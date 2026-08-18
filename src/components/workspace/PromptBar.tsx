@@ -31,6 +31,7 @@ interface PromptBarProps {
   onSelectDoc?: (doc: DocumentAnalysis) => void;
   onFileDrop?: (file: File) => void;
   onMediaBatchAttached?: (files: AttachedMediaFile[]) => void;
+  suggestions?: string[];
 }
 
 export default function PromptBar({
@@ -41,7 +42,8 @@ export default function PromptBar({
   currentDoc,
   onSelectDoc,
   onFileDrop,
-  onMediaBatchAttached
+  onMediaBatchAttached,
+  suggestions
 }: PromptBarProps) {
   const [input, setInput] = useState('');
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
@@ -272,6 +274,22 @@ export default function PromptBar({
     }
   };
 
+  const activeSuggestions = (suggestions && suggestions.length > 0)
+    ? suggestions
+    : currentDoc
+      ? [
+          '📝 Executive Summary',
+          '📊 Extract Data Tables',
+          '⚖️ Risk & Clause Audit',
+          '📅 Critical Deadlines'
+        ]
+      : [
+          '📄 Summarize or analyze a document',
+          '⚡ Write, explain, or debug code',
+          '📊 Extract and format structured data',
+          '💡 Explain a complex concept simply'
+        ];
+
   return (
     <>
       {/* Hidden Native File Picker for Instant Upload */}
@@ -284,7 +302,7 @@ export default function PromptBar({
         className="hidden"
       />
 
-      <div className="sticky bottom-0 bg-transparent px-4 py-4 z-20 transition-colors pointer-events-none">
+      <div className="sticky bottom-0 bg-transparent px-4 py-3 z-20 transition-colors pointer-events-none">
         <form
           onSubmit={handleSubmit}
           onDragOver={handleDragOver}
@@ -292,6 +310,23 @@ export default function PromptBar({
           onDrop={handleDrop}
           className="max-w-3xl mx-auto flex flex-col gap-2 relative pointer-events-auto"
         >
+          {/* Action Suggestions Bar (In front of Search / Prompt Bar) */}
+          {activeSuggestions && activeSuggestions.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-2 pb-1 animate-in fade-in select-none">
+              {activeSuggestions.map((sug, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => onSendMessage(sug)}
+                  className="px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#121824]/90 hover:bg-blue-50 dark:hover:bg-blue-950/70 border border-[#DCE5F0] dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-500 text-xs font-medium text-[#334155] dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 backdrop-blur-md shadow-xs transition-all cursor-pointer flex items-center gap-1.5 group"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+                  <span>{sug}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Staged Multi-Media Attachment Cards (ChatGPT Style) */}
           {attachedFiles.length > 0 && (
             <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none animate-in fade-in slide-in-from-bottom-2">

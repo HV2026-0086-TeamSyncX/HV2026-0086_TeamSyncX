@@ -601,84 +601,6 @@ function DashboardWorkspaceContent() {
                         </div>
                       )}
 
-                      {/* General Prompt Starters Grid */}
-                      <div className="space-y-3 pt-2">
-                        <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block px-1">
-                          {currentDoc ? 'Quick Document Questions' : 'Or Start a Universal AI Task'}
-                        </span>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-                          {(currentDoc
-                            ? [
-                                {
-                                  icon: FileText,
-                                  title: 'Executive Summary',
-                                  desc: 'Get a concise overview of key takeaways and conclusions',
-                                  prompt: `Provide a concise executive summary of ${currentDoc.name} with the top key takeaways.`
-                                },
-                                {
-                                  icon: BarChart3,
-                                  title: 'Extract Data Tables',
-                                  desc: 'Convert static numerical tables into structured rows',
-                                  prompt: 'Extract all data tables and numerical matrices from this document into clean rows.'
-                                },
-                                {
-                                  icon: Scale,
-                                  title: 'Risk & Clause Audit',
-                                  desc: 'Check for high-risk liability clauses, deadlines, and terms',
-                                  prompt: 'Audit all key clauses, obligations, risks, and critical deadlines in this document.'
-                                },
-                                {
-                                  icon: Sparkles,
-                                  title: 'Ask Anything',
-                                  desc: 'Ask specific questions with exact page citations',
-                                  prompt: `What are the most important conclusions and actionable points in ${currentDoc.name}?`
-                                }
-                              ]
-                            : [
-                                {
-                                  icon: Sparkles,
-                                  title: 'General AI Q&A',
-                                  desc: 'Brainstorm ideas, ask questions, or draft copy',
-                                  prompt: 'Explain the core principles of artificial neural networks in simple terms.'
-                                },
-                                {
-                                  icon: FileText,
-                                  title: 'Analyze Documents',
-                                  desc: 'Summarize PDFs, contracts, statements, and bills',
-                                  prompt: 'What are best practices for reviewing non-disclosure agreements (NDAs)?'
-                                },
-                                {
-                                  icon: BarChart3,
-                                  title: 'Data & Metrics',
-                                  desc: 'Extract numbers, calculate trends, or format tables',
-                                  prompt: 'How do you calculate compound annual growth rate (CAGR) with an example?'
-                                },
-                                {
-                                  icon: Scale,
-                                  title: 'Code & Technical',
-                                  desc: 'Write, debug, and optimize code in any language',
-                                  prompt: 'Write a TypeScript function to parse and validate CSV data safely.'
-                                }
-                              ]
-                          ).map((item, idx) => {
-                            const ItemIcon = item.icon;
-                            return (
-                              <button
-                                key={idx}
-                                onClick={() => handleSendMessage(item.prompt)}
-                                className="p-3.5 rounded-2xl bg-white dark:bg-[#121722] hover:bg-blue-50/50 dark:hover:bg-blue-950/30 border border-[#DCE5F0] dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-700 transition-all text-left group shadow-xs cursor-pointer"
-                              >
-                                <div className="flex items-center gap-2 mb-1">
-                                  <ItemIcon className="w-4 h-4 text-[#2563EB] dark:text-blue-400 group-hover:scale-110 transition-transform" />
-                                  <span className="text-xs font-bold text-[#101828] dark:text-white font-sans">{item.title}</span>
-                                </div>
-                                <p className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">{item.desc}</p>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
                     </div>
                   )}
 
@@ -877,6 +799,7 @@ function DashboardWorkspaceContent() {
               currentDoc={currentDoc}
               onSelectDoc={handleSelectDoc}
               onFileDrop={handleFileDropUpload}
+              suggestions={messages.length > 0 ? messages[messages.length - 1].suggestions : undefined}
             />
           </div>
 
