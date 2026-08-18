@@ -19,23 +19,27 @@ import zlib from 'node:zlib';
 /**
  * Helper to get a valid Gemini API client instance
  */
-export function getGeminiModel(customApiKey?: string, modelName = 'gemini-1.5-flash') {
+export function getGeminiModel(customApiKey?: string, modelName = 'gemini-2.0-flash') {
   const apiKey =
-    customApiKey ||
-    process.env.GEMINI_API_KEY ||
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
-    process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    customApiKey?.trim() ||
+    process.env.GEMINI_API_KEY?.trim() ||
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim() ||
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY?.trim();
 
-  if (!apiKey || apiKey.trim().length < 15 || apiKey.includes('default') || apiKey.startsWith('AQ.')) {
+  if (!apiKey || apiKey.length < 10 || apiKey.includes('default') || apiKey.startsWith('AQ.')) {
     return null;
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(apiKey.trim());
+    const genAI = new GoogleGenerativeAI(apiKey);
     return genAI.getGenerativeModel({ model: modelName });
-  } catch (err) {
-    console.warn('Gemini initialization notice:', err);
-    return null;
+  } catch {
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    } catch {
+      return null;
+    }
   }
 }
 
@@ -1241,12 +1245,28 @@ export async function executeUniversalChat(
   const cleanQuery = (query || '').trim();
   const qLower = cleanQuery.toLowerCase();
 
-  const suggestions = [
+  let dynamicSuggestions = [
     '📄 Summarize or analyze a document',
     '⚡ Write, explain, or debug code',
     '📊 Extract and format structured data',
     '💡 Explain a complex concept simply'
   ];
+
+  if (/code|python|javascript|typescript|function|script|sql|bug|react/i.test(qLower)) {
+    dynamicSuggestions = [
+      'Write a TypeScript function to parse CSV',
+      'Optimize database query indexing',
+      'Explain async/await concurrency',
+      'Debug a React state update error'
+    ];
+  } else if (/financial|tax|revenue|invoice|audit|covenant|profit/i.test(qLower)) {
+    dynamicSuggestions = [
+      'Calculate compound annual growth rate (CAGR)',
+      'Explain DSCR debt service coverage ratio',
+      'Audit GST / Input Tax Credit compliance',
+      'Compare quarterly EBITDA margins'
+    ];
+  }
 
   // 1. Try Live Gemini Generation
   const model = getGeminiModel(customApiKey);
@@ -1255,25 +1275,25 @@ export async function executeUniversalChat(
       let promptHistory = '';
       if (history && history.length > 0) {
         promptHistory = history
-          .slice(-6)
+          .slice(-8)
           .map((m) => `${m.sender === 'user' ? 'User' : 'Assistant'}: ${m.text}`)
           .join('\n\n');
       }
 
-      const prompt = `You are DocFin AI, an intelligent, helpful, articulate, and friendly AI assistant.
-Answer the user's question clearly, thoroughly, and helpfully across any topic (general knowledge, coding, math, writing, brainstorming, or analysis).
-You also have powerful multimodal document intelligence capabilities (users can attach PDFs, images, contracts, or spreadsheets anytime using the + button).
+      const prompt = `You are DocFin AI, a helpful, articulate, and intelligent AI coding, financial, and universal conversational assistant.
+Answer the user's question clearly, thoroughly, and helpfully across any topic (general knowledge, coding, math, writing, brainstorming, or deep analysis).
+You also possess multimodal document intelligence capabilities (users can attach PDFs, images, contracts, or spreadsheets anytime using the + button).
 
 ${promptHistory ? `CONVERSATION HISTORY:\n${promptHistory}\n\n` : ''}
 USER QUESTION:
 ${cleanQuery}
 
-Provide a direct, high quality, and well-structured answer in clean Markdown.`;
+Provide a direct, high-quality, and well-structured answer in clean Markdown (use headings, bullet points, bold keywords, and clean code blocks where appropriate).`;
 
       const result = await model.generateContent(prompt);
       const answer = result.response.text().trim();
       if (answer && answer.length > 5) {
-        return { answer, suggestions };
+        return { answer, suggestions: dynamicSuggestions };
       }
     } catch (err) {
       console.warn('Universal chat Gemini notice:', err);
@@ -1285,14 +1305,14 @@ Provide a direct, high quality, and well-structured answer in clean Markdown.`;
 
   let fallbackAnswer = '';
   if (isGreeting) {
-    fallbackAnswer = `Hello! 👋 How can I help you today?\n\nI'm your **DocFin AI Assistant**. Here are a few things we can do together:\n\n- 💬 **General AI Conversation & Q&A**: Ask me questions on any topic, brainstorm ideas, draft emails, or solve problems.\n- 💻 **Coding & Technical Assistance**: Write, debug, or explain algorithms, SQL queries, and scripts in any language.\n- 📄 **Multimodal Document Intelligence**: Click the **+** button or drag-and-drop any PDF, contract, bank statement, research paper, or image to extract tables, summarize key points, and audit clauses with page citations.\n\nWhat would you like to work on?`;
+    fallbackAnswer = `Hello! 👋 How can I help you today?\n\nI'm your **DocFin AI Assistant**. Here are a few things we can do together:\n\n- 💬 **Universal AI Conversation**: Ask questions on any topic, brainstorm ideas, draft content, or solve complex problems.\n- 💻 **Coding & Engineering**: Write, debug, or optimize algorithms, web services, and scripts in any language.\n- 📄 **Multimodal Document Intelligence**: Click the **+** button or drag-and-drop any PDF, contract, bank statement, research paper, or image to extract tables, summarize key points, and audit clauses with page citations.\n\nWhat would you like to work on?`;
   } else if (/code|python|javascript|typescript|function|script|sql|regex|html|css|bug|debug|api/i.test(qLower)) {
     fallbackAnswer = `I can help you write, optimize, or debug code! 💻\n\nPlease share your code snippet, technical requirements, or bug description, and I'll provide a clean, production-ready solution with explanations.`;
   } else if (/who are you|what are you|what is docfin/i.test(qLower)) {
-    fallbackAnswer = `I am **DocFin AI**, a universal document-aware AI assistant powered by advanced multimodal intelligence.\n\nYou can chat with me freely for general tasks or attach files (PDFs, spreadsheets, contracts, invoices) for spatial extraction, key figure tracking, and grounded Q&A!`;
+    fallbackAnswer = `I am **DocFin AI**, a universal conversational and document intelligence platform powered by advanced multimodal AI.\n\nYou can chat with me freely for general tasks or attach files (PDFs, spreadsheets, contracts, invoices) for spatial extraction, key figure tracking, and grounded Q&A!`;
   } else {
     fallbackAnswer = `I'd be glad to help you with: **"${cleanQuery}"**!\n\nFeel free to ask follow-up questions, request specific code or explanations, or attach relevant documents/data using the **+** button anytime.`;
   }
 
-  return { answer: fallbackAnswer, suggestions };
+  return { answer: fallbackAnswer, suggestions: dynamicSuggestions };
 }
