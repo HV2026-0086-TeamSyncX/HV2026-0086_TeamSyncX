@@ -1,9 +1,35 @@
 # HACKVERSE 2026
 
-1. Roshan Verma – Lead Developer & AI Systems Architect
-2. Team Member 2 – Full Stack & Frontend Engineer
-3. Team Member 3 – ML & Document Reasoning Specialist
-4. Team Member 4 – Cloud & Database Infrastructure Engineer
+### 🏆 Team Information
+- **Team Name**: Team SyncX
+- **Team ID**: TEAM-086
+- **College**: MAHAVEER ENGINEERING COLLEGE
+- **City**: Bandlaguda, Hyderabad
+
+---
+
+### 👥 Team Members
+
+1. **Kodi Roshan** – *Team Leader & Lead Systems Architect*
+   - **Email**: [roshankodi019@gmail.com](mailto:roshankodi019@gmail.com)
+   - **Mobile**: +91 8985797819
+   - **Roll Number**: 248P1A0525
+   - **Department**: CSE (III - YEAR)
+
+2. **Dhanyasree Gopinigari** – *Full Stack & AI/ML Engineer*
+   - **Email**: [dhanyasreegopinigari@gmail.com](mailto:dhanyasreegopinigari@gmail.com)
+   - **Mobile**: +91 6302097647
+   - **Department**: CSE - AI/ML (III - YEAR)
+
+3. **Jatoth Abhishiva** – *ML & Multimodal Reasoning Specialist*
+   - **Email**: [jatothabhishiva6@gmail.com](mailto:jatothabhishiva6@gmail.com)
+   - **Mobile**: +91 7989866674
+   - **Department**: CSE (III - YEAR)
+
+4. **Amuda Sai Bhavani** – *Cloud & Infrastructure Engineer*
+   - **Email**: [24xz1a0504trr@gmail.com](mailto:24xz1a0504trr@gmail.com)
+   - **Mobile**: +91 6303934161
+   - **Department**: CSE (III - YEAR)
 
 ---
 
@@ -126,7 +152,7 @@ docker compose up --build -d
 ---
 
 ## Demo
-- **Live Demo**: [https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX](https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX)
+- **Live Repository**: [https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX](https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX)
 - **Workspace Dashboard**: `http://localhost:3000/dashboard`
 - **Health Telemetry**: `http://localhost:3000/api/health`
 - **Demo Video**: [Add URL / Presentation Link]
