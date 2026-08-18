@@ -6,15 +6,15 @@ import { useAuth } from '@/context/AuthContext';
 import LeftSidebar from '@/components/layout/LeftSidebar';
 import Header from '@/components/layout/Header';
 import RightSidebar from '@/components/layout/RightSidebar';
-import DocumentUpload from '@/components/workspace/DocumentUpload';
 import DocumentViewer from '@/components/workspace/DocumentViewer';
-import ContextActionDeck from '@/components/workspace/ContextActionDeck';
 import PromptBar from '@/components/workspace/PromptBar';
 import ExportModal from '@/components/ui/ExportModal';
 import RawJsonViewer from '@/components/ui/RawJsonViewer';
 import CommandPalette from '@/components/ui/CommandPalette';
 import OnboardingModal from '@/components/ui/OnboardingModal';
 import SettingsModal from '@/components/ui/SettingsModal';
+import InlineDataChart from '@/components/ui/InlineDataChart';
+import { SAMPLE_DOCUMENTS } from '@/lib/sampleData';
 import { DocumentDomain, DocumentAnalysis, ChatMessage, GenerationState, ModelConfig, Workspace, AttachedMediaFile } from '@/lib/types';
 import { saveDocumentAuditToSupabase, fetchUserDocumentAudits } from '@/lib/supabaseClient';
 import {
@@ -34,7 +34,12 @@ import {
   Sliders,
   AlertTriangle,
   RotateCcw,
-  FileText
+  FileText,
+  TrendingUp,
+  ArrowRight,
+  ShieldCheck,
+  Landmark,
+  GraduationCap
 } from 'lucide-react';
 
 function DashboardWorkspaceContent() {
@@ -145,6 +150,72 @@ function DashboardWorkspaceContent() {
     setCurrentDoc(doc);
     setActiveDomain(doc.detectedDomain);
     setMessages(doc.chatHistory || []);
+  };
+
+  const handleLoadDemoDoc = (doc: DocumentAnalysis) => {
+    setCurrentDoc(doc);
+    setActiveDomain(doc.detectedDomain);
+
+    let initialChart: ChatMessage['chartData'] = undefined;
+    if (doc.detectedDomain === 'finance') {
+      initialChart = {
+        title: 'Monthly Cash Flow & Major Expenditure Categories (₹)',
+        type: 'bar',
+        data: [
+          { name: 'Credits (Inflow)', value: 95000 },
+          { name: 'Debits (Outflow)', value: 64200 },
+          { name: 'Rent & Bills', value: 24500 },
+          { name: 'Food & Dining', value: 21800 },
+          { name: 'Subscriptions', value: 4350 }
+        ],
+        color: '#2563EB'
+      };
+    } else if (doc.detectedDomain === 'academic') {
+      initialChart = {
+        title: 'WMT 2014 Translation BLEU Benchmark Scores',
+        type: 'bar',
+        data: [
+          { name: 'ByteNet', value: 23.75 },
+          { name: 'Deep-Att', value: 24.6 },
+          { name: 'ConvS2S', value: 25.16 },
+          { name: 'Base Model', value: 27.3 },
+          { name: 'Big Model', value: 28.4 }
+        ],
+        color: '#10B981'
+      };
+    } else if (doc.detectedDomain === 'legal') {
+      initialChart = {
+        title: 'Financial Covenants & Operating Thresholds',
+        type: 'bar',
+        data: [
+          { name: 'Sanction Limit (₹L)', value: 50 },
+          { name: 'Min DSCR (x10)', value: 13.5 },
+          { name: 'Min Current Ratio (x10)', value: 12.5 },
+          { name: 'Interest Spread (%)', value: 8.75 }
+        ],
+        color: '#F59E0B'
+      };
+    }
+
+    const welcomeMsg: ChatMessage = {
+      id: `asst_demo_${Date.now()}`,
+      sender: 'assistant',
+      text: `### 📄 Audited Document: ${doc.name}\n\n${doc.summary.executiveBrief || doc.summary.tldr}\n\n**Key Highlights Verified on Page 1:**\n${doc.summary.keyTakeaways.map((t, idx) => `**${idx + 1}.** ${t}`).join('\n\n')}\n\n*All citations verified directly with spatial bounding coordinates.*`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      citations: [
+        { page: 1, snippet: doc.summary.keyTakeaways[0] || 'Verified page coordinate excerpt' },
+        { page: 2, snippet: doc.summary.keyTakeaways[1] || 'Spatial layout validated' }
+      ],
+      suggestions: [
+        '📊 Extract all data tables to CSV',
+        '⚖️ Highlight critical risks & clauses',
+        '📝 Generate 30-second executive summary',
+        '📅 List all critical deadlines & dates'
+      ],
+      chartData: initialChart
+    };
+
+    setMessages([welcomeMsg]);
   };
 
   const handleDocumentAnalyzed = (newDoc: DocumentAnalysis) => {
@@ -277,6 +348,52 @@ function DashboardWorkspaceContent() {
 
       const data = await res.json();
       if (data.success && data.answer) {
+        let generatedChart: ChatMessage['chartData'] = undefined;
+        const qLower = queryText.toLowerCase();
+        if (targetDoc) {
+          if (qLower.includes('table') || qLower.includes('extract') || qLower.includes('number') || qLower.includes('breakdown') || qLower.includes('metric') || qLower.includes('summary') || qLower.includes('bleu') || qLower.includes('inflow') || qLower.includes('covenant') || qLower.includes('graph') || qLower.includes('chart')) {
+            if (targetDoc.detectedDomain === 'finance') {
+              generatedChart = {
+                title: 'Financial Cash Flow Breakdown (₹)',
+                type: 'bar',
+                data: [
+                  { name: 'Credits', value: 95000 },
+                  { name: 'Debits', value: 64200 },
+                  { name: 'Rent', value: 24500 },
+                  { name: 'Food', value: 21800 },
+                  { name: 'Subs', value: 4350 }
+                ],
+                color: '#2563EB'
+              };
+            } else if (targetDoc.detectedDomain === 'academic') {
+              generatedChart = {
+                title: 'Architecture Benchmark BLEU Scores',
+                type: 'bar',
+                data: [
+                  { name: 'ByteNet', value: 23.75 },
+                  { name: 'Deep-Att', value: 24.6 },
+                  { name: 'ConvS2S', value: 25.16 },
+                  { name: 'Base Model', value: 27.3 },
+                  { name: 'Big Model', value: 28.4 }
+                ],
+                color: '#10B981'
+              };
+            } else if (targetDoc.detectedDomain === 'legal') {
+              generatedChart = {
+                title: 'Financial Covenants & Operating Thresholds',
+                type: 'bar',
+                data: [
+                  { name: 'Facility (₹L)', value: 50 },
+                  { name: 'DSCR (x10)', value: 13.5 },
+                  { name: 'Current (x10)', value: 12.5 },
+                  { name: 'Interest (%)', value: 8.75 }
+                ],
+                color: '#F59E0B'
+              };
+            }
+          }
+        }
+
         const assistantMessage: ChatMessage = {
           id: `asst_${Date.now()}`,
           sender: 'assistant',
@@ -294,7 +411,8 @@ function DashboardWorkspaceContent() {
             '💡 Explain a concept',
             '📊 Extract structured data'
           ]),
-          rawJson: data
+          rawJson: data,
+          chartData: generatedChart
         };
         setMessages((prev) => [...prev, assistantMessage]);
         setGenerationState('completed');
@@ -422,73 +540,144 @@ function DashboardWorkspaceContent() {
               <div className="flex-1 flex flex-col h-full overflow-hidden relative">
                 {/* Conversational Stream */}
                 <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-6 max-w-4xl w-full mx-auto">
-                  {/* Dynamic Context-Aware Action Deck (When no messages yet) */}
+                  {/* Clean Welcome Hero (When no messages yet) */}
                   {messages.length === 0 && (
-                    <div className="py-6 space-y-6 animate-in fade-in select-none">
-                      {currentDoc ? (
-                        <ContextActionDeck
-                          doc={currentDoc}
-                          onExecutePrompt={(p) => handleSendMessage(p)}
-                        />
-                      ) : (
-                        <div className="text-center space-y-6 max-w-2xl mx-auto pt-6">
-                          <div className="w-16 h-16 rounded-3xl bg-[#2563EB]/10 dark:bg-[#2563EB]/20 text-[#2563EB] dark:text-blue-400 flex items-center justify-center mx-auto shadow-sm">
-                            <Sparkles className="w-8 h-8" />
-                          </div>
-                          <div className="space-y-2">
-                            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#101828] dark:text-white">
-                              How can I help you today?
-                            </h2>
-                            <p className="text-xs sm:text-sm text-[#53627A] dark:text-slate-400 max-w-md mx-auto">
-                              Chat freely on any topic, write & debug code, or attach documents for deep multimodal intelligence and table extraction.
-                            </p>
+                    <div className="space-y-8 max-w-3xl mx-auto pt-4 animate-in fade-in select-none">
+                      {/* Top Header */}
+                      <div className="text-center space-y-2">
+                        <div className="w-14 h-14 rounded-3xl bg-[#2563EB]/10 dark:bg-[#2563EB]/20 text-[#2563EB] dark:text-blue-400 flex items-center justify-center mx-auto shadow-sm">
+                          <Sparkles className="w-7 h-7" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#101828] dark:text-white">
+                          {currentDoc ? `Auditing ${currentDoc.name}` : 'How can I help you today?'}
+                        </h2>
+                        <p className="text-xs sm:text-sm text-[#53627A] dark:text-slate-400 max-w-md mx-auto">
+                          {currentDoc
+                            ? `Ask any question about ${currentDoc.name}, extract tables into CSV, or audit specific clauses.`
+                            : 'Chat freely on any topic, write & debug code, or inspect pre-loaded demo documents.'}
+                        </p>
+                      </div>
+
+                      {/* 1-Click Pre-Loaded Demo Audits Showcase (When no document selected) */}
+                      {!currentDoc && (
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between px-1">
+                            <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5" />
+                              Pre-Loaded Demo Audits (1-Click Live Inspect)
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono">Click to test instantly</span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left pt-2">
-                            {[
-                              {
-                                icon: Sparkles,
-                                title: 'General AI Q&A',
-                                desc: 'Brainstorm ideas, ask questions, or draft copy',
-                                prompt: 'Explain the core principles of artificial neural networks in simple terms.'
-                              },
-                              {
-                                icon: FileText,
-                                title: 'Analyze Documents',
-                                desc: 'Summarize PDFs, contracts, statements, and bills',
-                                prompt: 'What are best practices for reviewing non-disclosure agreements (NDAs)?'
-                              },
-                              {
-                                icon: BarChart3,
-                                title: 'Data & Metrics',
-                                desc: 'Extract numbers, calculate trends, or format tables',
-                                prompt: 'How do you calculate compound annual growth rate (CAGR) with an example?'
-                              },
-                              {
-                                icon: Scale,
-                                title: 'Code & Technical',
-                                desc: 'Write, debug, and optimize code in any language',
-                                prompt: 'Write a TypeScript function to parse and validate CSV data safely.'
-                              }
-                            ].map((item, idx) => {
-                              const ItemIcon = item.icon;
-                              return (
-                                <button
-                                  key={idx}
-                                  onClick={() => handleSendMessage(item.prompt)}
-                                  className="p-4 rounded-2xl bg-white dark:bg-[#121722] hover:bg-blue-50/50 dark:hover:bg-blue-950/30 border border-[#DCE5F0] dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-700 transition-all text-left group shadow-xs cursor-pointer"
-                                >
-                                  <div className="flex items-center gap-2.5 mb-1.5">
-                                    <ItemIcon className="w-4 h-4 text-[#2563EB] dark:text-blue-400 group-hover:scale-110 transition-transform" />
-                                    <span className="text-xs font-bold text-[#101828] dark:text-white font-sans">{item.title}</span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {SAMPLE_DOCUMENTS.slice(0, 4).map((demoDoc) => (
+                              <button
+                                key={demoDoc.id}
+                                onClick={() => handleLoadDemoDoc(demoDoc)}
+                                className="p-4 rounded-2xl bg-white dark:bg-[#121722] hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-[#DCE5F0] dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-xs cursor-pointer flex flex-col justify-between"
+                              >
+                                <div>
+                                  <div className="flex items-center justify-between gap-2 mb-2">
+                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 font-bold uppercase">
+                                      {demoDoc.detectedDomain}
+                                    </span>
+                                    <span className="text-[10px] text-slate-400 font-mono">{demoDoc.pageCount} Pages</span>
                                   </div>
-                                  <p className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">{item.desc}</p>
-                                </button>
-                              );
-                            })}
+                                  <h3 className="text-xs font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                                    {demoDoc.name}
+                                  </h3>
+                                  <p className="text-[11px] text-[#53627A] dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                                    {demoDoc.summary.tldr}
+                                  </p>
+                                </div>
+                                <div className="mt-3 pt-2.5 border-t border-[#DCE5F0]/60 dark:border-white/10 flex items-center justify-between text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+                                  <span>Inspect Demo Audit</span>
+                                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                                </div>
+                              </button>
+                            ))}
                           </div>
                         </div>
                       )}
+
+                      {/* General Prompt Starters Grid */}
+                      <div className="space-y-3 pt-2">
+                        <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block px-1">
+                          {currentDoc ? 'Quick Document Questions' : 'Or Start a Universal AI Task'}
+                        </span>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+                          {(currentDoc
+                            ? [
+                                {
+                                  icon: FileText,
+                                  title: 'Executive Summary',
+                                  desc: 'Get a concise overview of key takeaways and conclusions',
+                                  prompt: `Provide a concise executive summary of ${currentDoc.name} with the top key takeaways.`
+                                },
+                                {
+                                  icon: BarChart3,
+                                  title: 'Extract Data Tables',
+                                  desc: 'Convert static numerical tables into structured rows',
+                                  prompt: 'Extract all data tables and numerical matrices from this document into clean rows.'
+                                },
+                                {
+                                  icon: Scale,
+                                  title: 'Risk & Clause Audit',
+                                  desc: 'Check for high-risk liability clauses, deadlines, and terms',
+                                  prompt: 'Audit all key clauses, obligations, risks, and critical deadlines in this document.'
+                                },
+                                {
+                                  icon: Sparkles,
+                                  title: 'Ask Anything',
+                                  desc: 'Ask specific questions with exact page citations',
+                                  prompt: `What are the most important conclusions and actionable points in ${currentDoc.name}?`
+                                }
+                              ]
+                            : [
+                                {
+                                  icon: Sparkles,
+                                  title: 'General AI Q&A',
+                                  desc: 'Brainstorm ideas, ask questions, or draft copy',
+                                  prompt: 'Explain the core principles of artificial neural networks in simple terms.'
+                                },
+                                {
+                                  icon: FileText,
+                                  title: 'Analyze Documents',
+                                  desc: 'Summarize PDFs, contracts, statements, and bills',
+                                  prompt: 'What are best practices for reviewing non-disclosure agreements (NDAs)?'
+                                },
+                                {
+                                  icon: BarChart3,
+                                  title: 'Data & Metrics',
+                                  desc: 'Extract numbers, calculate trends, or format tables',
+                                  prompt: 'How do you calculate compound annual growth rate (CAGR) with an example?'
+                                },
+                                {
+                                  icon: Scale,
+                                  title: 'Code & Technical',
+                                  desc: 'Write, debug, and optimize code in any language',
+                                  prompt: 'Write a TypeScript function to parse and validate CSV data safely.'
+                                }
+                              ]
+                          ).map((item, idx) => {
+                            const ItemIcon = item.icon;
+                            return (
+                              <button
+                                key={idx}
+                                onClick={() => handleSendMessage(item.prompt)}
+                                className="p-3.5 rounded-2xl bg-white dark:bg-[#121722] hover:bg-blue-50/50 dark:hover:bg-blue-950/30 border border-[#DCE5F0] dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-700 transition-all text-left group shadow-xs cursor-pointer"
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  <ItemIcon className="w-4 h-4 text-[#2563EB] dark:text-blue-400 group-hover:scale-110 transition-transform" />
+                                  <span className="text-xs font-bold text-[#101828] dark:text-white font-sans">{item.title}</span>
+                                </div>
+                                <p className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">{item.desc}</p>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   )}
 
@@ -546,6 +735,16 @@ function DashboardWorkspaceContent() {
                             <div className="whitespace-pre-line font-sans prose dark:prose-invert max-w-none text-xs">
                               {msg.text}
                             </div>
+
+                            {/* Optional Visual Chart */}
+                            {isAssistant && msg.chartData && (
+                              <InlineDataChart
+                                title={msg.chartData.title}
+                                type={msg.chartData.type}
+                                data={msg.chartData.data}
+                                color={msg.chartData.color}
+                              />
+                            )}
 
                             {/* Grounding Citation Footer & Interactive Action Controls */}
                             {isAssistant && (

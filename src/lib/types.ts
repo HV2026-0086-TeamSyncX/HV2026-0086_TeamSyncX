@@ -302,6 +302,12 @@ export interface ChatMessage {
   rawJson?: unknown;
   suggestions?: string[];
   attachedMedia?: AttachedMediaFile[];
+  chartData?: {
+    title?: string;
+    type?: 'bar' | 'area';
+    data: Array<{ name: string; value: number; [key: string]: string | number }>;
+    color?: string;
+  };
 }
 
 export type GenerationState = 'idle' | 'validating' | 'submitting' | 'generating' | 'completed' | 'failed';
