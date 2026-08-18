@@ -205,13 +205,18 @@ export default function LeftSidebar({
                 { id: 'overall', label: 'Photos & Videos', icon: Film, color: 'text-amber-400' }
               ].map((cap) => {
                 const CapIcon = cap.icon;
+                const isSelected = activeDomain === cap.id;
                 return (
                   <button
                     key={cap.id}
                     onClick={() => {
                       if (onSelectDomain) onSelectDomain(cap.id as DocumentDomain);
                     }}
-                    className="w-full text-left px-2 py-1.5 rounded-lg text-[11px] text-slate-400 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                    className={`w-full text-left px-2 py-1.5 rounded-lg text-[11px] transition-colors flex items-center gap-2 cursor-pointer ${
+                      isSelected
+                        ? 'bg-white/15 text-white font-semibold'
+                        : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
                   >
                     <CapIcon className={`w-3 h-3 ${cap.color}`} />
                     <span className="truncate">{cap.label}</span>
@@ -298,6 +303,7 @@ export default function LeftSidebar({
             <div className="space-y-0.5">
               {(pinnedDocs.length > 0 ? recentDocs : docsList).map((doc) => {
                 const isActive = currentDoc?.id === doc.id;
+                const formattedName = doc.name.replace(/_/g, ' ');
                 return (
                   <button
                     key={doc.id}
@@ -312,7 +318,12 @@ export default function LeftSidebar({
                     {isCollapsed ? (
                       <MessageSquare className="w-4 h-4 mx-auto text-slate-400" />
                     ) : (
-                      <span className="truncate flex-1">{doc.name}</span>
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <MessageSquare className={`w-3.5 h-3.5 flex-shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-400 group-hover:text-blue-400 transition-colors'}`} />
+                        <span className="truncate flex-1 text-xs text-slate-200 group-hover:text-white transition-colors font-sans">
+                          {formattedName}
+                        </span>
+                      </div>
                     )}
                   </button>
                 );
@@ -339,7 +350,6 @@ export default function LeftSidebar({
               <p className="text-xs font-medium text-white truncate">
                 {user?.name || user?.email || 'DocFin User'}
               </p>
-              <p className="text-[10px] text-slate-500 truncate">Pro Plan</p>
             </div>
           )}
           {!isCollapsed && <MoreHorizontal className="w-4 h-4 text-slate-500" />}

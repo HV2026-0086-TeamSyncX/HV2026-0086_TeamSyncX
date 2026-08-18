@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DocumentAnalysis } from './types';
+import { SAMPLE_DOCUMENTS } from './sampleData';
 
 const DB_FILE = path.join(process.cwd(), 'dev.db');
 
@@ -15,7 +16,7 @@ function initDb(): LocalDatabaseSchema {
     if (fs.existsSync(DB_FILE)) {
       const content = fs.readFileSync(DB_FILE, 'utf-8');
       const parsed = JSON.parse(content);
-      if (parsed && Array.isArray(parsed.documents)) {
+      if (parsed && Array.isArray(parsed.documents) && parsed.documents.length > 0) {
         return parsed;
       }
     }
@@ -26,7 +27,7 @@ function initDb(): LocalDatabaseSchema {
   const initial: LocalDatabaseSchema = {
     version: 1,
     updatedAt: new Date().toISOString(),
-    documents: []
+    documents: SAMPLE_DOCUMENTS
   };
 
   try {

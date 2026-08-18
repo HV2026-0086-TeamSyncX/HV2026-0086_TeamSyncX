@@ -9,7 +9,8 @@ import {
   ExtractedTable,
   ActionChecklistItem,
   CitationReference,
-  ChatMessage
+  ChatMessage,
+  AttachedMediaFile
 } from '@/lib/types';
 import { classifyDocument } from '@/lib/docClassifier';
 import { indexDocumentInQdrant, searchQdrantVectors } from '@/lib/vectorClient';
@@ -807,8 +808,12 @@ export async function executeDocumentRAG(
       }
     }
     if (score > 0) {
-      const page = pages.find((p) => p.text.includes(s))?.page || 1;
-      scoredSentences.push({ sentence: s, score, page });
+      const sNorm = s.toLowerCase().replace(/[\r\n\s]+/g, ' ');
+      const matchingPage = pages.find((p) => {
+        const pNorm = p.text.toLowerCase().replace(/[\r\n\s]+/g, ' ');
+        return pNorm.includes(sNorm) || sNorm.includes(pNorm);
+      })?.page || 1;
+      scoredSentences.push({ sentence: s, score, page: matchingPage });
     }
   }
 
@@ -1240,7 +1245,8 @@ USER QUESTION: "${cleanQuery}"`;
 export async function executeUniversalChat(
   query: string,
   customApiKey?: string,
-  history?: ChatMessage[]
+  history?: ChatMessage[],
+  attachedFiles?: AttachedMediaFile[]
 ): Promise<{ answer: string; suggestions: string[] }> {
   const cleanQuery = (query || '').trim();
   const qLower = cleanQuery.toLowerCase();
@@ -1280,17 +1286,39 @@ export async function executeUniversalChat(
           .join('\n\n');
       }
 
-      const prompt = `You are DocFin AI, a helpful, articulate, and intelligent AI coding, financial, and universal conversational assistant.
-Answer the user's question clearly, thoroughly, and helpfully across any topic (general knowledge, coding, math, writing, brainstorming, or deep analysis).
-You also possess multimodal document intelligence capabilities (users can attach PDFs, images, contracts, or spreadsheets anytime using the + button).
+      const prompt = `You are DocFin AI, a helpful, articulate, and intelligent AI assistant.
+Answer the user's question clearly, thoroughly, and helpfully across any topic (general knowledge, document analysis, coding, math, writing, or data tables).
+Provide clear, simple, and understandable explanations in clean Markdown without raw syntax symbols.
 
 ${promptHistory ? `CONVERSATION HISTORY:\n${promptHistory}\n\n` : ''}
 USER QUESTION:
-${cleanQuery}
+${cleanQuery || 'Please analyze the attached file(s) and provide a clean, simple summary.'}`;
 
-Provide a direct, high-quality, and well-structured answer in clean Markdown (use headings, bullet points, bold keywords, and clean code blocks where appropriate).`;
+      const contentParts: Array<string | { inlineData: { data: string; mimeType: string } }> = [];
 
-      const result = await model.generateContent(prompt);
+      // Ingest attached media files (Images, PDFs, Documents) natively
+      if (attachedFiles && attachedFiles.length > 0) {
+        for (const file of attachedFiles) {
+          if (file.base64Data) {
+            let mime = file.mimeType || 'application/pdf';
+            if (file.mediaType === 'image') {
+              mime = file.mimeType?.startsWith('image/') ? file.mimeType : 'image/jpeg';
+            } else if (file.mediaType === 'pdf') {
+              mime = 'application/pdf';
+            }
+            contentParts.push({
+              inlineData: {
+                data: file.base64Data,
+                mimeType: mime
+              }
+            });
+          }
+        }
+      }
+
+      contentParts.push(prompt);
+
+      const result = await model.generateContent(contentParts);
       const answer = result.response.text().trim();
       if (answer && answer.length > 5) {
         return { answer, suggestions: dynamicSuggestions };

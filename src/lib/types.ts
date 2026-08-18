@@ -427,7 +427,7 @@ export interface DocumentAnalysis {
   extractedEntities: ExtractedEntity[];
   extractedTables: ExtractedTable[];
   sampleQuestions: string[];
-  chatHistory: ChatMessage[];
+  chatHistory?: ChatMessage[];
   rawText?: string;
   pageTexts?: { page: number; text: string }[];
 }

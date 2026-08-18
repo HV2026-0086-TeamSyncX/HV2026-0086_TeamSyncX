@@ -53,6 +53,7 @@ export default function PromptBar({
   const [isDragOver, setIsDragOver] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<AttachedMediaFile[]>([]);
   const nativeFileInputRef = useRef<HTMLInputElement>(null);
+  const textInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
 
   const detectMediaType = (file: File): MediaType => {
@@ -274,21 +275,194 @@ export default function PromptBar({
     }
   };
 
-  const activeSuggestions = (suggestions && suggestions.length > 0)
-    ? suggestions
-    : currentDoc
-      ? [
-          '📝 Executive Summary',
-          '📊 Extract Data Tables',
-          '⚖️ Risk & Clause Audit',
-          '📅 Critical Deadlines'
-        ]
-      : [
-          '📄 Summarize or analyze a document',
-          '⚡ Write, explain, or debug code',
-          '📊 Extract and format structured data',
-          '💡 Explain a complex concept simply'
-        ];
+  const getDomainFeaturePills = () => {
+    if (activeDomain === 'finance') {
+      return [
+        {
+          label: '💳 Statement Simplifier',
+          prompt: currentDoc
+            ? `Simplify and breakdown ${currentDoc.name} into total monthly credits, debits, recurring subscriptions, and net cash flow.`
+            : 'Simplify and breakdown this bank statement into total monthly credits, debits, recurring subscriptions, and net cash flow.'
+        },
+        {
+          label: '📈 Cash Flow & Expense Audit',
+          prompt: 'Analyze all high-value debits and categorize spending into essential vs discretionary expenses.'
+        },
+        {
+          label: '🔍 Hidden Fee & Interest Detector',
+          prompt: 'Audit this statement for hidden service charges, penalties, overdraft fees, or interest rate spikes.'
+        },
+        {
+          label: '🎯 50/30/20 Budget Plan',
+          prompt: 'Provide a personalized 50/30/20 budget recommendation and savings plan based on this financial flow.'
+        }
+      ];
+    }
+
+    if (activeDomain === 'insurance') {
+      return [
+        {
+          label: '🛡️ Policy Coverage Breakdown',
+          prompt: currentDoc
+            ? `Breakdown the coverage limits, sum insured, copay percentages, and cashless network provisions in ${currentDoc.name}.`
+            : 'Breakdown the coverage limits, sum insured, copay percentages, and cashless network provisions in this insurance policy.'
+        },
+        {
+          label: '⚠️ Exclusions & Waiting Periods',
+          prompt: 'Highlight all specific exclusions, permanent clause restrictions, and pre-existing disease waiting periods in this policy.'
+        },
+        {
+          label: '🏥 Claim Settlement Checklist',
+          prompt: 'Generate a step-by-step checklist of documents, deadlines, and requirements to ensure guaranteed claim approval.'
+        },
+        {
+          label: '📑 Deductibles & Copay Rules',
+          prompt: 'Explain the exact deductibles, out-of-pocket maximums, and room rent capping rules in simple terms.'
+        }
+      ];
+    }
+
+    if (activeDomain === 'legal') {
+      return [
+        {
+          label: '⚖️ Liability & Indemnity Audit',
+          prompt: currentDoc
+            ? `Audit ${currentDoc.name} for uncapped liability, indemnity risks, non-compete clauses, and jurisdiction traps.`
+            : 'Audit this contract for uncapped liability, indemnity risks, non-compete clauses, and jurisdiction traps.'
+        },
+        {
+          label: '📝 Termination & Exit Terms',
+          prompt: 'Extract all termination conditions, lock-in periods, notice requirements, and early exit penalties.'
+        },
+        {
+          label: '🔒 Confidentiality & IP Rights',
+          prompt: 'Verify standard NDA confidentiality durations, proprietary IP ownership rights, and data protection terms.'
+        },
+        {
+          label: '✍️ Clause Summary & Redlines',
+          prompt: 'Provide a plain-English clause-by-clause summary with recommended redlines for negotiation.'
+        }
+      ];
+    }
+
+    if (activeDomain === 'academic') {
+      return [
+        {
+          label: '🎓 Methodology & Architecture',
+          prompt: currentDoc
+            ? `Explain the methodology, core theoretical framework, and novelty of ${currentDoc.name}.`
+            : 'Explain the methodology, core theoretical framework, and novelty of this research paper.'
+        },
+        {
+          label: '📊 Benchmark Results & BLEU',
+          prompt: 'Extract all benchmark evaluation scores, baseline comparisons, and statistical significance metrics.'
+        },
+        {
+          label: '💡 Key Contributions & Limits',
+          prompt: 'Summarize the primary contributions, assumptions, and acknowledged limitations of this study.'
+        },
+        {
+          label: '📚 Literature & Prior Work',
+          prompt: 'Provide a concise literature review contextualizing how this paper advances state-of-the-art work.'
+        }
+      ];
+    }
+
+    if (activeDomain === 'billing') {
+      return [
+        {
+          label: '📑 Invoice & GST Reconciliation',
+          prompt: currentDoc
+            ? `Reconcile all line items, tax rates (GST/VAT), discount deductions, and total amount payable in ${currentDoc.name}.`
+            : 'Reconcile all line items, tax rates (GST/VAT), discount deductions, and total amount payable in this invoice.'
+        },
+        {
+          label: '📊 Vendor Cost Comparison',
+          prompt: 'Compare vendor unit rates, quantity variances, and identify potential cost savings.'
+        },
+        {
+          label: '🔢 Tabular Matrix Extraction',
+          prompt: 'Extract all tabular rows and columns into clean CSV / Markdown table format.'
+        },
+        {
+          label: '⚠️ Discrepancy & Duplicate Check',
+          prompt: 'Audit this billing file for duplicate invoice numbers, arithmetic errors, or overbilling.'
+        }
+      ];
+    }
+
+    if (activeDomain === 'medical') {
+      return [
+        {
+          label: '🩺 Lab Report Simplifier',
+          prompt: currentDoc
+            ? `Explain the medical lab test markers, reference ranges, and abnormal findings in ${currentDoc.name} in clear, plain language.`
+            : 'Explain these medical lab test markers, reference ranges, and abnormal findings in clear, plain language.'
+        },
+        {
+          label: '💊 Medication & Dosage Schedule',
+          prompt: 'Extract prescribed medicines, dosage timings, dietary precautions, and possible drug interactions.'
+        },
+        {
+          label: '📋 Treatment Plan Summary',
+          prompt: 'Summarize the diagnosis, recommended lifestyle modifications, and follow-up consultation dates.'
+        },
+        {
+          label: '⚠️ Warning Signs & Emergency Care',
+          prompt: 'List critical warning symptoms that require immediate medical attention or emergency care.'
+        }
+      ];
+    }
+
+    if (currentDoc) {
+      return [
+        {
+          label: '📝 Executive Summary',
+          prompt: `Please provide a concise executive summary of ${currentDoc.name} highlighting the top 5 key takeaways and conclusions.`
+        },
+        {
+          label: '📊 Extract Data Tables',
+          prompt: 'Extract all data tables and numerical matrices from this document into clean Markdown rows.'
+        },
+        {
+          label: '⚖️ Risk & Clause Audit',
+          prompt: 'Audit all key clauses, liability risks, financial obligations, and critical deadlines in this document.'
+        },
+        {
+          label: '📅 Critical Deadlines',
+          prompt: 'List all important dates, renewal milestones, payment terms, and deadlines found in this document.'
+        }
+      ];
+    }
+
+    return [
+      {
+        label: '📄 Summarize or analyze a document',
+        prompt: 'Please summarize this document, highlight the key executive takeaways, and list any critical action items or risks.'
+      },
+      {
+        label: '⚡ Write, explain, or debug code',
+        prompt: 'Write clean, type-safe TypeScript code to parse, validate, and transform structured data, with explanations and error handling.'
+      },
+      {
+        label: '📊 Extract and format structured data',
+        prompt: 'Extract all numerical figures, financial metrics, and data tables from this document into structured Markdown table format.'
+      },
+      {
+        label: '💡 Explain a complex concept simply',
+        prompt: 'Explain how transformer self-attention neural network architectures work in simple, intuitive terms with an analogy.'
+      }
+    ];
+  };
+
+  const featurePills = getDomainFeaturePills();
+
+  const handlePillClick = (promptText: string) => {
+    setInput(promptText);
+    setTimeout(() => {
+      textInputRef.current?.focus();
+    }, 50);
+  };
 
   return (
     <>
@@ -310,22 +484,20 @@ export default function PromptBar({
           onDrop={handleDrop}
           className="max-w-3xl mx-auto flex flex-col gap-2 relative pointer-events-auto"
         >
-          {/* Action Suggestions Bar (In front of Search / Prompt Bar) */}
-          {activeSuggestions && activeSuggestions.length > 0 && (
-            <div className="flex flex-wrap items-center justify-center gap-2 pb-1 animate-in fade-in select-none">
-              {activeSuggestions.map((sug, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => onSendMessage(sug)}
-                  className="px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#121824]/90 hover:bg-blue-50 dark:hover:bg-blue-950/70 border border-[#DCE5F0] dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-500 text-xs font-medium text-[#334155] dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 backdrop-blur-md shadow-xs transition-all cursor-pointer flex items-center gap-1.5 group"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 opacity-60 group-hover:opacity-100 transition-opacity" />
-                  <span>{sug}</span>
-                </button>
-              ))}
-            </div>
-          )}
+          {/* Action Suggestions Bar (Populates input inside capsule on click) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pb-1 animate-in fade-in select-none">
+            {featurePills.map((pill, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handlePillClick(pill.prompt)}
+                className="px-3.5 py-1.5 rounded-full bg-[#101622]/90 dark:bg-[#101622]/90 hover:bg-blue-950/70 border border-white/10 hover:border-blue-400 text-xs font-medium text-slate-200 hover:text-white backdrop-blur-md shadow-xs transition-all cursor-pointer flex items-center gap-2 group hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 opacity-75 group-hover:opacity-100 transition-opacity" />
+                <span>{pill.label}</span>
+              </button>
+            ))}
+          </div>
 
           {/* Staged Multi-Media Attachment Cards (ChatGPT Style) */}
           {attachedFiles.length > 0 && (
@@ -441,6 +613,7 @@ export default function PromptBar({
 
                 {/* Prompt Input */}
                 <input
+                  ref={textInputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}

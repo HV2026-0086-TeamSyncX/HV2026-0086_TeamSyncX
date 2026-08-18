@@ -16,32 +16,42 @@ function assert(condition, message) {
 
 async function runTests() {
   // ==========================================
-  // TEST 1: Qualitative Document (e.g. StudySync_Test_PDF / Essay with No Numbers)
+  // TEST 1: Exact StudySync Test PDF (3 Pages: AI, ML, Deep Learning)
   // ==========================================
-  console.log('\n--- TEST 1: Qualitative Document (Zero Numbers) ---');
-  const qualitativeText = `StudySync Collaborative Learning Platform.
-StudySync is a comprehensive educational platform designed to enhance student engagement through interactive literature, reading comprehension exercises, and peer collaboration.
-The platform empowers educators with adaptive lesson plans, customized rubrics, and real-time student progress tracking.
-Students can engage in dynamic group discussions, annotate texts synchronously, and participate in peer reviews.`;
+  console.log('\n--- TEST 1: Exact StudySync Test PDF (3 Pages: AI, ML, Deep Learning) ---');
+  const page1Text = 'StudySync Test PDF\nArtificial Intelligence (AI) is the simulation of human intelligence in machines.';
+  const page2Text = 'Machine Learning\nMachine Learning (ML) is a subset of AI that allows systems to learn from data.';
+  const page3Text = 'Deep Learning\nDeep Learning uses neural networks with multiple hidden layers.';
+  const fullText = `${page1Text}\n\n${page2Text}\n\n${page3Text}`;
 
   const qualDoc = generateDynamicAnalysisFromContent(
     'StudySync_Test_PDF.pdf',
-    1024 * 50,
-    'test-qual-1',
-    qualitativeText,
-    [{ page: 1, text: qualitativeText }]
+    1024 * 45,
+    'doc-studysync-test',
+    fullText,
+    [
+      { page: 1, text: page1Text },
+      { page: 2, text: page2Text },
+      { page: 3, text: page3Text }
+    ]
   );
 
-  assert(qualDoc.trackedNumbers === undefined || qualDoc.trackedNumbers.length === 0, 'Qualitative document should have 0 trackedNumbers');
-  assert(qualDoc.extractedTables === undefined || qualDoc.extractedTables.length === 0, 'Qualitative document should have 0 extractedTables');
+  assert(qualDoc.pageCount === 3, 'StudySync doc should have 3 pages');
 
-  const qualNumberQuery = await executeDocumentRAG('List critical dates & milestones', qualDoc);
-  assert(!qualNumberQuery.answer.includes('Top Numerical Takeaways'), 'Response must NOT contain "Top Numerical Takeaways"');
-  assert(!qualNumberQuery.answer.includes('No explicit numerical metrics'), 'Response must NOT contain "No explicit numerical metrics"');
-  assert(qualNumberQuery.answer.includes('StudySync'), 'Response must be grounded in StudySync content');
+  // Test Query 1: Page 1 Artificial Intelligence
+  const aiQuery = await executeDocumentRAG('What is Artificial Intelligence?', qualDoc);
+  assert(aiQuery.answer.toLowerCase().includes('simulation of human intelligence in machines'), 'AI query should extract simulation definition from Page 1');
+  assert(aiQuery.citations.some((c) => c.page === 1), 'AI query should cite Page 1');
 
-  const qualDatesQuery = await executeDocumentRAG('List critical dates & milestones', qualDoc);
-  assert(!qualDatesQuery.answer.includes('Document Ingestion & Verification'), 'Response must not contain fake ingestion date milestones');
+  // Test Query 2: Page 2 Machine Learning
+  const mlQuery = await executeDocumentRAG('What is Machine Learning?', qualDoc);
+  assert(mlQuery.answer.toLowerCase().includes('subset of ai') || mlQuery.answer.toLowerCase().includes('learn from data'), 'ML query should extract ML definition from Page 2');
+  assert(mlQuery.citations.some((c) => c.page === 2), 'ML query should cite Page 2');
+
+  // Test Query 3: Page 3 Deep Learning
+  const dlQuery = await executeDocumentRAG('What does Deep Learning use?', qualDoc);
+  assert(dlQuery.answer.toLowerCase().includes('neural networks') || dlQuery.answer.toLowerCase().includes('hidden layers'), 'DL query should extract Deep Learning definition from Page 3');
+  assert(dlQuery.citations.some((c) => c.page === 3), 'DL query should cite Page 3');
 
   // ==========================================
   // TEST 2: Academic / Research Paper

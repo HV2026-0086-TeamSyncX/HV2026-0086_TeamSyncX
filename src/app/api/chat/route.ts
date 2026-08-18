@@ -5,11 +5,11 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    const { query, documentContext, customApiKey, history } = await req.json();
+    const { query, documentContext, customApiKey, history, attachedFiles } = await req.json();
 
-    if (!query || typeof query !== 'string') {
+    if (!query && (!attachedFiles || attachedFiles.length === 0)) {
       return NextResponse.json(
-        { success: false, error: 'A valid query string is required.' },
+        { success: false, error: 'A valid query string or attached file is required.' },
         { status: 400 }
       );
     }
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (documentContext && documentContext.name) {
       // Document-grounded RAG
       const { answer, citations, suggestions } = await executeDocumentRAG(
-        query,
+        query || 'Summarize this document',
         documentContext,
         customApiKey
       );
@@ -30,11 +30,12 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Universal AI Chat
+    // Universal AI Chat with Attached Media
     const { answer, suggestions } = await executeUniversalChat(
-      query,
+      query || '',
       customApiKey,
-      history
+      history,
+      attachedFiles
     );
 
     return NextResponse.json({

@@ -359,7 +359,8 @@ function DashboardWorkspaceContent() {
           query: queryText,
           documentContext: targetDoc,
           customApiKey: user?.customApiKey,
-          history: messages
+          history: messages,
+          attachedFiles: attachedMedia
         })
       });
 
