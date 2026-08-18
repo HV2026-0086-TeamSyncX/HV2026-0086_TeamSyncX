@@ -17,7 +17,6 @@ import InlineDataChart from '@/components/ui/InlineDataChart';
 import FormattedMessageText from '@/components/ui/FormattedMessageText';
 import { SAMPLE_DOCUMENTS } from '@/lib/sampleData';
 import { DocumentDomain, DocumentAnalysis, ChatMessage, GenerationState, ModelConfig, Workspace, AttachedMediaFile } from '@/lib/types';
-import { saveDocumentAuditToSupabase, fetchUserDocumentAudits } from '@/lib/supabaseClient';
 import {
   Sparkles,
   Bot,
@@ -88,37 +87,39 @@ function DashboardWorkspaceContent() {
   const [lastUserQuery, setLastUserQuery] = useState<string>('');
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
-  // Load user documents from localStorage on client mount
+  // Load user documents from dev.db and localStorage on mount
   useEffect(() => {
-    try {
-      const cached = localStorage.getItem('docfin_user_documents');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setDocsList(parsed);
+    async function loadInitialDocuments() {
+      try {
+        const res = await fetch('/api/documents');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.documents) && data.documents.length > 0) {
+          setDocsList(data.documents);
+          return;
         }
+      } catch (err) {
+        console.warn('API documents fetch notice:', err);
       }
-    } catch (e) {
-      console.warn('Local document cache read error:', e);
-    }
-  }, []);
 
-  // Load user documents from Supabase on mount
-  useEffect(() => {
-    async function loadCloudDocs() {
-      if (user?.id) {
-        const cloudDocs = await fetchUserDocumentAudits(user.id);
-        if (cloudDocs && cloudDocs.length > 0) {
-          setDocsList(cloudDocs);
-          if (!currentDoc) {
-            setCurrentDoc(cloudDocs[0]);
-            setActiveDomain(cloudDocs[0].detectedDomain);
+      // Fallback to localStorage or default sample documents
+      try {
+        const cached = localStorage.getItem('docfin_user_documents');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setDocsList(parsed);
+            return;
           }
         }
+      } catch {
+        // ignore
       }
+
+      setDocsList(SAMPLE_DOCUMENTS);
     }
-    loadCloudDocs();
-  }, [user?.id]);
+
+    loadInitialDocuments();
+  }, []);
 
   useEffect(() => {
     if (docIdParam && docsList.length > 0) {
@@ -225,7 +226,14 @@ function DashboardWorkspaceContent() {
     setCurrentDoc(newDoc);
     setActiveDomain(newDoc.detectedDomain);
     setMessages([]);
-    saveDocumentAuditToSupabase(newDoc, user?.id);
+    
+    // Save to dev.db
+    fetch('/api/documents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ document: newDoc })
+    }).catch((e) => console.warn('dev.db document sync error:', e));
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('docfin_user_documents', JSON.stringify(updated));
     }
@@ -242,6 +250,10 @@ function DashboardWorkspaceContent() {
   const handleRemoveDoc = (docId: string) => {
     const updated = docsList.filter((d) => d.id !== docId);
     setDocsList(updated);
+
+    // Delete from dev.db
+    fetch(`/api/documents?id=${docId}`, { method: 'DELETE' }).catch(() => {});
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('docfin_user_documents', JSON.stringify(updated));
     }
@@ -255,6 +267,10 @@ function DashboardWorkspaceContent() {
     setDocsList([]);
     setCurrentDoc(null);
     setMessages([]);
+
+    // Clear dev.db
+    fetch('/api/documents?clearAll=true', { method: 'DELETE' }).catch(() => {});
+
     if (typeof window !== 'undefined') {
       localStorage.removeItem('docfin_user_documents');
     }

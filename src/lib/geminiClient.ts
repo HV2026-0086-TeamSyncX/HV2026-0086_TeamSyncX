@@ -26,7 +26,7 @@ export function getGeminiModel(customApiKey?: string, modelName = 'gemini-2.0-fl
     process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim() ||
     process.env.NEXT_PUBLIC_GEMINI_API_KEY?.trim();
 
-  if (!apiKey || apiKey.length < 10 || apiKey.includes('default') || apiKey.startsWith('AQ.')) {
+  if (!apiKey || apiKey.length < 10 || apiKey.includes('your_') || apiKey.includes('default')) {
     return null;
   }
 

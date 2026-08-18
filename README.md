@@ -16,7 +16,7 @@
    - **Roll Number**: 248P1A0525
    - **Department**: CSE (III - YEAR)
 
-2. **Dhanyasree Gopinigari** – *Full Stack & AI/ML Engineer*
+2. **Dhanyasree Gopiwnigari** – *Full Stack & AI/ML Engineer*
    - **Email**: [dhanyasreegopinigari@gmail.com](mailto:dhanyasreegopinigari@gmail.com)
    - **Mobile**: +91 6302097647
    - **Department**: CSE - AI/ML (III - YEAR)
