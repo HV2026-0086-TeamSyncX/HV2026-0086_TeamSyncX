@@ -14,6 +14,7 @@ import CommandPalette from '@/components/ui/CommandPalette';
 import OnboardingModal from '@/components/ui/OnboardingModal';
 import SettingsModal from '@/components/ui/SettingsModal';
 import InlineDataChart from '@/components/ui/InlineDataChart';
+import FormattedMessageText from '@/components/ui/FormattedMessageText';
 import { SAMPLE_DOCUMENTS } from '@/lib/sampleData';
 import { DocumentDomain, DocumentAnalysis, ChatMessage, GenerationState, ModelConfig, Workspace, AttachedMediaFile } from '@/lib/types';
 import { saveDocumentAuditToSupabase, fetchUserDocumentAudits } from '@/lib/supabaseClient';
@@ -732,9 +733,7 @@ function DashboardWorkspaceContent() {
                                 : 'bg-[#2563EB] text-white shadow-sm'
                             }`}
                           >
-                            <div className="whitespace-pre-line font-sans prose dark:prose-invert max-w-none text-xs">
-                              {msg.text}
-                            </div>
+                            <FormattedMessageText content={msg.text} isAssistant={isAssistant} />
 
                             {/* Optional Visual Chart */}
                             {isAssistant && msg.chartData && (
