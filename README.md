@@ -152,9 +152,10 @@ docker compose up --build -d
 ---
 
 ## Demo
-- **Live Repository**: [https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX](https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX)
-- **Workspace Dashboard**: `http://localhost:3000/dashboard`
-- **Health Telemetry**: `http://localhost:3000/api/health`
+- **Live Demo**: [https://hv-2026-0086-team-sync-x.vercel.app](https://hv-2026-0086-team-sync-x.vercel.app)
+- **Live AI Workspace**: [https://hv-2026-0086-team-sync-x.vercel.app/dashboard](https://hv-2026-0086-team-sync-x.vercel.app/dashboard)
+- **Live Health Telemetry**: [https://hv-2026-0086-team-sync-x.vercel.app/api/health](https://hv-2026-0086-team-sync-x.vercel.app/api/health)
+- **GitHub Repository**: [https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX](https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX)
 - **Demo Video**: [Add URL / Presentation Link]
 
 ---
