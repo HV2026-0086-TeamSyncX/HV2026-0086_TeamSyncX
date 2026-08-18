@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const googleClientId =
     process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
-    '164090023306-dguq239tulgjra4guusad3fgb4r7rlhs.apps.googleusercontent.com';
+    '164090023306-g475l009a50i0pm4nfq9vhvr4ai22lpc.apps.googleusercontent.com';
 
   useEffect(() => {
     try {
