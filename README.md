@@ -1,6 +1,5 @@
 # HACKVERSE 2026
 
-## Team Members
 1. Roshan Verma – Lead Developer & AI Systems Architect
 2. Team Member 2 – Full Stack & Frontend Engineer
 3. Team Member 3 – ML & Document Reasoning Specialist
@@ -9,27 +8,31 @@
 ---
 
 ## Project Title
-**DocFin — Multimodal Document Intelligence & Extraction Platform**
+**DocFin AI — Universal Document-Aware Multimodal Intelligence & Verification Platform**
 
 ---
 
 ## Problem Statement
-Critical information in legal contracts, corporate research reports, financial statements, insurance schedules, and billing invoices remains trapped inside complex, unstructured static documents. Manual review of these multi-page PDFs is tedious, expensive, and prone to human error—frequently overlooking high-risk liability clauses, strict lock-in deadlines, unannounced fee surcharges, and input tax credit offsets.
+Critical data within enterprise organizations remains trapped in complex, unstructured multi-page documents—such as legal agreements, corporate research reports, financial statements, insurance policies, and billing invoices. Manual audit of these files is tedious, expensive, and prone to human error, frequently missing high-risk liability clauses, strict lock-in renewal deadlines, fee surcharges, and input tax credit offsets. Traditional OCR tools fail because they lack semantic comprehension and spatial coordinate awareness.
 
 ---
 
 ## Proposed Solution
-DocFin is an intelligent multimodal document analysis and conversational reasoning platform. It ingests arbitrary PDF documents and scans, normalizes visual coordinate tensors, and leverages **Google Gemini 1.5/2.0 Flash Multimodal Vision AI** to automatically classify document domains, synthesize multi-page data tables into CSVs, flag high-risk liabilities, verify tax calculations (GST/ITC), and power conversational **Retrieval-Augmented Generation (RAG)** with strict page coordinate citations.
+**DocFin AI** is an intelligent, universal document-aware multimodal reasoning platform. It pairs a clean, ChatGPT-style conversational assistant with deep document intelligence. Users can chat freely on any topic or attach arbitrary documents (PDFs, spreadsheets, contracts, invoices) via drag-and-drop or the **+** button. 
+
+Powered by **Google Gemini 1.5/2.0 Flash Multimodal Vision AI**, **Qdrant Vector Database**, and **Upstash Redis**, DocFin automatically detects document domains, synthesizes multi-page tables into downloadable CSVs, highlights critical risk covenants, audits tax/fee calculations, and provides grounded conversational Q&A with verifiable page coordinate citations.
 
 ---
 
 ## Technologies Used
-- **Frontend & Framework**: Next.js 16 (Turbopack, App Router), React 19, TypeScript
+- **Frontend & Framework**: Next.js 16 (App Router, Turbopack), React 19, TypeScript
 - **Styling & Design System**: Tailwind CSS v4, Lucide Icons, Plus Jakarta Sans, Newsreader Serif
-- **AI & Reasoning Engine**: Google Gemini 1.5/2.0 Flash Multimodal Vision API (`@google/generative-ai`), Conversational RAG Engine
-- **Authentication**: Google OAuth 2.0 (`@react-oauth/google`), JWT Session Management
-- **Cloud Database & Storage**: Supabase Cloud (`@supabase/supabase-js`), LocalStorage Fallback Cache
-- **Data Visualization & Export**: Recharts, Tabular CSV Generator, 1-Click Executive Memo Exporter, Canvas Confetti
+- **AI & Reasoning Engine**: Google Gemini 1.5 / 2.0 Flash Multimodal Vision API (`@google/generative-ai`)
+- **Vector Database**: Qdrant Vector Cloud (Dense Embedding Indexing & Hybrid Spatial RAG)
+- **High-Speed Cache**: Upstash Redis (Sub-millisecond query & payload caching)
+- **Database & Storage**: Supabase (PostgreSQL with Row-Level Security)
+- **Containerization & Deployment**: Docker (Multi-stage standalone build $<150\text{MB}$), Docker Compose
+- **APIs & Protocols**: REST API (`/api/analyze`, `/api/chat`, `/api/compare`, `/api/health`)
 
 ---
 
@@ -39,16 +42,17 @@ DocFin is an intelligent multimodal document analysis and conversational reasoni
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            DOCFIN CLIENT (NEXT.JS 16)                       │
 ├────────────────────────────────┬────────────────────────────────────────────┤
-│ • Document Ingestion & Base64  │ • 3-Zone Workspace UI (Rail, Chat, History)│
-│ • Google OAuth 2.0 Auth        │ • Split-View PDF & Citation Inspector     │
+│ • Universal AI Assistant Canvas│ • Split-View PDF & Citation Inspector     │
+│ • Drag-and-Drop Multi-File Bar │ • Slide-in Document Audit History Sidebar  │
 └───────────────────────┬────────────────────────────┬────────────────────────┘
                         │                            │
                         ▼                            ▼
 ┌──────────────────────────────────────┐   ┌──────────────────────────────────┐
-│        NEXT.JS API BACKEND           │   │      SUPABASE CLOUD DATABASE     │
+│        NEXT.JS API BACKEND           │   │      SUPABASE & UPSTASH CACHE    │
 ├──────────────────────────────────────┤   ├──────────────────────────────────┤
-│ • /api/analyze (Multimodal Parsing)  │   │ • User Authentication Profiles   │
-│ • /api/chat (Conversational RAG)     │   │ • Document Audit History         │
+│ • /api/analyze (Multimodal Parsing)  │   │ • User Auth & Document Storage   │
+│ • /api/chat (Conversational RAG)     │   │ • Sub-millisecond Query Caching  │
+│ • /api/compare & /api/health         │   │ • Qdrant Dense Vector Embeddings │
 └───────────────────────┬──────────────┘   └──────────────────────────────────┘
                         │
                         ▼
@@ -56,22 +60,22 @@ DocFin is an intelligent multimodal document analysis and conversational reasoni
 │                     GOOGLE GEMINI 1.5 / 2.0 FLASH AI                        │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ • Multimodal Layout OCR & Spatial Coordinate Grounding                      │
-│ • Domain Classifier (Legal, Finance, Insurance, Billing, Reports)           │
-│ • Tabular Synthesis (PDF to CSV) & Covenant Risk Radar                      │
-│ • Contextual Document-Grounded RAG with Page Citations                      │
+│ • Domain Classifier (Legal, Finance, Academic, Invoicing, General)          │
+│ • Tabular Synthesis (PDF to CSV) & High-Risk Liability Auditing             │
+│ • Contextual Document-Grounded RAG with Exact Page Citations                │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## Features
-- **Universal Multi-Domain Document Ingestion**: Accurately processes contracts, bank statements, tax invoices, insurance policies, and research briefs up to 50MB.
-- **Multimodal AI Extraction (Gemini 1.5 Flash)**: Reads layout coordinate tensors and extracts structured data tables, dates, entities, and risk clauses directly into strict JSON.
-- **Conversational RAG Engine**: Chat conversationally with any document with 100% grounded facts and exact page citations.
-- **4 Super-Action Intelligence Routines**: 1-click execution for *Analyze Clauses & Risks*, *Executive Summary & Numbers*, *Extract Data Tables to CSV*, and *Audit Fees & Discrepancies*.
-- **Collapsible Document History**: Slide-in history sidebar tracking all audited files (`xxx.pdf`) with live search, item deletion, and fast switching.
-- **1-Click Executive Memo & CSV Export**: Export comprehensive structured audit reports and spreadsheets instantly.
-- **High-Contrast Modern Light/Dark System**: Clean visual hierarchy designed with Impeccable principles.
+- **Universal Conversational AI Assistant**: Operates as a full-featured general AI assistant for coding, writing, and problem-solving, with seamless document attachment capabilities.
+- **Multimodal Document Understanding (Gemini 2.0 Flash)**: Parses visual coordinate tensors, structural layout, and qualitative content up to 50MB.
+- **Strict Spatial Coordinate Grounding**: Every insight and AI answer is verified with exact page numbers and clickable source excerpt drawers.
+- **Domain-Aware Intelligence**: Adapts analysis based on document type (Legal risks, Financial ratios, Academic methodologies, Invoicing tax credits) without rigid hardcoded templates.
+- **Multi-Page Table Extraction**: Automatically identifies and exports complex document tables directly to structured CSV format.
+- **Collapsible Audit History & Split-View Canvas**: Slide-in drawer to switch between audited files, with side-by-side PDF preview and JSON inspection.
+- **Enterprise Security & Health Telemetry**: Security-hardened HTTP headers (HSTS, CSP, X-Frame-Options), Next.js standalone Docker runner, and real-time `/api/health` monitoring.
 
 ---
 
@@ -79,8 +83,8 @@ DocFin is an intelligent multimodal document analysis and conversational reasoni
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/roshanverma/docfin-ai.git
-cd docfin-ai
+git clone https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX.git
+cd HV2026-0086_TeamSyncX
 
 # 2. Install dependencies
 npm install
@@ -90,47 +94,61 @@ npm install
 
 ## How to Run
 
+### Local Development:
 ```bash
-# 1. Configure environment variables in .env.local:
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-NEXT_PUBLIC_GOOGLE_CLIENT_ID="your_google_client_id"
-GEMINI_API_KEY="your_gemini_api_key"
-NEXT_PUBLIC_SUPABASE_URL="your_supabase_url"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your_supabase_anon_key"
+# Configure environment variables (.env.local)
+cp .env.example .env.local
 
-# 2. Start the local development server
+# Run the development server with Turbopack
 npm run dev
 
-# 3. Open application in browser
-# Navigate to http://localhost:3000
+# Open http://localhost:3000 in your browser
+```
+
+### Production Build & Test Suite:
+```bash
+# Run automated typecheck, linting, and 15-point universal pipeline verification
+npm test
+
+# Build optimized production bundle
+npm run build
+
+# Start production server
+npm start
+```
+
+### Docker Container Deployment:
+```bash
+# Build and run standalone container via Docker Compose
+docker compose up --build -d
 ```
 
 ---
 
 ## Demo
-- **Live Application**: [http://localhost:3000](http://localhost:3000)
-- **Document Workspace**: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
-- **Sign In / Registration**: [http://localhost:3000/login](http://localhost:3000/login)
+- **Live Demo**: [https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX](https://github.com/HV2026-0086-TeamSyncX/HV2026-0086_TeamSyncX)
+- **Workspace Dashboard**: `http://localhost:3000/dashboard`
+- **Health Telemetry**: `http://localhost:3000/api/health`
+- **Demo Video**: [Add URL / Presentation Link]
 
 ---
 
 ## Deployment
-Deployed on **Vercel** with continuous deployment from GitHub:
-- **Build Engine**: Next.js 16 with Turbopack (`next build`)
-- **Runtime**: Node.js 20.x Serverless Functions
-- **Hosting Platform**: Vercel Global Edge Network
+- **Containerization**: Security-hardened multi-stage Docker build running on unprivileged `nextjs` user with Alpine Node 20 ($<150\text{MB}$ image size).
+- **Edge Deployment**: Next.js App Router optimized for serverless edge deployment on **Vercel**, **AWS ECS/Fargate**, **Google Cloud Run**, or **Kubernetes**.
+- **CI/CD**: Automated GitHub Actions testing pipeline validating TypeScript, ESLint, domain-aware pipeline tests, and build artifacts on every commit.
 
 ---
 
 ## Screenshots
-- **Homepage & Multi-Format Inspector**: High-contrast landing hero with live format switcher (`Contract`, `Report`, `Statement`, `Invoice`).
-- **Document Intelligence Workspace**: ChatGPT/Antigravity-style conversational canvas with 4 routine starters and floating prompt bar.
-- **Collapsible History Sidebar**: Slide-in ledger showing active and past audited PDF files (`xxx.pdf`).
-- **Focused Authentication**: Clean, single-column Google OAuth and Email sign-in modal.
+- **Universal Assistant Canvas**: Clean ChatGPT/Claude-style conversational workspace with prompt starter chips and floating multi-file upload bar.
+- **Multimodal Document Intelligence**: Split-screen PDF preview with verified page coordinate citations and source excerpt drawer.
+- **Structured Data & CSV Export**: Extracted data tables with 1-click CSV download and JSON schema inspection.
+- **System Health Monitor**: Real-time memory metrics (`rssMb`, `heapUsedMb`), uptime, and latency benchmarks for Gemini, Supabase, Redis, and Qdrant.
 
 ---
 
 ## Future Enhancements
-- **Cross-Document Comparative Analysis**: Simultaneously cross-reference purchase orders against delivery receipts and multiple vendor invoices.
-- **Automated ERP Connectors**: Direct export integrations into enterprise tools like SAP, Oracle, and QuickBooks.
-- **On-Premises Hybrid Deployment**: Support for offline air-gapped local LLMs for high-security enterprise environments.
+- **Cross-Document Comparative Differential Engine**: Cross-examine contracts against amendments, or invoices against purchase orders and bank statements in a unified matrix.
+- **Enterprise ERP & Accounting Connectors**: Direct two-way sync integrations with SAP, Oracle NetSuite, QuickBooks, and Salesforce.
+- **Air-Gapped Hybrid On-Premise LLMs**: Support for local Ollama / vLLM execution in high-security air-gapped financial environments.
