@@ -84,135 +84,43 @@ export default function QuickActionMenu({
 
   const getDomainSpecificActions = (domain: DocumentDomain): ActionItem[] => {
     switch (domain) {
-      case 'academic':
-        return [
-          {
-            id: 'acad_critique',
-            icon: Sparkles,
-            iconColor: 'text-purple-400',
-            title: 'Critique Methodology & Architecture',
-            description: 'Evaluate experimental setup, benchmark datasets & statistical rigor',
-            prompt: 'Provide a rigorous academic critique of the methodology, architecture, and empirical evaluation presented in this paper.'
-          },
-          {
-            id: 'acad_benchmarks',
-            icon: BarChart3,
-            iconColor: 'text-blue-400',
-            title: 'Extract Benchmark Results & Tables',
-            description: 'Synthesize quantitative BLEU/accuracy scores into structured matrices',
-            prompt: 'Extract all empirical benchmark tables, baseline comparisons, and ablation results from this research paper.'
-          },
-          {
-            id: 'acad_formulas',
-            icon: FileText,
-            iconColor: 'text-emerald-400',
-            title: 'Summarize Key Theoretical Contributions',
-            description: 'Synthesize novel mechanisms, formulas, and bibliographic references',
-            prompt: 'Summarize the core novel mechanisms, mathematical formulations, and primary references of this research paper.'
-          }
-        ];
-
-      case 'technical':
-        return [
-          {
-            id: 'tech_openapi',
-            icon: Zap,
-            iconColor: 'text-amber-400',
-            title: 'Generate OpenAPI 3.1 Specification',
-            description: 'Extract API endpoints, query params, schemas & response codes',
-            prompt: 'Generate a clean OpenAPI 3.1 YAML/JSON specification covering all microservice endpoints documented in this architecture spec.'
-          },
-          {
-            id: 'tech_sla',
-            icon: Scale,
-            iconColor: 'text-blue-400',
-            title: 'System Requirements & SLA Audit',
-            description: 'Extract latency benchmarks, throughput bounds, and security standards',
-            prompt: 'Audit all latency SLAs, availability bounds, security mTLS standards, and system dependencies in this specification.'
-          },
-          {
-            id: 'tech_runbook',
-            icon: Layers,
-            iconColor: 'text-emerald-400',
-            title: 'Operational Procedure Checklist',
-            description: 'Convert architecture steps and deployment procedures into runbooks',
-            prompt: 'Extract the step-by-step deployment, ingestion, and failover runbook procedures from this technical guide.'
-          }
-        ];
-
       case 'finance':
         return [
           {
-            id: 'fin_cashflow',
+            id: 'fin_simplifier',
             icon: CreditCard,
             iconColor: 'text-blue-400',
-            title: 'Cashflow & Subscription Audit',
-            description: 'Identify recurring subscriptions, idle auto-debits & optimization targets',
-            prompt: 'Please run a comprehensive Cashflow Audit on this statement. Break down outflows, list recurring subscriptions that can be cancelled, and calculate potential monthly savings.'
+            title: 'Statement Simplifier',
+            description: 'Breakdown credits, debits, subscriptions & net cash flow',
+            prompt: 'Simplify and breakdown this bank statement into total monthly credits, debits, recurring subscriptions, and net cash flow.',
+            badge: 'Finance'
           },
           {
-            id: 'fin_burn',
-            icon: Scale,
+            id: 'fin_cashflow',
+            icon: BarChart3,
             iconColor: 'text-emerald-400',
-            title: 'Expense & Burn Rate Analysis',
-            description: 'Calculate spending allocation & net monthly savings rate',
-            prompt: 'Analyze the expense balance of this statement using the 50/30/20 framework. What percentage went to fixed, discretionary, and savings?'
+            title: 'Cash Flow & Expense Audit',
+            description: 'Categorize spending into essential vs discretionary expenses',
+            prompt: 'Analyze all high-value debits and categorize spending into essential vs discretionary expenses.',
+            badge: 'Audit'
           },
           {
             id: 'fin_fees',
             icon: ShieldAlert,
             iconColor: 'text-rose-400',
-            title: 'Fee & Surcharge Audit',
-            description: 'Detect penalty charges and generate dispute inquiry letter',
-            prompt: 'Detect all penalty charges, maintenance fees, and overdraft costs in this statement and format a dispute inquiry letter.'
-          }
-        ];
-
-      case 'legal':
-        return [
+            title: 'Hidden Fee & Interest Detector',
+            description: 'Audit statement for hidden charges, penalties & fee spikes',
+            prompt: 'Audit this statement for hidden service charges, penalties, overdraft fees, or interest rate spikes.',
+            badge: 'Detector'
+          },
           {
-            id: 'leg_termination',
-            icon: Scale,
+            id: 'fin_budget',
+            icon: Sparkles,
             iconColor: 'text-purple-400',
-            title: 'Extract Termination & Exit Clauses',
-            description: 'Highlight penalty periods, notice windows & liquidation damages',
-            prompt: 'Extract all termination clauses, notice periods, break fees, and survival provisions in this contract.'
-          },
-          {
-            id: 'leg_indemnity',
-            icon: ShieldAlert,
-            iconColor: 'text-rose-400',
-            title: 'Audit Indemnity & Liability Caps',
-            description: 'Analyze indemnification breadth and aggregate monetary liability limits',
-            prompt: 'Audit the limitation of liability, indemnification obligations, and consequential loss disclaimers.'
-          },
-          {
-            id: 'leg_compliance',
-            icon: CheckSquare,
-            iconColor: 'text-emerald-400',
-            title: 'Covenant & Regulatory Checklist',
-            description: 'Create compliance audit for GDPR, FCPA, and Delaware General Corp Law',
-            prompt: 'Draft an itemized compliance audit for all affirmative and negative covenants binding both parties.'
-          }
-        ];
-
-      case 'billing':
-        return [
-          {
-            id: 'bil_tax',
-            icon: Receipt,
-            iconColor: 'text-emerald-400',
-            title: 'GST / VAT Tax Reconciler',
-            description: 'Verify HSN/SAC codes, reverse charge mechanism & Input Tax Credit',
-            prompt: 'Reconcile all GST/VAT rates, Input Tax Credit (ITC) eligibility, and HSN/SAC codes on this invoice.'
-          },
-          {
-            id: 'bil_lineitems',
-            icon: BarChart3,
-            iconColor: 'text-blue-400',
-            title: 'Unit Rate & Math Verification',
-            description: 'Cross-check quantity × rate calculations against total billed amount',
-            prompt: 'Perform mathematical cross-verification of all invoice line item unit rates, discounts, subtotals, and final payable sum.'
+            title: '50/30/20 Budget Plan',
+            description: 'Personalized 50/30/20 budget recommendation & savings plan',
+            prompt: 'Provide a personalized 50/30/20 budget recommendation and savings plan based on this financial flow.',
+            badge: 'Budget'
           }
         ];
 
@@ -222,42 +130,239 @@ export default function QuickActionMenu({
             id: 'ins_coverage',
             icon: ShieldAlert,
             iconColor: 'text-blue-400',
-            title: 'Coverage vs Exclusion Matrix',
-            description: 'Generate clear two-column comparison of covered perils vs policy riders',
-            prompt: 'Construct a structured two-column matrix comparing all explicitly covered perils versus policy exclusions and copay limits.'
+            title: 'Policy Coverage Breakdown',
+            description: 'Coverage limits, sum insured, copay & network rules',
+            prompt: 'Breakdown the coverage limits, sum insured, copay percentages, and cashless network provisions in this insurance policy.',
+            badge: 'Insurance'
+          },
+          {
+            id: 'ins_exclusions',
+            icon: Sparkles,
+            iconColor: 'text-amber-400',
+            title: 'Exclusions & Waiting Periods',
+            description: 'Permanent clause restrictions & pre-existing disease limits',
+            prompt: 'Highlight all specific exclusions, permanent clause restrictions, and pre-existing disease waiting periods in this policy.',
+            badge: 'Exclusions'
           },
           {
             id: 'ins_claim_steps',
             icon: CheckSquare,
             iconColor: 'text-emerald-400',
-            title: 'Claim Filing Runbook',
-            description: 'Step-by-step checklist of documentation required for cashless settlement',
-            prompt: 'Generate an emergency claim filing runbook listing all hospital/incident reports, bills, and deadlines required.'
+            title: 'Claim Settlement Checklist',
+            description: 'Step-by-step checklist of documents & deadlines for approval',
+            prompt: 'Generate a step-by-step checklist of documents, deadlines, and requirements to ensure guaranteed claim approval.',
+            badge: 'Checklist'
+          },
+          {
+            id: 'ins_copay',
+            icon: FileText,
+            iconColor: 'text-rose-400',
+            title: 'Deductibles & Copay Rules',
+            description: 'Deductibles, out-of-pocket maximums & room rent caps',
+            prompt: 'Explain the exact deductibles, out-of-pocket maximums, and room rent capping rules in simple terms.',
+            badge: 'Rules'
           }
         ];
 
-      case 'business':
+      case 'legal':
         return [
           {
-            id: 'biz_swot',
-            icon: BarChart3,
-            iconColor: 'text-amber-400',
-            title: 'SWOT & Strategic Positioning',
-            description: 'Extract Strengths, Weaknesses, Opportunities, and Threats',
-            prompt: 'Perform a SWOT strategic positioning analysis based on the disclosures in this report.'
+            id: 'leg_liability',
+            icon: Scale,
+            iconColor: 'text-rose-400',
+            title: 'Liability & Indemnity Audit',
+            description: 'Uncapped liability, indemnity risks & non-competes',
+            prompt: 'Audit this contract for uncapped liability, indemnity risks, non-compete clauses, and jurisdiction traps.',
+            badge: 'Legal'
           },
           {
-            id: 'biz_okrs',
+            id: 'leg_termination',
+            icon: FileText,
+            iconColor: 'text-amber-400',
+            title: 'Termination & Exit Terms',
+            description: 'Lock-in periods, notice requirements & early exit penalties',
+            prompt: 'Extract all termination conditions, lock-in periods, notice requirements, and early exit penalties.',
+            badge: 'Terms'
+          },
+          {
+            id: 'leg_ip',
+            icon: Sparkles,
+            iconColor: 'text-blue-400',
+            title: 'Confidentiality & IP Rights',
+            description: 'NDA durations, IP ownership rights & data protection',
+            prompt: 'Verify standard NDA confidentiality durations, proprietary IP ownership rights, and data protection terms.',
+            badge: 'IP Rights'
+          },
+          {
+            id: 'leg_redlines',
+            icon: CheckSquare,
+            iconColor: 'text-emerald-400',
+            title: 'Clause Summary & Redlines',
+            description: 'Plain-English summary with recommended redlines',
+            prompt: 'Provide a plain-English clause-by-clause summary with recommended redlines for negotiation.',
+            badge: 'Redlines'
+          }
+        ];
+
+      case 'academic':
+        return [
+          {
+            id: 'acad_critique',
             icon: Sparkles,
             iconColor: 'text-purple-400',
-            title: 'Stakeholder Executive Memo',
-            description: 'Draft a 1-page board governance briefing and OKR summary',
-            prompt: 'Draft an executive 1-page briefing memo summarizing strategic objectives, deliverables, and top business risks.'
+            title: 'Methodology & Architecture',
+            description: 'Theoretical framework, neural topology & novelty',
+            prompt: 'Explain the methodology, core theoretical framework, and novelty of this research paper.',
+            badge: 'Academic'
+          },
+          {
+            id: 'acad_benchmarks',
+            icon: BarChart3,
+            iconColor: 'text-blue-400',
+            title: 'Benchmark Results & BLEU',
+            description: 'Quantitative benchmark scores, baselines & metrics',
+            prompt: 'Extract all benchmark evaluation scores, baseline comparisons, and statistical significance metrics.',
+            badge: 'BLEU'
+          },
+          {
+            id: 'acad_contributions',
+            icon: FileText,
+            iconColor: 'text-emerald-400',
+            title: 'Key Contributions & Limits',
+            description: 'Primary contributions, assumptions & acknowledged limits',
+            prompt: 'Summarize the primary contributions, assumptions, and acknowledged limitations of this study.',
+            badge: 'Limits'
+          },
+          {
+            id: 'acad_literature',
+            icon: Layers,
+            iconColor: 'text-amber-400',
+            title: 'Literature & Prior Work',
+            description: 'Concise literature review contextualizing prior art',
+            prompt: 'Provide a concise literature review contextualizing how this paper advances state-of-the-art work.',
+            badge: 'Literature'
+          }
+        ];
+
+      case 'billing':
+        return [
+          {
+            id: 'bil_tax',
+            icon: Receipt,
+            iconColor: 'text-emerald-400',
+            title: 'Invoice & GST Reconciliation',
+            description: 'Reconcile line items, GST/VAT rates, and total payable',
+            prompt: 'Reconcile all line items, tax rates (GST/VAT), discount deductions, and total amount payable in this invoice.',
+            badge: 'Billing'
+          },
+          {
+            id: 'bil_cost',
+            icon: BarChart3,
+            iconColor: 'text-blue-400',
+            title: 'Vendor Cost Comparison',
+            description: 'Unit rates, quantity variances & cost savings',
+            prompt: 'Compare vendor unit rates, quantity variances, and identify potential cost savings.',
+            badge: 'Vendor'
+          },
+          {
+            id: 'bil_matrix',
+            icon: Zap,
+            iconColor: 'text-purple-400',
+            title: 'Tabular Matrix Extraction',
+            description: 'Extract tabular rows & columns into clean CSV / Markdown',
+            prompt: 'Extract all tabular rows and columns into clean CSV / Markdown table format.',
+            badge: 'Matrix'
+          },
+          {
+            id: 'bil_duplicates',
+            icon: ShieldAlert,
+            iconColor: 'text-rose-400',
+            title: 'Discrepancy & Duplicate Check',
+            description: 'Audit for duplicate numbers, math errors & overbilling',
+            prompt: 'Audit this billing file for duplicate invoice numbers, arithmetic errors, or overbilling.',
+            badge: 'Audit'
+          }
+        ];
+
+      case 'medical':
+        return [
+          {
+            id: 'med_lab',
+            icon: Sparkles,
+            iconColor: 'text-rose-400',
+            title: 'Lab Report Simplifier',
+            description: 'Explain test markers, reference ranges & abnormal results',
+            prompt: 'Explain these medical lab test markers, reference ranges, and abnormal findings in clear, plain language.',
+            badge: 'Medical'
+          },
+          {
+            id: 'med_dosage',
+            icon: FileText,
+            iconColor: 'text-blue-400',
+            title: 'Medication & Dosage Schedule',
+            description: 'Prescribed medicines, timings & drug interactions',
+            prompt: 'Extract prescribed medicines, dosage timings, dietary precautions, and possible drug interactions.',
+            badge: 'Dosage'
+          },
+          {
+            id: 'med_treatment',
+            icon: CheckSquare,
+            iconColor: 'text-emerald-400',
+            title: 'Treatment Plan Summary',
+            description: 'Diagnosis, lifestyle changes & follow-up dates',
+            prompt: 'Summarize the diagnosis, recommended lifestyle modifications, and follow-up consultation dates.',
+            badge: 'Plan'
+          },
+          {
+            id: 'med_warning',
+            icon: ShieldAlert,
+            iconColor: 'text-amber-400',
+            title: 'Warning Signs & Emergency Care',
+            description: 'Critical warning symptoms requiring immediate attention',
+            prompt: 'List critical warning symptoms that require immediate medical attention or emergency care.',
+            badge: 'Emergency'
           }
         ];
 
       default:
-        return [];
+        return [
+          {
+            id: 'gen_summary',
+            icon: Sparkles,
+            iconColor: 'text-amber-400',
+            title: 'Summarize or Analyze Document',
+            description: 'Executive takeaways, critical action items & risk check',
+            prompt: 'Please summarize this document, highlight the key executive takeaways, and list any critical action items or risks.',
+            badge: 'Summary'
+          },
+          {
+            id: 'gen_code',
+            icon: Zap,
+            iconColor: 'text-blue-400',
+            title: 'Write, Explain, or Debug Code',
+            description: 'Type-safe TypeScript & Python code solutions',
+            prompt: 'Write clean, type-safe TypeScript code to parse, validate, and transform structured data, with explanations and error handling.',
+            badge: 'Code'
+          },
+          {
+            id: 'gen_tables',
+            icon: BarChart3,
+            iconColor: 'text-emerald-400',
+            title: 'Extract & Format Structured Data',
+            description: 'Extract numbers, figures & tabular matrices to Markdown',
+            prompt: 'Extract all numerical figures, financial metrics, and data tables from this document into structured Markdown table format.',
+            badge: 'Data'
+          },
+          {
+            id: 'gen_concept',
+            icon: Bot,
+            iconColor: 'text-purple-400',
+            title: 'Explain Complex Concept Simply',
+            description: 'Clear analogies and intuitive plain-English breakdowns',
+            prompt: 'Explain how transformer self-attention neural network architectures work in simple, intuitive terms with an analogy.',
+            badge: 'Explain'
+          }
+        ];
     }
   };
 
@@ -286,17 +391,6 @@ export default function QuickActionMenu({
       mediaCategory: 'image'
     },
     {
-      id: 'act_add_videos',
-      icon: Video,
-      iconColor: 'text-purple-400',
-      title: 'Videos & Screen Recordings',
-      description: 'MP4, MOV & WebM video briefings',
-      prompt: '',
-      badge: 'MP4 / WebM',
-      isUpload: true,
-      mediaCategory: 'video'
-    },
-    {
       id: 'act_add_docs',
       icon: FileText,
       iconColor: 'text-rose-400',
@@ -317,57 +411,6 @@ export default function QuickActionMenu({
       badge: 'XLSX / CSV',
       isUpload: true,
       mediaCategory: 'spreadsheet'
-    },
-    {
-      id: 'act_add_presentations',
-      icon: Presentation,
-      iconColor: 'text-amber-400',
-      title: 'Slide Decks & Presentations',
-      description: 'PowerPoint & Keynote pitch decks',
-      prompt: '',
-      badge: 'PPTX',
-      isUpload: true,
-      mediaCategory: 'presentation'
-    },
-    {
-      id: 'act_summary',
-      icon: Sparkles,
-      iconColor: 'text-amber-400',
-      title: '30-Second Executive Summary',
-      description: 'Generate concise TL;DR with key numbers & takeaways',
-      prompt: 'Provide a concise 30-second executive summary of this document, highlighting the top 5 most important numerical takeaways.'
-    },
-    {
-      id: 'act_tables',
-      icon: BarChart3,
-      iconColor: 'text-emerald-400',
-      title: 'Extract Data Tables to CSV',
-      description: 'Synthesize static document tables into spreadsheets',
-      prompt: 'Extract all structured data tables from this document into clean, tab-delimited spreadsheet rows.'
-    },
-    {
-      id: 'act_risks',
-      icon: Scale,
-      iconColor: 'text-rose-400',
-      title: 'Analyze Critical Clauses & Risks',
-      description: 'Extract obligations, deadlines, and asymmetric terms',
-      prompt: 'Analyze all critical clauses, obligations, milestones, and liability risks in this document.'
-    },
-    {
-      id: 'act_checklist',
-      icon: CheckSquare,
-      iconColor: 'text-cyan-400',
-      title: 'Action Item & Milestone Checklist',
-      description: 'Extract prioritized to-dos, deadlines, and covenants',
-      prompt: 'Extract all actionable tasks, milestones, deadlines, and responsibilities mentioned in this document into a prioritized checklist.'
-    },
-    {
-      id: 'act_deep_audit',
-      icon: Bot,
-      iconColor: 'text-purple-400',
-      title: 'Deep Document Audit',
-      description: 'Run full multimodal neural reasoning & tensor graphs',
-      prompt: 'Perform an exhaustive deep audit across all sections, verifying every number, date, entity relationship, and clause.'
     }
   ];
 

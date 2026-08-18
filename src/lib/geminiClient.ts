@@ -20,7 +20,7 @@ import zlib from 'node:zlib';
 /**
  * Helper to get a valid Gemini API client instance
  */
-export function getGeminiModel(customApiKey?: string, modelName = 'gemini-2.0-flash') {
+export function getGeminiModel(customApiKey?: string, modelName = 'gemini-3.6-flash') {
   const apiKey =
     customApiKey?.trim() ||
     process.env.GEMINI_API_KEY?.trim() ||
@@ -35,13 +35,50 @@ export function getGeminiModel(customApiKey?: string, modelName = 'gemini-2.0-fl
     const genAI = new GoogleGenerativeAI(apiKey);
     return genAI.getGenerativeModel({ model: modelName });
   } catch {
+    return null;
+  }
+}
+
+/**
+ * Universal resilient generation trying latest active Gemini models
+ */
+export async function generateGeminiContentWithFallback(
+  contents: string | Array<string | { inlineData: { data: string; mimeType: string } }>,
+  customApiKey?: string
+): Promise<string | null> {
+  const apiKey =
+    customApiKey?.trim() ||
+    process.env.GEMINI_API_KEY?.trim() ||
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim() ||
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY?.trim();
+
+  if (!apiKey || apiKey.length < 10 || apiKey.includes('your_') || apiKey.includes('default')) {
+    return null;
+  }
+
+  const candidateModels = [
+    'gemini-3.6-flash',
+    'gemini-3.5-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-3.1-flash-lite',
+    'gemini-flash-latest'
+  ];
+
+  for (const modelName of candidateModels) {
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    } catch {
-      return null;
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent(contents);
+      const text = result.response.text();
+      if (text && text.trim().length > 0) {
+        return text.trim();
+      }
+    } catch (err: unknown) {
+      console.warn(`Gemini model ${modelName} notice:`, err);
     }
   }
+
+  return null;
 }
 
 /**
@@ -321,8 +358,8 @@ Return ONLY valid JSON matching this schema:
         }
       };
 
-      const result = await model.generateContent([filePart, prompt]);
-      const responseText = result.response.text().trim();
+      const responseText = await generateGeminiContentWithFallback([filePart, prompt], customApiKey);
+      if (!responseText) throw new Error('Model returned empty response');
       const cleanJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(cleanJson);
 
@@ -836,11 +873,9 @@ export async function executeDocumentRAG(
   ];
 
   // 3. Live Gemini RAG Generation (if valid API key is present)
-  const model = getGeminiModel(customApiKey);
-  if (model) {
-    try {
-      const pageTextsStr = pages.map((p) => `--- PAGE ${p.page} ---\n${p.text}`).join('\n\n');
-      const ragPrompt = `You are DocFin AI, an expert document intelligence and explanation engine.
+  try {
+    const pageTextsStr = pages.map((p) => `--- PAGE ${p.page} ---\n${p.text}`).join('\n\n');
+    const ragPrompt = `You are DocFin AI, an expert document intelligence and explanation engine.
 Answer the user's question accurately, concisely, and in simple, clear everyday language using ONLY the provided document text.
 
 RULES:
@@ -855,17 +890,15 @@ ${pageTextsStr.slice(0, 12000)}
 
 USER QUESTION: "${cleanQuery}"`;
 
-      const result = await model.generateContent(ragPrompt);
-      const answer = result.response.text().trim();
+    const answer = await generateGeminiContentWithFallback(ragPrompt, customApiKey);
 
-      if (answer && answer.length > 20) {
-        const responseToReturn = { answer, citations };
-        setInCache(cacheKey, responseToReturn, 3600).catch(() => {});
-        return responseToReturn;
-      }
-    } catch (err: unknown) {
-      console.warn('Gemini live RAG notice:', err);
+    if (answer && answer.length > 20) {
+      const responseToReturn = { answer, citations };
+      setInCache(cacheKey, responseToReturn, 3600).catch(() => {});
+      return responseToReturn;
     }
+  } catch (err: unknown) {
+    console.warn('Gemini live RAG notice:', err);
   }
 
   // 4. Grounded NLP Direct Answer Generator (Plain English synthesis)
@@ -1275,18 +1308,16 @@ export async function executeUniversalChat(
   }
 
   // 1. Try Live Gemini Generation
-  const model = getGeminiModel(customApiKey);
-  if (model) {
-    try {
-      let promptHistory = '';
-      if (history && history.length > 0) {
-        promptHistory = history
-          .slice(-8)
-          .map((m) => `${m.sender === 'user' ? 'User' : 'Assistant'}: ${m.text}`)
-          .join('\n\n');
-      }
+  try {
+    let promptHistory = '';
+    if (history && history.length > 0) {
+      promptHistory = history
+        .slice(-8)
+        .map((m) => `${m.sender === 'user' ? 'User' : 'Assistant'}: ${m.text}`)
+        .join('\n\n');
+    }
 
-      const prompt = `You are DocFin AI, a helpful, articulate, and intelligent AI assistant.
+    const prompt = `You are DocFin AI, a helpful, articulate, and intelligent AI assistant.
 Answer the user's question clearly, thoroughly, and helpfully across any topic (general knowledge, document analysis, coding, math, writing, or data tables).
 Provide clear, simple, and understandable explanations in clean Markdown without raw syntax symbols.
 
@@ -1294,38 +1325,36 @@ ${promptHistory ? `CONVERSATION HISTORY:\n${promptHistory}\n\n` : ''}
 USER QUESTION:
 ${cleanQuery || 'Please analyze the attached file(s) and provide a clean, simple summary.'}`;
 
-      const contentParts: Array<string | { inlineData: { data: string; mimeType: string } }> = [];
+    const contentParts: Array<string | { inlineData: { data: string; mimeType: string } }> = [];
 
-      // Ingest attached media files (Images, PDFs, Documents) natively
-      if (attachedFiles && attachedFiles.length > 0) {
-        for (const file of attachedFiles) {
-          if (file.base64Data) {
-            let mime = file.mimeType || 'application/pdf';
-            if (file.mediaType === 'image') {
-              mime = file.mimeType?.startsWith('image/') ? file.mimeType : 'image/jpeg';
-            } else if (file.mediaType === 'pdf') {
-              mime = 'application/pdf';
-            }
-            contentParts.push({
-              inlineData: {
-                data: file.base64Data,
-                mimeType: mime
-              }
-            });
+    // Ingest attached media files (Images, PDFs, Documents) natively
+    if (attachedFiles && attachedFiles.length > 0) {
+      for (const file of attachedFiles) {
+        if (file.base64Data) {
+          let mime = file.mimeType || 'application/pdf';
+          if (file.mediaType === 'image') {
+            mime = file.mimeType?.startsWith('image/') ? file.mimeType : 'image/jpeg';
+          } else if (file.mediaType === 'pdf') {
+            mime = 'application/pdf';
           }
+          contentParts.push({
+            inlineData: {
+              data: file.base64Data,
+              mimeType: mime
+            }
+          });
         }
       }
-
-      contentParts.push(prompt);
-
-      const result = await model.generateContent(contentParts);
-      const answer = result.response.text().trim();
-      if (answer && answer.length > 5) {
-        return { answer, suggestions: dynamicSuggestions };
-      }
-    } catch (err) {
-      console.warn('Universal chat Gemini notice:', err);
     }
+
+    contentParts.push(prompt);
+
+    const answer = await generateGeminiContentWithFallback(contentParts, customApiKey);
+    if (answer && answer.length > 5) {
+      return { answer, suggestions: dynamicSuggestions };
+    }
+  } catch (err) {
+    console.warn('Universal chat Gemini notice:', err);
   }
 
   // 2. Intelligent Conversational Fallback

@@ -484,21 +484,6 @@ export default function PromptBar({
           onDrop={handleDrop}
           className="max-w-3xl mx-auto flex flex-col gap-2 relative pointer-events-auto"
         >
-          {/* Action Suggestions Bar (Populates input inside capsule on click) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pb-1 animate-in fade-in select-none">
-            {featurePills.map((pill, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handlePillClick(pill.prompt)}
-                className="px-3.5 py-1.5 rounded-full bg-[#101622]/90 dark:bg-[#101622]/90 hover:bg-blue-950/70 border border-white/10 hover:border-blue-400 text-xs font-medium text-slate-200 hover:text-white backdrop-blur-md shadow-xs transition-all cursor-pointer flex items-center gap-2 group hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 opacity-75 group-hover:opacity-100 transition-opacity" />
-                <span>{pill.label}</span>
-              </button>
-            ))}
-          </div>
-
           {/* Staged Multi-Media Attachment Cards (ChatGPT Style) */}
           {attachedFiles.length > 0 && (
             <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none animate-in fade-in slide-in-from-bottom-2">
@@ -572,17 +557,17 @@ export default function PromptBar({
               </div>
             ) : (
               <>
-                {/* The Dynamic [+] Super-Action Button */}
+                {/* The Dynamic [+] Super-Action Button (Media + Features Menu) */}
                 <div className="relative flex-shrink-0">
                   <button
                     type="button"
-                    onClick={() => nativeFileInputRef.current?.click()}
-                    onContextMenu={(e) => {
-                      e.preventDefault();
-                      setIsQuickActionOpen(!isQuickActionOpen);
-                    }}
-                    className="w-9 h-9 rounded-full border border-white/15 bg-white/10 dark:bg-white/5 text-slate-200 hover:text-white hover:bg-white/15 transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95"
-                    title="Attach files (Click to pick files, Right-click for Quick Actions)"
+                    onClick={() => setIsQuickActionOpen(!isQuickActionOpen)}
+                    className={`w-9 h-9 rounded-full border transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95 ${
+                      isQuickActionOpen
+                        ? 'bg-blue-600 text-white border-blue-400 rotate-45 ring-2 ring-blue-500/40'
+                        : 'bg-white/10 dark:bg-white/5 text-slate-200 hover:text-white hover:bg-white/15 border-white/15'
+                    }`}
+                    title="Add Media Files & Features (+)"
                   >
                     <Plus className="w-4 h-4 text-blue-400" />
                   </button>
@@ -591,7 +576,7 @@ export default function PromptBar({
                     activeDomain={activeDomain}
                     isOpen={isQuickActionOpen}
                     onClose={() => setIsQuickActionOpen(false)}
-                    onExecuteAction={(title, prompt) => onSendMessage(prompt)}
+                    onExecuteAction={(title, prompt) => handlePillClick(prompt)}
                     onUploadClick={() => nativeFileInputRef.current?.click()}
                     onOpenAddMedia={handleOpenAddMedia}
                   />
