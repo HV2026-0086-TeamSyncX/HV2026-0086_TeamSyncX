@@ -28,7 +28,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  // Only enable standalone output when explicitly compiling for Docker
+  ...(process.env.DOCKER_BUILD === 'true' ? { output: 'standalone' } : {}),
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
