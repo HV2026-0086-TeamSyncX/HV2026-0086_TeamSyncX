@@ -44,12 +44,12 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
               .filter(Boolean);
 
             return (
-              <div key={bIdx} className="overflow-x-auto my-2 rounded-xl border border-slate-200 dark:border-white/10 shadow-xs">
-                <table className="w-full text-left text-[11px]">
+              <div key={bIdx} className="overflow-x-auto my-2 rounded-xl border border-slate-200 dark:border-white/10 shadow-xs table-scroll-container max-w-[calc(100vw-3.5rem)] sm:max-w-none scrollbar-thin">
+                <table className="min-w-full text-left text-[10px] sm:text-[11px] divide-y divide-slate-200 dark:divide-white/10">
                   <thead className="bg-slate-100 dark:bg-white/5 font-semibold text-slate-900 dark:text-slate-200">
                     <tr>
                       {headers.map((h, hIdx) => (
-                        <th key={hIdx} className="p-2.5 border-b border-slate-200 dark:border-white/10">
+                        <th key={hIdx} className="p-2 sm:p-2.5 border-b border-slate-200 dark:border-white/10 whitespace-nowrap">
                           {h}
                         </th>
                       ))}
@@ -64,7 +64,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
                       return (
                         <tr key={rIdx} className="hover:bg-slate-50 dark:hover:bg-white/[0.02]">
                           {cells.map((cell, cIdx) => (
-                            <td key={cIdx} className="p-2.5 text-slate-700 dark:text-slate-300">
+                            <td key={cIdx} className="p-2 sm:p-2.5 text-slate-700 dark:text-slate-300 break-words-anywhere">
                               {cell}
                             </td>
                           ))}

@@ -59,6 +59,7 @@ function DashboardWorkspaceContent() {
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isParamsDrawerOpen, setIsParamsDrawerOpen] = useState(false);
+  const [mobileActiveView, setMobileActiveView] = useState<'chat' | 'doc'>('chat');
 
   // Generation State Machine
   const [generationState, setGenerationState] = useState<GenerationState>('idle');
@@ -629,7 +630,7 @@ function DashboardWorkspaceContent() {
       />
 
       {/* 2. Main Central Conversational Canvas */}
-      <main className="flex-1 flex flex-col min-w-0 h-full overflow-hidden bg-[var(--bg-canvas)] relative">
+      <main className="flex-1 flex flex-col min-w-0 h-full overflow-hidden bg-[var(--bg-canvas)] relative w-full">
         {/* Top Header */}
         <Header
           activeDomain={activeDomain}
@@ -646,16 +647,52 @@ function DashboardWorkspaceContent() {
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenOnboarding={() => setIsOnboardingOpen(true)}
+          onToggleLeftSidebar={() => setIsLeftCollapsed(!isLeftCollapsed)}
+          isLeftSidebarOpen={!isLeftCollapsed}
         />
 
+        {/* Mobile View Switcher (Only visible on mobile when a document is open) */}
+        {currentDoc && (
+          <div className="md:hidden flex items-center justify-center p-2 bg-white/80 dark:bg-[#07090e]/80 border-b border-[#DCE5F0] dark:border-white/10 backdrop-blur-md z-10 flex-shrink-0">
+            <div className="flex rounded-full bg-slate-100 dark:bg-white/10 p-1 border border-slate-200 dark:border-white/10 w-full max-w-xs shadow-inner">
+              <button
+                onClick={() => setMobileActiveView('chat')}
+                className={`flex-1 py-1.5 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all touch-target ${
+                  mobileActiveView === 'chat'
+                    ? 'bg-white dark:bg-blue-600 text-slate-900 dark:text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'
+                }`}
+              >
+                <Bot className="w-3.5 h-3.5" />
+                <span>AI Chat</span>
+              </button>
+              <button
+                onClick={() => setMobileActiveView('doc')}
+                className={`flex-1 py-1.5 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all touch-target ${
+                  mobileActiveView === 'doc'
+                    ? 'bg-white dark:bg-blue-600 text-slate-900 dark:text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Document</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Workspace Body */}
-        <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex overflow-hidden w-full relative">
           {/* Main Playground Center Column */}
-          <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-            <div className="flex-1 flex overflow-hidden">
-              <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+          <div
+            className={`flex-1 flex flex-col h-full overflow-hidden relative w-full ${
+              currentDoc && mobileActiveView === 'doc' ? 'hidden md:flex' : 'flex'
+            }`}
+          >
+            <div className="flex-1 flex overflow-hidden w-full">
+              <div className="flex-1 flex flex-col h-full overflow-hidden relative w-full">
                 {/* Conversational Stream */}
-                <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-6 max-w-4xl w-full mx-auto">
+                <div className="flex-1 overflow-y-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6 max-w-4xl w-full mx-auto">
                   {/* Clean Welcome Hero (When no messages yet) */}
                   {messages.length === 0 && (
                     <div className="space-y-8 max-w-3xl mx-auto pt-4 animate-in fade-in select-none">
@@ -918,9 +955,16 @@ function DashboardWorkspaceContent() {
             />
           </div>
 
-          {/* Optional Right-Split Document PDF Inspector */}
+          {/* Mobile Document Viewer (When mobileActiveView === 'doc') */}
+          {currentDoc && mobileActiveView === 'doc' && (
+            <div className="flex-1 h-full w-full md:hidden overflow-hidden">
+              <DocumentViewer doc={currentDoc} />
+            </div>
+          )}
+
+          {/* Desktop Split-View Document PDF Inspector */}
           {currentDoc && isSplitView && (
-            <div className="w-1/2 border-l border-[#DCE5F0] dark:border-white/10 h-full hidden md:block">
+            <div className="w-1/2 border-l border-[#DCE5F0] dark:border-white/10 h-full hidden md:block overflow-hidden">
               <DocumentViewer doc={currentDoc} />
             </div>
           )}

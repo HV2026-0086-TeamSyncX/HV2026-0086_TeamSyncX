@@ -409,25 +409,25 @@ export default function QuickActionMenu({
   return (
     <div
       ref={menuRef}
-      className="absolute bottom-full mb-3 left-0 z-50 w-[360px] sm:w-[460px] bg-[#0c1017]/85 backdrop-blur-2xl backdrop-saturate-200 text-white border border-white/15 dark:border-white/10 rounded-[26px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7),0_0_35px_rgba(37,99,235,0.2)] ring-1 ring-white/10 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200 select-none"
+      className="absolute bottom-full mb-3 -left-2 sm:left-0 z-50 w-[calc(100vw-2rem)] max-w-[460px] bg-[#0c1017]/90 backdrop-blur-2xl backdrop-saturate-200 text-white border border-white/15 dark:border-white/10 rounded-[22px] sm:rounded-[26px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7),0_0_35px_rgba(37,99,235,0.2)] ring-1 ring-white/10 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200 select-none max-h-[75vh] flex flex-col"
     >
       {/* Glassmorphic Header */}
-      <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between text-xs bg-gradient-to-r from-blue-600/20 via-indigo-600/10 to-transparent">
+      <div className="px-3.5 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 flex items-center justify-between text-xs bg-gradient-to-r from-blue-600/20 via-indigo-600/10 to-transparent flex-shrink-0">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400">
             <Sparkles className="w-3 h-3" />
           </div>
           <span className="font-bold text-white text-xs tracking-tight">
-            DocFin Intelligence Routines
+            DocFin Routines
           </span>
         </div>
-        <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-blue-500/25 border border-blue-400/30 text-blue-200 font-bold tracking-wider shadow-inner">
-          {activeDomain} Lens
+        <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-blue-500/25 border border-blue-400/30 text-blue-200 font-bold tracking-wider shadow-inner">
+          {activeDomain}
         </span>
       </div>
 
       {/* Menu List */}
-      <div className="p-2 space-y-1 max-h-[350px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/15 hover:scrollbar-thumb-white/25 scrollbar-track-transparent">
+      <div className="p-1.5 sm:p-2 space-y-1 max-h-[min(350px,50vh)] overflow-y-auto scrollbar-thin scrollbar-thumb-white/15 hover:scrollbar-thumb-white/25 scrollbar-track-transparent flex-1">
         {filteredActions.length === 0 ? (
           <div className="p-6 text-center text-xs text-slate-400">
             No matching routines found for &quot;{searchQuery}&quot;

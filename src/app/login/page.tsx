@@ -70,7 +70,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--bg-canvas)] text-[var(--text-primary)] transition-colors duration-300 select-none p-4 sm:p-6">
+    <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--bg-canvas)] text-[var(--text-primary)] transition-colors duration-300 select-none p-3 sm:p-6">
       {/* Top Bar: Brand & Theme Toggle */}
       <header className="max-w-md w-full mx-auto flex items-center justify-between pt-2">
         <Link href="/">
@@ -79,7 +79,7 @@ export default function LoginPage() {
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
-          className="w-9 h-9 rounded-2xl text-[#1E3A2B] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white bg-[#EBF5EF] dark:bg-white/5 hover:bg-[#E2F0E7] dark:hover:bg-white/10 border border-[#CDE3D5] dark:border-white/10 flex items-center justify-center transition-all shadow-xs"
+          className="w-9 h-9 rounded-2xl text-[#1E3A2B] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white bg-[#EBF5EF] dark:bg-white/5 hover:bg-[#E2F0E7] dark:hover:bg-white/10 border border-[#CDE3D5] dark:border-white/10 flex items-center justify-center transition-all shadow-xs touch-target"
           title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         >
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#1E3A2B]" />}
@@ -87,8 +87,8 @@ export default function LoginPage() {
       </header>
 
       {/* Main Centered Sign-In Card */}
-      <main className="max-w-md w-full mx-auto my-auto py-8">
-        <div className="bg-white dark:bg-[#0E121A] rounded-3xl p-7 sm:p-9 border border-[#DCE5F0] dark:border-white/10 shadow-xl shadow-blue-500/5 space-y-6">
+      <main className="max-w-md w-full mx-auto my-auto py-6 sm:py-8">
+        <div className="bg-white dark:bg-[#0E121A] rounded-2xl sm:rounded-3xl p-5 sm:p-9 border border-[#DCE5F0] dark:border-white/10 shadow-xl shadow-blue-500/5 space-y-6">
           {/* Header */}
           <div className="space-y-1.5 text-center">
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#0F172A] dark:text-white tracking-tight">

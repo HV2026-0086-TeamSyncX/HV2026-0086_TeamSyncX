@@ -81,55 +81,67 @@ export default function LeftSidebar({
   const recentDocs = docsList.filter((doc) => !doc.isFavorite);
 
   return (
-    <aside
-      className={`relative flex flex-col bg-[#0d0d0d] text-[#e3e3e3] border-r border-white/[0.08] transition-all duration-300 ease-in-out select-none z-30 h-full font-sans ${
-        isCollapsed ? 'w-16' : 'w-64 sm:w-[260px]'
-      }`}
-    >
-      {/* 1. Top Header */}
-      <div className="flex items-center justify-between px-3.5 h-13 border-b border-white/[0.06] flex-shrink-0">
-        <Link href="/" className="flex items-center gap-2 overflow-hidden group">
-          <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-white font-bold text-xs group-hover:bg-[#2563EB] transition-colors">
-            D
-          </div>
-          {!isCollapsed && (
-            <span className="font-semibold text-sm tracking-tight text-white">
-              DocFin
-            </span>
-          )}
-        </Link>
+    <>
+      {/* Mobile Drawer Backdrop (Only on < md when not collapsed) */}
+      {!isCollapsed && (
+        <div
+          onClick={onToggleCollapse}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 md:hidden animate-in fade-in duration-200"
+          aria-hidden="true"
+        />
+      )}
 
-        {!isCollapsed && (
-          <div className="flex items-center gap-0.5">
-            {onOpenSearch && (
-              <button
-                onClick={onOpenSearch}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                title="Search (⌘K)"
-              >
-                <Search className="w-4 h-4" />
-              </button>
+      <aside
+        className={`bg-[#0d0d0d] text-[#e3e3e3] border-r border-white/[0.08] transition-all duration-300 ease-in-out select-none z-50 h-full font-sans flex flex-col ${
+          isCollapsed
+            ? 'hidden md:flex md:w-16 relative'
+            : 'fixed inset-y-0 left-0 w-[280px] max-w-[85vw] md:relative md:w-64 lg:w-[260px] shadow-2xl md:shadow-none'
+        }`}
+      >
+        {/* 1. Top Header */}
+        <div className="flex items-center justify-between px-3.5 h-14 border-b border-white/[0.06] flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2 overflow-hidden group">
+            <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-white font-bold text-xs group-hover:bg-[#2563EB] transition-colors">
+              D
+            </div>
+            {!isCollapsed && (
+              <span className="font-semibold text-sm tracking-tight text-white">
+                DocFin
+              </span>
             )}
+          </Link>
+
+          {!isCollapsed && (
+            <div className="flex items-center gap-0.5">
+              {onOpenSearch && (
+                <button
+                  onClick={onOpenSearch}
+                  className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer touch-target flex items-center justify-center"
+                  title="Search (⌘K)"
+                >
+                  <Search className="w-4 h-4" />
+                </button>
+              )}
+              <button
+                onClick={onToggleCollapse}
+                className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer touch-target flex items-center justify-center"
+                title="Close sidebar"
+              >
+                <PanelLeftClose className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {isCollapsed && (
             <button
               onClick={onToggleCollapse}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-              title="Close sidebar"
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors mx-auto cursor-pointer touch-target flex items-center justify-center"
+              title="Expand sidebar"
             >
-              <PanelLeftClose className="w-4 h-4" />
+              <PanelLeft className="w-4 h-4" />
             </button>
-          </div>
-        )}
-
-        {isCollapsed && (
-          <button
-            onClick={onToggleCollapse}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors mx-auto cursor-pointer"
-            title="Expand sidebar"
-          >
-            <PanelLeft className="w-4 h-4" />
-          </button>
-        )}
-      </div>
+          )}
+        </div>
 
       {/* 2. Top Navigation Items (ChatGPT Style) */}
       <div className="p-2 space-y-0.5 flex-shrink-0">
@@ -268,8 +280,13 @@ export default function LeftSidebar({
                 return (
                   <button
                     key={doc.id}
-                    onClick={() => onSelectDoc && onSelectDoc(doc)}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-2.5 group cursor-pointer ${
+                    onClick={() => {
+                      if (onSelectDoc) onSelectDoc(doc);
+                      if (typeof window !== 'undefined' && window.innerWidth < 768 && !isCollapsed) {
+                        onToggleCollapse();
+                      }
+                    }}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs transition-colors flex items-center gap-2.5 group cursor-pointer touch-target ${
                       isActive
                         ? 'bg-[#212121] text-white font-medium'
                         : 'text-slate-300 hover:bg-white/[0.06] hover:text-white'
@@ -307,8 +324,13 @@ export default function LeftSidebar({
                 return (
                   <button
                     key={doc.id}
-                    onClick={() => onSelectDoc && onSelectDoc(doc)}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-2.5 group cursor-pointer ${
+                    onClick={() => {
+                      if (onSelectDoc) onSelectDoc(doc);
+                      if (typeof window !== 'undefined' && window.innerWidth < 768 && !isCollapsed) {
+                        onToggleCollapse();
+                      }
+                    }}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs transition-colors flex items-center gap-2.5 group cursor-pointer touch-target ${
                       isActive
                         ? 'bg-[#212121] text-white font-medium shadow-2xs'
                         : 'text-slate-300 hover:bg-white/[0.06] hover:text-white'
@@ -337,7 +359,7 @@ export default function LeftSidebar({
       <div className="p-2 border-t border-white/[0.06] flex-shrink-0 relative">
         <button
           onClick={() => setShowUserMenu(!showUserMenu)}
-          className={`w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer text-left ${
+          className={`w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer text-left touch-target ${
             isCollapsed ? 'justify-center p-1' : ''
           }`}
           title="Account settings"
@@ -360,7 +382,7 @@ export default function LeftSidebar({
           <div className="absolute bottom-14 left-2 right-2 p-1.5 rounded-2xl bg-[#1e1e1e] border border-white/10 shadow-2xl space-y-0.5 animate-in fade-in slide-in-from-bottom-2 z-50">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer touch-target"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Log out</span>
@@ -369,5 +391,6 @@ export default function LeftSidebar({
         )}
       </div>
     </aside>
+    </>
   );
 }

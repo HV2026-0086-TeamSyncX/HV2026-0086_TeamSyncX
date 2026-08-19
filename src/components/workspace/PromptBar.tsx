@@ -476,39 +476,39 @@ export default function PromptBar({
         className="hidden"
       />
 
-      <div className="sticky bottom-0 bg-transparent px-4 py-3 z-20 transition-colors pointer-events-none">
+      <div className="sticky bottom-0 bg-transparent px-2 sm:px-4 py-2 sm:py-3 pb-safe z-20 transition-colors pointer-events-none w-full max-w-[100vw]">
         <form
           onSubmit={handleSubmit}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className="max-w-3xl mx-auto flex flex-col gap-2 relative pointer-events-auto"
+          className="max-w-3xl mx-auto flex flex-col gap-1.5 sm:gap-2 relative pointer-events-auto"
         >
           {/* Staged Multi-Media Attachment Cards (ChatGPT Style) */}
           {attachedFiles.length > 0 && (
-            <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none animate-in fade-in slide-in-from-bottom-2">
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none animate-in fade-in slide-in-from-bottom-2 px-1">
               {attachedFiles.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center gap-3 px-3.5 py-2 liquid-glass-card rounded-2xl text-xs text-white shadow-xl flex-shrink-0 animate-in zoom-in-95 group relative border border-white/15"
+                  className="flex items-center gap-2.5 px-3 py-1.5 sm:py-2 liquid-glass-card rounded-2xl text-xs text-white shadow-xl flex-shrink-0 animate-in zoom-in-95 group relative border border-white/15"
                 >
                   {/* Thumbnail or Media Icon */}
                   {file.previewUrl ? (
-                    <div className="w-8 h-8 rounded-xl overflow-hidden border border-white/20 flex-shrink-0 bg-black/40">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl overflow-hidden border border-white/20 flex-shrink-0 bg-black/40">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={file.previewUrl} alt={file.name} className="w-full h-full object-cover" />
                     </div>
                   ) : (
-                    <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center flex-shrink-0">
                       {getMediaBadgeIcon(file.mediaType)}
                     </div>
                   )}
 
                   <div className="flex flex-col min-w-0 pr-1">
-                    <span className="font-semibold text-xs truncate max-w-[150px] text-white">
+                    <span className="font-semibold text-[11px] sm:text-xs truncate max-w-[120px] sm:max-w-[150px] text-white">
                       {file.name}
                     </span>
-                    <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
+                    <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-mono text-slate-400">
                       <span>{file.sizeFormatted}</span>
                       <span>•</span>
                       {file.status === 'uploading' && (
@@ -532,7 +532,7 @@ export default function PromptBar({
                   <button
                     type="button"
                     onClick={() => handleRemoveAttached(file.id)}
-                    className="w-6 h-6 rounded-full bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 transition-colors flex items-center justify-center cursor-pointer ml-1"
+                    className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 transition-colors flex items-center justify-center cursor-pointer ml-1 touch-target"
                     title="Remove attachment"
                   >
                     <X className="w-3 h-3" />
@@ -544,7 +544,7 @@ export default function PromptBar({
 
           {/* Main Floating Liquid Glass Capsule Prompt Bar */}
           <div
-            className={`flex items-center gap-2.5 rounded-full p-2.5 shadow-2xl transition-all relative ${
+            className={`flex items-center gap-1.5 sm:gap-2.5 rounded-full p-1.5 sm:p-2.5 shadow-2xl transition-all relative ${
               isDragOver
                 ? 'border-2 border-dashed border-blue-400 bg-blue-500/20 ring-4 ring-blue-500/30 scale-[1.01]'
                 : 'liquid-glass-capsule border border-white/20 dark:border-white/15 focus-within:border-blue-400/80 focus-within:ring-2 focus-within:ring-blue-500/30'
@@ -562,7 +562,7 @@ export default function PromptBar({
                   <button
                     type="button"
                     onClick={() => setIsQuickActionOpen(!isQuickActionOpen)}
-                    className={`w-9 h-9 rounded-full border transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95 ${
+                    className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95 touch-target ${
                       isQuickActionOpen
                         ? 'bg-blue-600 text-white border-blue-400 rotate-45 ring-2 ring-blue-500/40'
                         : 'bg-white/10 dark:bg-white/5 text-slate-200 hover:text-white hover:bg-white/15 border-white/15'
@@ -586,7 +586,7 @@ export default function PromptBar({
                 <button
                   type="button"
                   onClick={toggleMic}
-                  className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all shadow-xs flex-shrink-0 cursor-pointer ${
+                  className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all shadow-xs flex-shrink-0 cursor-pointer touch-target ${
                     isRecording
                       ? 'bg-rose-600 text-white border-rose-500 animate-pulse ring-2 ring-rose-500/40'
                       : 'bg-white/10 dark:bg-white/5 border-white/15 text-slate-300 hover:text-white hover:bg-white/15'
@@ -604,38 +604,38 @@ export default function PromptBar({
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={
                     attachedFiles.length > 0
-                      ? `Ask questions about attached ${attachedFiles.length} file(s)... (or press Enter)`
+                      ? `Ask questions about attached ${attachedFiles.length} file(s)...`
                       : 'Ask anything, summarize documents, analyze tables, or drop files...'
                   }
-                  className="flex-1 px-3 py-2 text-xs bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400"
+                  className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-0"
                 />
 
                 {/* Liquid Glass Send Button */}
                 <button
                   type="submit"
                   disabled={(!input.trim() && attachedFiles.length === 0) || isLoading}
-                  className="w-9 h-9 rounded-full liquid-glass-button text-white flex items-center justify-center shadow-lg disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all flex-shrink-0 cursor-pointer"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full liquid-glass-button text-white flex items-center justify-center shadow-lg disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all flex-shrink-0 cursor-pointer touch-target"
                   title="Send Message"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </>
             )}
           </div>
 
           {/* Footer Subtext */}
-          <div className="flex items-center justify-between text-[11px] text-slate-400 px-3 select-none">
-            <span className="flex items-center gap-1.5 font-mono">
-              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-              DocFin AI Multimodal Assistant • Attach files with <strong>[+]</strong> or drag & drop
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-400 px-2 sm:px-3 select-none gap-2">
+            <span className="flex items-center gap-1 sm:gap-1.5 font-mono truncate">
+              <Sparkles className="w-3 h-3 text-blue-400 flex-shrink-0" />
+              <span className="truncate">DocFin AI Multimodal Assistant • Attach with <strong>[+]</strong></span>
             </span>
             <button
               type="button"
               onClick={() => nativeFileInputRef.current?.click()}
-              className="text-blue-400 hover:underline flex items-center gap-1 font-mono cursor-pointer"
+              className="text-blue-400 hover:underline flex items-center gap-1 font-mono cursor-pointer flex-shrink-0 touch-target"
             >
               <FolderOpen className="w-3 h-3" />
-              <span>Browse Files</span>
+              <span>Browse</span>
             </button>
           </div>
         </form>

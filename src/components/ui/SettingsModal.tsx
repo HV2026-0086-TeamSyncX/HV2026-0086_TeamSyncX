@@ -98,24 +98,24 @@ export default function SettingsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/65 backdrop-blur-2xl animate-in fade-in select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-6 bg-black/65 backdrop-blur-2xl animate-in fade-in select-none">
       {/* Liquid Glass Modal Window */}
-      <div className="liquid-glass-modal rounded-[32px] w-full max-w-2xl max-h-[88vh] flex flex-col text-white overflow-hidden animate-in zoom-in-95 duration-250 relative group">
+      <div className="liquid-glass-modal rounded-[24px] sm:rounded-[32px] w-full max-w-2xl max-h-[92vh] sm:max-h-[88vh] flex flex-col text-white overflow-hidden animate-in zoom-in-95 duration-250 relative group">
         {/* Ambient Fluid Lighting */}
         <div className="absolute top-0 left-1/4 w-64 h-44 bg-blue-500/20 rounded-full blur-3xl pointer-events-none -z-10" />
         <div className="absolute bottom-0 right-1/4 w-64 h-44 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
         {/* Modal Header */}
-        <div className="p-6 px-7 border-b border-white/[0.12] flex items-center justify-between bg-white/[0.02] flex-shrink-0">
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600/30 to-indigo-500/20 border border-white/20 flex items-center justify-center text-blue-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
-              <Sparkles className="w-5 h-5" />
+        <div className="p-4 sm:p-6 px-4 sm:px-7 border-b border-white/[0.12] flex items-center justify-between bg-white/[0.02] flex-shrink-0">
+          <div className="flex items-center gap-3 sm:gap-3.5 min-w-0 pr-2">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-blue-600/30 to-indigo-500/20 border border-white/20 flex items-center justify-center text-blue-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)] flex-shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                Platform Settings & Engine
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-lg font-bold text-white tracking-tight truncate">
+                Settings & Engine
               </h3>
-              <p className="text-xs text-slate-300/80 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-slate-300/80 mt-0.5 truncate">
                 Configure BYOK credentials, models, and personal profile
               </p>
             </div>
@@ -123,18 +123,18 @@ export default function SettingsModal({
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer backdrop-blur-md hover:scale-105"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer backdrop-blur-md hover:scale-105 flex-shrink-0 touch-target"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Liquid Glass Tab Navigation */}
-        <div className="flex border-b border-white/[0.08] px-7 bg-white/[0.01] gap-2 pt-2.5 flex-shrink-0">
+        <div className="flex border-b border-white/[0.08] px-4 sm:px-7 bg-white/[0.01] gap-2 pt-2.5 flex-shrink-0 overflow-x-auto scrollbar-none">
           {[
-            { id: 'api', label: 'API Keys & Engine', icon: Key },
-            { id: 'profile', label: 'User Profile', icon: User },
-            { id: 'models', label: 'Model Parameters', icon: Sliders },
+            { id: 'api', label: 'API Keys', icon: Key },
+            { id: 'profile', label: 'Profile', icon: User },
+            { id: 'models', label: 'Models', icon: Sliders },
             { id: 'data', label: 'Data & Storage', icon: Database }
           ].map((tab) => {
             const Icon = tab.icon;
@@ -143,7 +143,7 @@ export default function SettingsModal({
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as 'profile' | 'api' | 'models' | 'data')}
-                className={`flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-full transition-all cursor-pointer mb-2.5 ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 text-xs font-semibold rounded-full transition-all cursor-pointer mb-2.5 whitespace-nowrap flex-shrink-0 touch-target ${
                   isActive
                     ? 'bg-blue-600/90 text-white shadow-[0_0_20px_rgba(59,130,246,0.5),inset_0_1px_0_rgba(255,255,255,0.4)] border border-blue-400/50'
                     : 'text-slate-300/80 hover:text-white hover:bg-white/10 border border-transparent'
@@ -157,7 +157,7 @@ export default function SettingsModal({
         </div>
 
         {/* Body Content */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-7 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 sm:p-7 space-y-6">
           {savedToast && (
             <div className="p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-medium flex items-center gap-2 animate-in fade-in">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />

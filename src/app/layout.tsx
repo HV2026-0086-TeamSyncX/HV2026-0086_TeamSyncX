@@ -27,6 +27,18 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500', '600', '700']
 });
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover' as const,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#06080d' }
+  ]
+};
+
 export const metadata: Metadata = {
   title: 'DocFin — Intelligent Document Analysis & Extraction Platform',
   description:

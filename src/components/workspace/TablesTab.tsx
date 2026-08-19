@@ -129,12 +129,12 @@ export default function TablesTab({ doc }: { doc: DocumentAnalysis }) {
             </span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+          <div className="overflow-x-auto table-scroll-container scrollbar-thin">
+            <table className="min-w-full text-left text-xs whitespace-nowrap sm:whitespace-normal">
               <thead className="bg-[#F8FAFD] dark:bg-white/5 border-b border-[#DCE5F0] dark:border-white/10 text-[#53627A] dark:text-slate-400 uppercase font-mono text-[10px]">
                 <tr>
                   {activeTable.columns.map((col: string, idx: number) => (
-                    <th key={idx} className="px-6 py-3 font-semibold">
+                    <th key={idx} className="px-3 sm:px-6 py-2.5 sm:py-3 font-semibold">
                       {col}
                     </th>
                   ))}
@@ -144,7 +144,7 @@ export default function TablesTab({ doc }: { doc: DocumentAnalysis }) {
                 {filteredRows.map((row: Record<string, string | number>, rIdx: number) => (
                   <tr key={rIdx} className="hover:bg-blue-50/40 dark:hover:bg-white/5 transition-colors">
                     {activeTable.columns.map((col: string, cIdx: number) => (
-                      <td key={cIdx} className="px-6 py-3.5 font-sans">
+                      <td key={cIdx} className="px-3 sm:px-6 py-2.5 sm:py-3.5 font-sans break-words-anywhere">
                         {String(row[col] ?? '')}
                       </td>
                     ))}

@@ -43,7 +43,7 @@ export default function HeroSection() {
             </div>
 
             {/* High-Contrast Primary Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[58px] font-serif text-[#0F172A] dark:text-white tracking-tight leading-[1.08] font-bold">
+            <h1 className="text-3xl sm:text-5xl lg:text-[58px] font-serif text-[#0F172A] dark:text-white tracking-tight leading-[1.1] sm:leading-[1.08] font-bold">
               Understand the details inside <br className="hidden sm:inline" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#2563EB] via-indigo-500 to-blue-400">
                 any complex document.
@@ -51,15 +51,15 @@ export default function HeroSection() {
             </h1>
 
             {/* High-Contrast Readable Paragraph */}
-            <p className="text-base sm:text-lg text-[#334155] dark:text-slate-300 leading-relaxed font-sans max-w-xl">
+            <p className="text-sm sm:text-lg text-[#334155] dark:text-slate-300 leading-relaxed font-sans max-w-xl">
               DocFin extracts buried clauses, key numbers, financial ledgers, and obligations from contracts, research papers, bank statements, and invoices in seconds.
             </p>
 
             {/* Actions: Primary Emerald Pill CTA & Secondary Link */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <Link
                 href="/dashboard"
-                className="group px-8 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.45)] border border-emerald-400/30 transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="group px-7 sm:px-8 py-3 sm:py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.45)] border border-emerald-400/30 transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] touch-target"
               >
                 <span>Open Workspace</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -67,24 +67,24 @@ export default function HeroSection() {
 
               <Link
                 href="/login"
-                className="px-6 py-3.5 rounded-full bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer backdrop-blur-md"
+                className="px-6 py-3 sm:py-3.5 rounded-full bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer backdrop-blur-md text-center touch-target"
               >
                 Sign in to account
               </Link>
             </div>
 
             {/* Capability Trust Micro-Strip */}
-            <div className="pt-4 flex flex-wrap items-center gap-y-2 gap-x-6 text-[11px] text-[#64748B] dark:text-slate-400 font-mono">
+            <div className="pt-3 sm:pt-4 flex flex-wrap items-center gap-y-2 gap-x-4 sm:gap-x-6 text-[11px] text-[#64748B] dark:text-slate-400 font-mono">
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                 <span>Zero Data Retention</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                 <span>Page-Grounded Citations</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                 <span>Multi-Format Reasoning</span>
               </div>
             </div>
@@ -92,14 +92,14 @@ export default function HeroSection() {
 
           {/* Right Column: Realistic Interactive Document Intelligence Canvas (5 cols) */}
           <div className="lg:col-span-5">
-            <div className="p-6 sm:p-7 rounded-3xl bg-white/80 dark:bg-[#0c1017]/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.6)] text-left space-y-4 relative group">
+            <div className="p-4 sm:p-7 rounded-3xl bg-white/80 dark:bg-[#0c1017]/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.6)] text-left space-y-4 relative group">
               {/* Outer Subtle Gradient Rim Glow */}
               <div className="absolute -inset-[1px] bg-gradient-to-r from-blue-500/20 via-indigo-500/10 to-emerald-500/20 rounded-3xl -z-10 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
 
               {/* Product Card Top Bar */}
-              <div className="flex items-center justify-between pb-3 border-b border-black/[0.06] dark:border-white/[0.08]">
+              <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 pb-3 border-b border-black/[0.06] dark:border-white/[0.08]">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                  <div className="w-6 h-6 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0">
                     <FileText className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-bold text-[#0F172A] dark:text-white font-mono">
@@ -108,7 +108,7 @@ export default function HeroSection() {
                 </div>
 
                 {/* Document Type Switcher */}
-                <div className="flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/10 text-[10px] font-medium">
+                <div className="flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/10 text-[10px] font-medium overflow-x-auto scrollbar-none">
                   {[
                     { id: 'lease', label: 'Contract' },
                     { id: 'report', label: 'Report' },
@@ -118,7 +118,7 @@ export default function HeroSection() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveDocType(tab.id as any)}
-                      className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
+                      className={`px-2.5 py-1 rounded-full transition-all cursor-pointer whitespace-nowrap touch-target ${
                         activeDocType === tab.id
                           ? 'bg-[#2563EB] text-white font-bold shadow-xs'
                           : 'text-[#53627A] dark:text-slate-400 hover:text-[#0F172A] dark:hover:text-white'

@@ -20,27 +20,27 @@ export default function InteractiveRoiCalculator() {
             <Calculator className="w-3.5 h-3.5" />
             <span>Interactive Operational Model</span>
           </div>
-          <h2 className="text-4xl sm:text-6xl font-serif text-slate-900 dark:text-white tracking-tight mt-2 mb-6 font-normal">
+          <h2 className="text-3xl sm:text-6xl font-serif text-slate-900 dark:text-white tracking-tight mt-2 mb-4 sm:mb-6 font-normal">
             Calculate Your Organization’s ROI
           </h2>
-          <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed font-sans max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-sans max-w-2xl mx-auto">
             Quantify the exact hours reclaimed, cash leakage prevented, and compliance accuracy gained by deploying DocFin.
           </p>
         </div>
 
         {/* Calculator Box */}
-        <div className="max-w-4xl mx-auto rounded-3xl bg-white dark:bg-[#0E121A] border border-slate-200/90 dark:border-white/10 p-8 sm:p-12 shadow-lg">
+        <div className="max-w-4xl mx-auto rounded-3xl glass-panel border border-black/10 dark:border-white/10 p-5 sm:p-12 shadow-xl">
           {/* Slider Control */}
-          <div className="space-y-5 mb-12 pb-10 border-b border-slate-100 dark:border-white/10">
+          <div className="space-y-4 sm:space-y-5 mb-8 sm:mb-12 pb-6 sm:pb-10 border-b border-black/[0.06] dark:border-white/10">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <label className="text-base sm:text-lg font-serif text-slate-900 dark:text-white font-normal">
+              <label className="text-sm sm:text-lg font-serif text-[#0F172A] dark:text-white font-bold">
                 Monthly Financial Documents Audited:
               </label>
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-white/10 px-5 py-2 rounded-full border border-slate-200 dark:border-white/15">
-                <span className="text-2xl font-black text-slate-900 dark:text-white font-mono">
+              <div className="flex items-center gap-1.5 bg-black/5 dark:bg-white/10 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border border-black/10 dark:border-white/15">
+                <span className="text-xl sm:text-2xl font-black text-[#0F172A] dark:text-white font-mono">
                   {docVolume}
                 </span>
-                <span className="text-xs text-slate-600 dark:text-slate-300 font-semibold">files / month</span>
+                <span className="text-[11px] sm:text-xs text-[#53627A] dark:text-slate-300 font-semibold">files / month</span>
               </div>
             </div>
 
@@ -51,66 +51,66 @@ export default function InteractiveRoiCalculator() {
               step="5"
               value={docVolume}
               onChange={(e) => setDocVolume(parseInt(e.target.value))}
-              className="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:accent-white"
+              className="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#2563EB] dark:accent-[#34d399] touch-target"
             />
 
-            <div className="flex items-center justify-between text-xs font-mono text-slate-500">
-              <span>10 Documents (Solo Desk)</span>
-              <span>150 Documents (Mid-Sized Desk)</span>
-              <span>500+ Documents (Enterprise Team)</span>
+            <div className="flex flex-wrap items-center justify-between text-[10px] sm:text-xs font-mono text-[#64748B] dark:text-slate-400 gap-1">
+              <span>10 (Solo Practitioner)</span>
+              <span>150 (Mid-Sized Team)</span>
+              <span>500+ (Enterprise Audit)</span>
             </div>
           </div>
 
           {/* 3 Calculated KPI Output Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-            <div className="p-6 rounded-3xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-left">
+            <div className="p-6 rounded-3xl glass-card border border-black/[0.08] dark:border-white/10 text-left">
               <div className="flex items-center gap-2 text-slate-500 mb-2">
-                <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <Clock className="w-4 h-4 text-[#2563EB] dark:text-blue-400" />
                 <span className="text-xs font-semibold uppercase tracking-wider font-mono">Time Reclaimed</span>
               </div>
-              <p className="text-4xl font-serif text-slate-900 dark:text-white tracking-tight font-normal">
-                {hoursSavedPerMonth} <span className="text-base font-sans text-slate-400">hrs/mo</span>
+              <p className="text-4xl font-serif text-[#0F172A] dark:text-white tracking-tight font-bold">
+                {hoursSavedPerMonth} <span className="text-base font-sans text-[#64748B] font-normal">hrs/mo</span>
               </p>
-              <span className="text-xs text-slate-500 dark:text-slate-400 mt-2 block">
+              <span className="text-xs text-[#53627A] dark:text-slate-400 mt-2 block font-sans">
                 ~{Math.round(hoursSavedPerMonth / 8)} analyst workdays saved
               </span>
             </div>
 
-            <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-white/10 border border-blue-200 dark:border-white/15 text-left">
-              <div className="flex items-center gap-2 text-blue-700 dark:text-white mb-2">
-                <TrendingUp className="w-4 h-4 text-blue-600 dark:text-emerald-400" />
-                <span className="text-xs font-semibold uppercase tracking-wider font-mono">Discrepancies Caught</span>
+            <div className="p-6 rounded-3xl bg-blue-500/10 dark:bg-blue-950/40 border border-blue-500/20 dark:border-blue-900/40 text-left">
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 mb-2">
+                <TrendingUp className="w-4 h-4 text-[#2563EB] dark:text-emerald-400" />
+                <span className="text-xs font-semibold uppercase tracking-wider font-mono">Leakage Caught</span>
               </div>
-              <p className="text-4xl font-serif text-slate-900 dark:text-white tracking-tight font-normal">
+              <p className="text-4xl font-serif text-[#0F172A] dark:text-white tracking-tight font-bold">
                 ₹{capitalProtectedINR.toLocaleString()}
               </p>
-              <span className="text-xs text-slate-600 dark:text-slate-300 mt-2 block font-medium">
-                Unclaimed GST, fees & lock-in risks
+              <span className="text-xs text-[#334155] dark:text-slate-300 mt-2 block font-medium font-sans">
+                Unclaimed GST, fees & penalty risks
               </span>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-left">
+            <div className="p-6 rounded-3xl glass-card border border-black/[0.08] dark:border-white/10 text-left">
               <div className="flex items-center gap-2 text-slate-500 mb-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-xs font-semibold uppercase tracking-wider font-mono">Accuracy Elevation</span>
+                <span className="text-xs font-semibold uppercase tracking-wider font-mono">Audit Accuracy</span>
               </div>
-              <p className="text-4xl font-serif text-slate-900 dark:text-white tracking-tight font-normal">
+              <p className="text-4xl font-serif text-[#0F172A] dark:text-white tracking-tight font-bold">
                 {errorReductionPct}%
               </p>
-              <span className="text-xs text-slate-500 dark:text-slate-400 mt-2 block">
-                0% hallucination coordinate tensors
+              <span className="text-xs text-[#53627A] dark:text-slate-400 mt-2 block font-sans">
+                Spatial citation grounding
               </span>
             </div>
           </div>
 
           {/* CTA Footer */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100 dark:border-white/10">
-            <span className="text-xs text-slate-500">
-              * Based on empirical analysis across 14,000+ audited commercial statements and invoices.
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-black/[0.06] dark:border-white/10">
+            <span className="text-xs text-[#64748B] dark:text-slate-400 font-sans">
+              * Empirical benchmark across 14,000+ audited commercial statements & invoices.
             </span>
             <Link
               href="/dashboard"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#0F172A] hover:bg-[#1E293B] dark:bg-white dark:hover:bg-slate-100 text-white dark:text-[#07090E] text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2"
+              className="glass-button-emerald w-full sm:w-auto px-8 py-3.5 rounded-full text-white text-xs font-bold transition-all flex items-center justify-center gap-2 touch-target"
             >
               <span>Test With Your Own Documents</span>
               <ArrowRight className="w-3.5 h-3.5" />

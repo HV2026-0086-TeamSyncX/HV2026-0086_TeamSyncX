@@ -113,11 +113,11 @@ export default function CommandPalette({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-24 p-4 animate-in fade-in duration-150">
-      <div className="bg-white dark:bg-[#0E121A] border border-[#DCE5F0] dark:border-white/15 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-12 sm:pt-24 p-3 sm:p-4 animate-in fade-in duration-150 select-none">
+      <div className="bg-white dark:bg-[#0E121A] border border-[#DCE5F0] dark:border-white/15 rounded-2xl sm:rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-5 py-3.5 border-b border-[#DCE5F0] dark:border-white/10 bg-[#F8FAFD] dark:bg-[#07090E]">
-          <Search className="w-4 h-4 text-[#8092A7]" />
+        <div className="flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 border-b border-[#DCE5F0] dark:border-white/10 bg-[#F8FAFD] dark:bg-[#07090E]">
+          <Search className="w-4 h-4 text-[#8092A7] flex-shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -125,15 +125,15 @@ export default function CommandPalette({
             onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0); }}
             onKeyDown={handleKeyDown}
             placeholder="Type a command or search documents..."
-            className="flex-1 text-xs bg-transparent border-none focus:outline-none text-[#0F172A] dark:text-white placeholder:text-[#8092A7]"
+            className="flex-1 text-xs sm:text-sm bg-transparent border-none focus:outline-none text-[#0F172A] dark:text-white placeholder:text-[#8092A7] min-w-0"
           />
-          <kbd className="px-2 py-0.5 rounded-lg bg-white dark:bg-white/10 border border-[#DCE5F0] dark:border-white/15 text-[10px] font-mono text-[#8092A7]">
+          <kbd className="px-2 py-0.5 rounded-lg bg-white dark:bg-white/10 border border-[#DCE5F0] dark:border-white/15 text-[10px] font-mono text-[#8092A7] flex-shrink-0">
             ESC
           </kbd>
         </div>
 
         {/* Action List */}
-        <div className="max-h-80 overflow-y-auto p-2 space-y-1">
+        <div className="max-h-80 overflow-y-auto p-1.5 sm:p-2 space-y-1 scrollbar-thin">
           {filtered.length === 0 ? (
             <div className="py-8 text-center text-xs text-[#8092A7]">
               No commands or documents found for &quot;{query}&quot;
@@ -147,13 +147,13 @@ export default function CommandPalette({
                   key={item.id}
                   onClick={item.action}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs transition-all ${
+                  className={`w-full flex items-center justify-between px-3 sm:px-3.5 py-2.5 rounded-2xl text-xs transition-all touch-target cursor-pointer ${
                     isSelected
                       ? 'bg-[#2563EB] text-white shadow-xs'
                       : 'text-[#0F172A] dark:text-slate-200 hover:bg-[#F8FAFD] dark:hover:bg-white/5'
                   }`}
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="flex items-center gap-2.5 min-w-0 pr-2">
                     <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? 'text-white' : 'text-[#8092A7]'}`} />
                     <span className="truncate font-medium">{item.title}</span>
                   </div>

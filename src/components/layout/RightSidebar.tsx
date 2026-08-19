@@ -91,9 +91,20 @@ export default function RightSidebar({
         }}
       />
 
+      {/* Mobile Drawer Backdrop */}
+      {isOpen && (
+        <div
+          onClick={onToggle}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 md:hidden animate-in fade-in duration-200"
+          aria-hidden="true"
+        />
+      )}
+
       <aside
-        className={`relative flex flex-col bg-white dark:bg-[#0c1017] text-[#0F172A] dark:text-slate-300 border-l border-[#DCE5F0] dark:border-white/10 transition-all duration-300 ease-in-out select-none z-20 h-full ${
-          isOpen ? 'w-72 sm:w-80' : 'w-0 border-l-0'
+        className={`bg-white dark:bg-[#0c1017] text-[#0F172A] dark:text-slate-300 border-l border-[#DCE5F0] dark:border-white/10 transition-all duration-300 ease-in-out select-none z-50 h-full flex flex-col ${
+          isOpen
+            ? 'fixed inset-y-0 right-0 w-[300px] max-w-[85vw] md:relative md:w-72 lg:w-80 shadow-2xl md:shadow-none'
+            : 'hidden md:flex md:w-0 md:border-l-0 overflow-hidden'
         }`}
       >
         {/* Visible Content Only When Open */}
@@ -114,14 +125,14 @@ export default function RightSidebar({
               <div className="flex items-center gap-1">
                 <button
                   onClick={handleUploadClick}
-                  className="p-1.5 rounded-lg text-[#8092A7] hover:text-[#0F172A] dark:hover:text-white hover:bg-blue-50/60 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                  className="p-2 rounded-lg text-[#8092A7] hover:text-[#0F172A] dark:hover:text-white hover:bg-blue-50/60 dark:hover:bg-white/10 transition-colors cursor-pointer touch-target flex items-center justify-center"
                   title="Add Media Files"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
                 <button
                   onClick={onToggle}
-                  className="p-1.5 rounded-lg text-[#8092A7] hover:text-[#0F172A] dark:hover:text-white hover:bg-blue-50/60 dark:hover:bg-white/10 transition-colors"
+                  className="p-2 rounded-lg text-[#8092A7] hover:text-[#0F172A] dark:hover:text-white hover:bg-blue-50/60 dark:hover:bg-white/10 transition-colors cursor-pointer touch-target flex items-center justify-center"
                   title="Collapse History Sidebar"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -151,7 +162,7 @@ export default function RightSidebar({
                   <p className="text-xs text-[#53627A] dark:text-slate-400">No documents found</p>
                   <button
                     onClick={handleUploadClick}
-                    className="text-xs text-[#2563EB] dark:text-blue-400 hover:underline font-semibold cursor-pointer inline-flex items-center gap-1"
+                    className="text-xs text-[#2563EB] dark:text-blue-400 hover:underline font-semibold cursor-pointer inline-flex items-center gap-1 touch-target"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add Media Files</span>
@@ -169,8 +180,13 @@ export default function RightSidebar({
                         e.dataTransfer.setData('text/plain', doc.name);
                         e.dataTransfer.effectAllowed = 'copyMove';
                       }}
-                      onClick={() => onSelectDoc(doc)}
-                      className={`group relative p-3 rounded-2xl border text-left cursor-grab active:cursor-grabbing transition-all hover:scale-[1.01] ${
+                      onClick={() => {
+                        onSelectDoc(doc);
+                        if (typeof window !== 'undefined' && window.innerWidth < 768 && isOpen) {
+                          onToggle();
+                        }
+                      }}
+                      className={`group relative p-3 rounded-2xl border text-left cursor-grab active:cursor-grabbing transition-all hover:scale-[1.01] touch-target ${
                         isSelected
                           ? 'bg-[#EBF2FE] dark:bg-white/10 border-[#2563EB] dark:border-blue-500 shadow-xs ring-2 ring-[#2563EB]/20'
                           : 'bg-white dark:bg-white/5 border-[#DCE5F0] dark:border-white/5 hover:border-[#CBD5E1] dark:hover:border-white/15 hover:bg-[#F8FAFD] dark:hover:bg-white/10'
