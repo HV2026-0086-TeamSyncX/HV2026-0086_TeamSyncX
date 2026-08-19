@@ -14,11 +14,7 @@ import {
   BarChart3,
   Search,
   Bot,
-  Plus,
-  Image as ImageIcon,
-  Video,
-  FileSpreadsheet,
-  Presentation
+  Plus
 } from 'lucide-react';
 import { DocumentDomain, MediaType } from '@/lib/types';
 

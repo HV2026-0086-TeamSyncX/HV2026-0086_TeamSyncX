@@ -1118,15 +1118,15 @@ USER QUESTION: "${cleanQuery}"`;
   const qLower = cleanQuery.toLowerCase();
   const isDatesQuery = /date|milestone|deadline|calendar|timeline|schedule|due|when|effective|expiration|renewal/i.test(qLower);
   const isNumericalQuery = /number|numeric|figure|metric|amount|financial|price|rate|cost|fee|revenue|margin|tax|stat|quantity|total|sum/i.test(qLower);
-  const isSummaryQuery = /summary|summarize|explain|overview|takeaway|brief|understand|30-second|core|thesis/i.test(qLower);
+  const isMethodologyQuery = /methodology|method|thesis|research question|hypothesis|dataset|benchmark|experiment|attention/i.test(qLower);
+  const isInitialUpload = /attached \d+ media file|analyze and synthesize uploaded document/i.test(qLower);
+  const isSummaryQuery = /summary|summarize|explain|overview|takeaway|brief|understand|30-second|core|thesis/i.test(qLower) || isMethodologyQuery || isInitialUpload;
   const isExportQuery = /export|markdown|report|dossier|full summary/i.test(qLower);
   const isRiskQuery = /risk|penalty|clause|liability|forfeit|breach|concern|warning|covenant|terms|lock-in|red flag|hidden con/i.test(qLower);
   const isTableQuery = /table|extract table|make table|tabular|data table|csv|spreadsheet|matrix|ledger/i.test(qLower);
   const isSavingsQuery = /saving|savings|tip|tips|optimize|optimization|cut cost|reduce bill|recommendation/i.test(qLower);
   const isCashFlowQuery = /spending|cash flow|inflow|outflow|subscription|charge|balance|bank statement/i.test(qLower);
-  const isMethodologyQuery = /methodology|method|thesis|research question|hypothesis|dataset|benchmark|experiment/i.test(qLower);
   const isGreeting = /^(hey|hi|hello|greetings|good\s+(morning|afternoon|evening)|yo|howdy|sup)\b/i.test(qLower) || /^(what\s+can\s+you\s+do|help|how\s+to\s+use)\b/i.test(qLower);
-  const isInitialUpload = /attached \d+ media file|analyze and synthesize uploaded document/i.test(qLower);
 
   if (isGreeting) {
     answer = `Hello! 👋 How can I help you today?\n\nI have **${documentContext.name}** (${domain.toUpperCase()} domain, ${documentContext.pageCount || 1} page(s)) indexed in context.\n\nYou can:\n- 🚩 Highlight red flags, risks & hidden clauses\n- 📊 Extract and view structured tables\n- 💡 Get personalized AI optimization tips\n- 📝 Generate plain-English executive summaries\n\nWhat would you like to explore?`;

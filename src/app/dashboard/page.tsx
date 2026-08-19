@@ -39,8 +39,310 @@ import {
   ArrowRight,
   ShieldCheck,
   Landmark,
-  GraduationCap
+  GraduationCap,
+  FileSpreadsheet,
+  Code2,
+  CreditCard,
+  Zap,
+  BookOpen
 } from 'lucide-react';
+
+function getDocumentFunctions(doc: DocumentAnalysis) {
+  const name = doc.name.toLowerCase();
+  const domain = doc.detectedDomain;
+
+  // 1. Research Paper / Academic Domain
+  if (domain === 'academic' || name.includes('attention') || name.includes('research') || name.includes('paper')) {
+    return [
+      {
+        id: 'fn-acad-1',
+        title: '📊 Extract Benchmark Tables (WMT/BLEU)',
+        subtitle: 'Pull Table 3.1 & empirical English-to-German BLEU score benchmarks into a clean CSV matrix.',
+        badge: 'MAKE TABLES',
+        badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+        icon: FileSpreadsheet,
+        prompt: `Extract Table 3.1 and all empirical WMT-14 English-to-German / French translation BLEU benchmark scores from ${doc.name} into a structured CSV table.`
+      },
+      {
+        id: 'fn-acad-2',
+        title: '🧠 Explain Core Architecture',
+        subtitle: 'Break down multi-head scaled dot-product attention with 8 heads and d_k=64 in simple terms.',
+        badge: 'SYNTHESIS',
+        badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
+        icon: GraduationCap,
+        prompt: `Explain how multi-head scaled dot-product attention works in ${doc.name} (8 heads, d_k=64) compared to recurrent RNN/LSTM models in simple terms.`
+      },
+      {
+        id: 'fn-acad-3',
+        title: '🚨 Red Flags & Complexity Bottlenecks',
+        subtitle: 'Highlight quadratic O(n²) self-attention memory bottlenecks and training constraints.',
+        badge: 'RED FLAGS',
+        badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        icon: AlertTriangle,
+        prompt: `Highlight the critical limitations, quadratic O(n^2) self-attention complexity, and memory bottlenecks mentioned in ${doc.name}.`
+      },
+      {
+        id: 'fn-acad-4',
+        title: '💡 PyTorch Implementation Guide',
+        subtitle: 'Generate a clean, annotated PyTorch code implementation of the self-attention layer.',
+        badge: 'CODE GUIDE',
+        badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+        icon: Code2,
+        prompt: `Generate a step-by-step PyTorch code implementation of the Multi-Head Attention layer described in ${doc.name} with complete comments.`
+      }
+    ];
+  }
+
+  // 2. Bank Statement / Financial Account Domain
+  if (domain === 'finance' || name.includes('bank') || name.includes('statement') || name.includes('salary')) {
+    return [
+      {
+        id: 'fn-fin-1',
+        title: '💳 Bank Statement Summarizer',
+        subtitle: 'Understand total monthly credits, debits, recurring subscriptions, and net cash flow.',
+        badge: 'SUMMARIZER',
+        badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+        icon: CreditCard,
+        prompt: `Provide an easy-to-understand breakdown of ${doc.name}: total monthly credits, debits, recurring subscriptions, and net monthly cash flow.`
+      },
+      {
+        id: 'fn-fin-2',
+        title: '🚨 Red Flags & Hidden Surcharges',
+        subtitle: 'Audit for erroneous overdraft fees, minimum balance penalties, and disputable debit charges.',
+        badge: 'RED FLAGS',
+        badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        icon: AlertTriangle,
+        prompt: `Audit ${doc.name} for erroneous overdraft fees, penalty charges, and disputable debit transactions.`
+      },
+      {
+        id: 'fn-fin-3',
+        title: '📊 Make Tables & Export Ledger (CSV)',
+        subtitle: 'Extract all 31-day transactions into a structured 5-column ledger table ready for export.',
+        badge: 'MAKE TABLES',
+        badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+        icon: FileSpreadsheet,
+        prompt: `Extract all transaction records from ${doc.name} into a structured 5-column ledger table ready for CSV export.`
+      },
+      {
+        id: 'fn-fin-4',
+        title: '💡 Personalized AI Financial Tips',
+        subtitle: '50/30/20 budget recommendation and automated savings optimization based on cash flow.',
+        badge: 'AI TIPS',
+        badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+        icon: Sparkles,
+        prompt: `Based on the cash flow and spending patterns in ${doc.name}, give me personalized savings and 50/30/20 budget optimization tips.`
+      }
+    ];
+  }
+
+  // 3. Commercial Lease / Legal Contract Domain
+  if (domain === 'legal' || name.includes('lease') || name.includes('agreement') || name.includes('contract')) {
+    return [
+      {
+        id: 'fn-leg-1',
+        title: '🚨 Red Flags & Hidden Cons',
+        subtitle: 'Audit for security deposit forfeiture risks, uncapped indemnities, and notice traps.',
+        badge: 'RED FLAGS',
+        badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        icon: AlertTriangle,
+        prompt: `Audit ${doc.name} for hidden risks: security deposit forfeiture clauses, uncapped indemnities, and notice traps.`
+      },
+      {
+        id: 'fn-leg-2',
+        title: '⚖️ Liability & Counter-Clause Redline',
+        subtitle: 'Analyze Clause 5.2 and draft a tenant counter-clause capping early exit liability to 1 month.',
+        badge: 'LEGAL REDLINE',
+        badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
+        icon: Scale,
+        prompt: `Analyze Clause 5.2 in ${doc.name} and generate a professional tenant counter-clause capping early exit liability to 1 month pro-rata rent.`
+      },
+      {
+        id: 'fn-leg-3',
+        title: '📅 Key Dates & Critical Deadlines',
+        subtitle: 'Extract 11-month lock-in expiration, 5% escalation date, and notice period deadlines.',
+        badge: 'DEADLINES',
+        badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+        icon: TrendingUp,
+        prompt: `Extract all critical dates from ${doc.name}: 11-month lock-in expiration, annual escalation date, and mandatory notice period deadlines.`
+      },
+      {
+        id: 'fn-leg-4',
+        title: '📝 Plain-English Executive Summary',
+        subtitle: 'Bullet-by-bullet breakdown of tenant obligations, maintenance terms, and permitted usage.',
+        badge: 'EXECUTIVE SUMMARY',
+        badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+        icon: FileText,
+        prompt: `Provide a plain-English clause-by-clause summary of all tenant obligations, maintenance terms, and permitted usage in ${doc.name}.`
+      }
+    ];
+  }
+
+  // 4. Insurance Policy Domain
+  if (domain === 'insurance' || name.includes('insurance') || name.includes('policy') || name.includes('health')) {
+    return [
+      {
+        id: 'fn-ins-1',
+        title: '🚨 Red Flags, Exclusions & Caps',
+        subtitle: 'List all hidden exclusions, waiting periods, room-rent capping limits, and co-pay rules.',
+        badge: 'RED FLAGS',
+        badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        icon: AlertTriangle,
+        prompt: `List all hidden policy exclusions, pre-existing disease waiting periods, room-rent capping limits, and co-payment clauses in ${doc.name}.`
+      },
+      {
+        id: 'fn-ins-2',
+        title: '🏥 Guaranteed Claim Approval Checklist',
+        subtitle: 'Step-by-step checklist of documents and pre-authorization deadlines for 100% claim settlement.',
+        badge: 'CLAIM GUIDE',
+        badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+        icon: ShieldCheck,
+        prompt: `Generate a step-by-step checklist of required documents, hospital notice deadlines, and pre-authorization steps for 100% claim settlement under ${doc.name}.`
+      },
+      {
+        id: 'fn-ins-3',
+        title: '📊 Make Sub-limits & Coverage Table',
+        subtitle: 'Extract Sum Insured, ICU capping, day-care procedures, and cashless network hospital rules.',
+        badge: 'MAKE TABLES',
+        badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+        icon: FileSpreadsheet,
+        prompt: `Extract the full coverage limits table from ${doc.name}: Sum Insured, ICU capping, day-care procedures, and cashless network hospital rules.`
+      },
+      {
+        id: 'fn-ins-4',
+        title: '💡 AI Claim Strategy & Optimization Tips',
+        subtitle: 'Expert advice to maximize insurance reimbursement and avoid out-of-pocket room deductions.',
+        badge: 'AI TIPS',
+        badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
+        icon: Sparkles,
+        prompt: `Provide expert advice on how to maximize insurance reimbursement and avoid out-of-pocket room rent deductions under ${doc.name}.`
+      }
+    ];
+  }
+
+  // 5. Invoicing & Billing Domain
+  if (domain === 'billing' || name.includes('invoice') || name.includes('bill') || name.includes('tax')) {
+    return [
+      {
+        id: 'fn-bil-1',
+        title: '🧾 GST & Input Tax Credit (ITC) Verification',
+        subtitle: 'Verify 18% Integrated GST calculation against supplier GSTIN for 100% GSTR-3B tax credit.',
+        badge: 'TAX CREDIT',
+        badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+        icon: Receipt,
+        prompt: `Verify the 18% Integrated GST calculation in ${doc.name} against the supplier GSTIN and confirm 100% GSTR-3B tax credit eligibility.`
+      },
+      {
+        id: 'fn-bil-2',
+        title: '🚨 Red Flags & Surcharges',
+        subtitle: 'Audit line items for unexpected compute surcharges, egress bandwidth spikes, or unallocated taxes.',
+        badge: 'RED FLAGS',
+        badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        icon: AlertTriangle,
+        prompt: `Audit line items in ${doc.name} for unexpected compute surcharges, egress bandwidth spikes, or unallocated regional tax rates.`
+      },
+      {
+        id: 'fn-bil-3',
+        title: '📊 Make Line-Item Tables (CSV)',
+        subtitle: 'Extract all service charges, HSN/SAC codes, hourly rates, and taxable values into CSV.',
+        badge: 'MAKE TABLES',
+        badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+        icon: FileSpreadsheet,
+        prompt: `Extract all service charges, HSN/SAC codes, hourly rates, and taxable values from ${doc.name} into a structured CSV table.`
+      },
+      {
+        id: 'fn-bil-4',
+        title: '💡 Cost Optimization Tips',
+        subtitle: 'Analyze compute/bandwidth resource usage and recommend immediate cost-saving optimizations.',
+        badge: 'COST SAVINGS',
+        badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+        icon: Sparkles,
+        prompt: `Analyze the resource usage in ${doc.name} and recommend immediate cost-saving optimizations.`
+      }
+    ];
+  }
+
+  // 6. Medical Lab Report / Health
+  if (name.includes('metabolic') || name.includes('lab') || name.includes('panel') || name.includes('medical')) {
+    return [
+      {
+        id: 'fn-med-1',
+        title: '🚨 Out-of-Range Red Flags',
+        subtitle: 'Identify abnormal biomarkers (Fasting Glucose, Creatinine) and explain clinical significance.',
+        badge: 'RED FLAGS',
+        badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        icon: AlertTriangle,
+        prompt: `Identify all abnormal/out-of-range biomarkers in ${doc.name} (e.g. Fasting Glucose, Creatinine) and explain their clinical significance.`
+      },
+      {
+        id: 'fn-med-2',
+        title: '🧪 Biomarker Explanation (Plain English)',
+        subtitle: 'Explain what each of the 14 CMP parameters measures and why it matters for organ health.',
+        badge: 'EXPLANATION',
+        badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+        icon: FileText,
+        prompt: `Explain what each of the 14 CMP parameters measures in ${doc.name} and why it matters for metabolic and organ health in plain English.`
+      },
+      {
+        id: 'fn-med-3',
+        title: '📊 Make Lab Results Matrix Table',
+        subtitle: 'Extract all 14 biomarkers with observed values, reference ranges, and abnormal flags to CSV.',
+        badge: 'MAKE TABLES',
+        badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
+        icon: FileSpreadsheet,
+        prompt: `Extract all 14 biomarkers from ${doc.name} with their observed values, standard reference ranges, and abnormal flags into a structured table.`
+      },
+      {
+        id: 'fn-med-4',
+        title: '💡 Personalized Lifestyle Tips',
+        subtitle: 'Suggest actionable dietary, hydration, and lifestyle improvements based on elevated markers.',
+        badge: 'AI TIPS',
+        badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+        icon: Sparkles,
+        prompt: `Based on the elevated markers in ${doc.name}, suggest actionable dietary, hydration, and lifestyle improvements.`
+      }
+    ];
+  }
+
+  // 7. Universal Fallback for any uploaded file
+  return [
+    {
+      id: 'fn-gen-1',
+      title: '📝 Plain-English Executive Summary',
+      subtitle: 'Summarize key takeaways, obligations, and conclusions in 3 concise bullet points.',
+      badge: 'SUMMARIZE',
+      badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+      icon: FileText,
+      prompt: `Summarize ${doc.name} in 3 concise executive bullet points with key takeaways.`
+    },
+    {
+      id: 'fn-gen-2',
+      title: '🚨 Red Flags & Hidden Risks',
+      subtitle: 'Audit for high-risk clauses, unexpected penalties, obligations, or statistical anomalies.',
+      badge: 'RED FLAGS',
+      badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+      icon: AlertTriangle,
+      prompt: `Audit ${doc.name} for high-risk clauses, hidden fees, unusual obligations, or statistical anomalies.`
+    },
+    {
+      id: 'fn-gen-3',
+      title: '📊 Make Structured Tables (CSV)',
+      subtitle: 'Extract quantitative metrics, financial figures, or tabular data into a spreadsheet matrix.',
+      badge: 'MAKE TABLES',
+      badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
+      icon: FileSpreadsheet,
+      prompt: `Extract all quantitative metrics, financial numbers, or tabular matrices from ${doc.name} into a structured table.`
+    },
+    {
+      id: 'fn-gen-4',
+      title: '💡 Personalized Actionable Tips',
+      subtitle: 'Receive strategic recommendations and high-impact next steps based on this analysis.',
+      badge: 'AI TIPS',
+      badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+      icon: Sparkles,
+      prompt: `What are the top 3 recommended actions or strategic next steps based on ${doc.name}?`
+    }
+  ];
+}
 
 function DashboardWorkspaceContent() {
   const searchParams = useSearchParams();
@@ -694,19 +996,19 @@ function DashboardWorkspaceContent() {
             <div className="flex-1 flex overflow-hidden w-full">
               <div className="flex-1 flex flex-col h-full overflow-hidden relative w-full">
                 {/* Conversational Stream */}
-                <div className="flex-1 overflow-y-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6 max-w-4xl w-full mx-auto">
+                <div className="flex-1 overflow-y-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-8 space-y-8 max-w-5xl lg:max-w-6xl w-full mx-auto">
                   {/* Clean Welcome Hero (When no messages yet) */}
                   {messages.length === 0 && (
-                    <div className="space-y-8 max-w-3xl mx-auto pt-4 animate-in fade-in select-none">
+                    <div className="space-y-10 max-w-4xl lg:max-w-5xl mx-auto pt-4 animate-in fade-in select-none">
                       {/* Top Header */}
-                      <div className="text-center space-y-2">
+                      <div className="text-center space-y-3">
                         <div className="w-14 h-14 rounded-3xl bg-[#2563EB]/10 dark:bg-[#2563EB]/20 text-[#2563EB] dark:text-blue-400 flex items-center justify-center mx-auto shadow-sm">
                           <Sparkles className="w-7 h-7" />
                         </div>
-                        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#101828] dark:text-white">
+                        <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#101828] dark:text-white">
                           {currentDoc ? `Auditing ${currentDoc.name}` : 'How can I help you today?'}
                         </h2>
-                        <p className="text-xs sm:text-sm text-[#53627A] dark:text-slate-400 max-w-md mx-auto">
+                        <p className="text-xs sm:text-base text-[#53627A] dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
                           {currentDoc
                             ? `Ask any question about ${currentDoc.name}, extract tables into CSV, or audit specific clauses.`
                             : 'Chat freely on any topic, write & debug code, or inspect pre-loaded demo documents.'}
@@ -715,42 +1017,87 @@ function DashboardWorkspaceContent() {
 
                       {/* 1-Click Pre-Loaded Demo Audits Showcase (When no document selected) */}
                       {!currentDoc && (
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                           <div className="flex items-center justify-between px-1">
-                            <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-1.5">
-                              <Sparkles className="w-3.5 h-3.5" />
+                            <span className="text-xs font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-2">
+                              <Sparkles className="w-4 h-4" />
                               Pre-Loaded Demo Audits (1-Click Live Inspect)
                             </span>
-                            <span className="text-[10px] text-slate-400 font-mono">Click to test instantly</span>
+                            <span className="text-xs text-slate-400 font-mono">Click to test instantly</span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {SAMPLE_DOCUMENTS.slice(0, 4).map((demoDoc) => (
                               <button
                                 key={demoDoc.id}
                                 onClick={() => handleLoadDemoDoc(demoDoc)}
-                                className="p-4 rounded-2xl bg-white dark:bg-[#121722] hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-[#DCE5F0] dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-xs cursor-pointer flex flex-col justify-between"
+                                className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-xs cursor-pointer flex flex-col justify-between"
                               >
                                 <div>
-                                  <div className="flex items-center justify-between gap-2 mb-2">
-                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 font-bold uppercase">
+                                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 font-bold uppercase border border-blue-500/20">
                                       {demoDoc.detectedDomain}
                                     </span>
-                                    <span className="text-[10px] text-slate-400 font-mono">{demoDoc.pageCount} Pages</span>
+                                    <span className="text-[11px] text-slate-400 font-mono">{demoDoc.pageCount} Pages</span>
                                   </div>
-                                  <h3 className="text-xs font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                                  <h3 className="text-sm font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
                                     {demoDoc.name}
                                   </h3>
-                                  <p className="text-[11px] text-[#53627A] dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                                  <p className="text-xs text-[#53627A] dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
                                     {demoDoc.summary.tldr}
                                   </p>
                                 </div>
-                                <div className="mt-3 pt-2.5 border-t border-[#DCE5F0]/60 dark:border-white/10 flex items-center justify-between text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+                                <div className="mt-4 pt-3 border-t border-black/[0.06] dark:border-white/10 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
                                   <span>Inspect Demo Audit</span>
-                                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </div>
                               </button>
                             ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 1-Click Document Intelligence Functions (When a document is actively loaded) */}
+                      {currentDoc && (
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between px-1">
+                            <span className="text-xs font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-2">
+                              <Zap className="w-4 h-4 text-amber-500" />
+                              1-Click Audit & Reasoning Functions
+                            </span>
+                            <span className="text-xs text-slate-400 font-mono">Click any function to execute</span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {getDocumentFunctions(currentDoc).map((fn) => {
+                              const Icon = fn.icon;
+                              return (
+                                <button
+                                  key={fn.id}
+                                  onClick={() => handleSendMessage(fn.prompt)}
+                                  className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-xs cursor-pointer flex flex-col justify-between"
+                                >
+                                  <div>
+                                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                                      <span className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full border font-bold uppercase ${fn.badgeColor}`}>
+                                        {fn.badge}
+                                      </span>
+                                      <Icon className="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                    </div>
+                                    <h3 className="text-sm font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                                      {fn.title}
+                                    </h3>
+                                    <p className="text-xs text-[#53627A] dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
+                                      {fn.subtitle}
+                                    </p>
+                                  </div>
+                                  <div className="mt-4 pt-3 border-t border-black/[0.06] dark:border-white/10 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                    <span>Execute Function</span>
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                  </div>
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
@@ -764,11 +1111,11 @@ function DashboardWorkspaceContent() {
                     return (
                       <div
                         key={msg.id}
-                        className={`flex gap-3.5 max-w-3xl ${isAssistant ? '' : 'ml-auto flex-row-reverse'}`}
+                        className={`flex gap-4 max-w-4xl lg:max-w-5xl w-full ${isAssistant ? '' : 'ml-auto flex-row-reverse'}`}
                       >
                         {/* Avatar */}
                         <div
-                          className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-xs font-bold ${
+                          className={`w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 text-xs font-bold ${
                             isAssistant
                               ? 'bg-[#2563EB] text-white shadow-xs'
                               : 'bg-[#0F172A] text-white dark:bg-white dark:text-[#0F172A]'
@@ -778,8 +1125,8 @@ function DashboardWorkspaceContent() {
                         </div>
 
                         {/* Message Content */}
-                        <div className={`space-y-2 max-w-2xl ${isAssistant ? '' : 'text-right'}`}>
-                          <div className="flex items-center gap-2 text-[10px] text-[#8092A7] font-mono">
+                        <div className={`space-y-2 flex-1 min-w-0 ${isAssistant ? 'max-w-4xl' : 'max-w-xl text-right'}`}>
+                          <div className="flex items-center gap-2 text-[11px] text-[#8092A7] font-mono">
                             <span>{isAssistant ? 'DocFin Intelligence Engine' : 'You'}</span>
                             <span>•</span>
                             <span>{msg.timestamp}</span>
@@ -791,7 +1138,7 @@ function DashboardWorkspaceContent() {
                               {msg.attachedMedia.map((f, fIdx) => (
                                 <div
                                   key={fIdx}
-                                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-[#1E40AF] text-white border border-blue-400/30 text-xs font-mono shadow-sm"
+                                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[#1E40AF] text-white border border-blue-400/30 text-xs font-mono shadow-sm"
                                 >
                                   <FileText className="w-3.5 h-3.5 text-blue-200" />
                                   <span className="font-semibold truncate max-w-[150px]">{f.name}</span>
@@ -803,10 +1150,10 @@ function DashboardWorkspaceContent() {
 
                           {/* Main Text Bubble */}
                           <div
-                            className={`p-5 rounded-3xl text-xs leading-relaxed text-left transition-all ${
+                            className={`p-6 sm:p-7 rounded-3xl text-sm leading-relaxed text-left transition-all ${
                               isAssistant
-                                ? 'bg-white dark:bg-[#121722] border border-[#DCE5F0] dark:border-white/10 text-[#0F172A] dark:text-slate-200 shadow-sm'
-                                : 'bg-[#2563EB] text-white shadow-sm'
+                                ? 'bg-white/90 dark:bg-[#121722]/90 border border-black/10 dark:border-white/10 text-[#0F172A] dark:text-slate-200 shadow-md backdrop-blur-md'
+                                : 'bg-[#2563EB] text-white shadow-md'
                             }`}
                           >
                             <FormattedMessageText content={msg.text} isAssistant={isAssistant} />

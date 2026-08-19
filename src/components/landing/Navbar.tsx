@@ -44,10 +44,10 @@ export default function Navbar() {
             Capabilities & Bento
           </a>
           <a
-            href="#roi"
+            href="#what-why-where"
             className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all"
           >
-            ROI Model
+            What • Why • Where
           </a>
           <Link
             href="/dashboard"
@@ -122,11 +122,11 @@ export default function Navbar() {
             Capabilities & Bento
           </a>
           <a
-            href="#roi"
+            href="#what-why-where"
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200"
           >
-            ROI Model
+            What • Why • Where
           </a>
           <Link
             href="/dashboard"

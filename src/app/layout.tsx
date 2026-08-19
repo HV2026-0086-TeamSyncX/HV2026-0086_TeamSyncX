@@ -60,6 +60,13 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${jakartaSans.variable} ${newsreader.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('theme');var d=s?s==='dark':true;if(d)document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}})();`
+          }}
+        />
+      </head>
       <body className="font-sans antialiased min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] transition-colors duration-200">
         <ThemeProvider>
           <AuthProvider>

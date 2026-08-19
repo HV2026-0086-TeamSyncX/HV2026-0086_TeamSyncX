@@ -4,7 +4,7 @@ import React from 'react';
 import Navbar from '@/components/landing/Navbar';
 import HeroSection from '@/components/landing/HeroSection';
 import StudioBentoGrid from '@/components/landing/StudioBentoGrid';
-import InteractiveRoiCalculator from '@/components/landing/InteractiveRoiCalculator';
+import WhyWhatWhereSection from '@/components/landing/WhyWhatWhereSection';
 import FinalCtaSection from '@/components/landing/FinalCtaSection';
 import Footer from '@/components/landing/Footer';
 
@@ -22,8 +22,8 @@ export default function LandingPage() {
         {/* Studio Bento Grid: 1M Multimodal Window + Spatial Grounding + Persona Workflows */}
         <StudioBentoGrid />
 
-        {/* Operational Model & ROI Slider */}
-        <InteractiveRoiCalculator />
+        {/* Beautiful Aesthetic Manifesto: What, Why & Where Used */}
+        <WhyWhatWhereSection />
 
         {/* Final Launch Studio CTA */}
         <FinalCtaSection />
