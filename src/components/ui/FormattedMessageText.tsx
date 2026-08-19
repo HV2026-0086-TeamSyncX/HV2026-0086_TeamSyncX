@@ -82,7 +82,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
             return (
               <div
                 key={bIdx}
-                className="overflow-x-auto my-3 rounded-2xl border border-black/10 dark:border-white/10 shadow-sm studio-card table-scroll-container max-w-[calc(100vw-3.5rem)] sm:max-w-none scrollbar-thin"
+                className="overflow-x-auto my-3 rounded-2xl border border-black/10 dark:border-white/10 shadow-sm studio-card table-scroll-container max-w-full"
               >
                 <table className="min-w-full text-left text-[11px] sm:text-xs divide-y divide-black/[0.06] dark:divide-white/[0.08]">
                   <thead className="bg-black/[0.03] dark:bg-white/5 font-semibold text-[#0F172A] dark:text-white">

@@ -16,7 +16,14 @@ import {
   FileCode,
   CheckCircle2,
   Loader2,
-  FolderOpen
+  FolderOpen,
+  Paperclip,
+  ArrowUp,
+  Atom,
+  Scale,
+  Search,
+  Zap,
+  ShieldAlert
 } from 'lucide-react';
 import { DocumentDomain, DocumentAnalysis, AttachedMediaFile, MediaType } from '@/lib/types';
 import QuickActionMenu from '@/components/ui/QuickActionMenu';
@@ -53,7 +60,7 @@ export default function PromptBar({
   const [isDragOver, setIsDragOver] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<AttachedMediaFile[]>([]);
   const nativeFileInputRef = useRef<HTMLInputElement>(null);
-  const textInputRef = useRef<HTMLInputElement>(null);
+  const textInputRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<any>(null);
 
   const detectMediaType = (file: File): MediaType => {
@@ -542,87 +549,123 @@ export default function PromptBar({
             </div>
           )}
 
-          {/* Main Floating Liquid Glass Capsule Prompt Bar */}
+          {/* Main Floating Chat Pill Interface (DeepSeek / Gemini Style) */}
           <div
-            className={`flex items-center gap-2 sm:gap-3 rounded-full p-2 sm:p-2.5 sm:px-4 shadow-2xl transition-all relative ${
+            className={`rounded-3xl p-3 sm:p-3.5 shadow-2xl transition-all relative ${
               isDragOver
                 ? 'border-2 border-dashed border-blue-400 bg-blue-500/20 ring-4 ring-blue-500/30 scale-[1.01]'
-                : 'liquid-glass-capsule border border-black/10 dark:border-white/15 focus-within:border-blue-400/80 focus-within:ring-2 focus-within:ring-blue-500/30'
+                : 'bg-white/95 dark:bg-[#181a20] border border-black/10 dark:border-white/10 shadow-aesthetic-lg focus-within:border-blue-500/80 focus-within:ring-2 focus-within:ring-blue-500/20 backdrop-blur-xl'
             }`}
           >
             {isDragOver ? (
-              <div className="flex-1 flex items-center justify-center gap-2 py-2 text-sm text-blue-600 dark:text-blue-300 font-bold animate-pulse">
+              <div className="flex items-center justify-center gap-2 py-4 text-xs sm:text-sm text-blue-600 dark:text-blue-300 font-bold animate-pulse">
                 <UploadCloud className="w-5 h-5" />
                 <span>Drop files anywhere to attach to conversation...</span>
               </div>
             ) : (
               <>
-                {/* The Dynamic [+] Super-Action Button (Media + Features Menu) */}
-                <div className="relative flex-shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setIsQuickActionOpen(!isQuickActionOpen)}
-                    className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full border transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95 touch-target ${
-                      isQuickActionOpen
-                        ? 'bg-blue-600 text-white border-blue-400 rotate-45 ring-2 ring-blue-500/40'
-                        : 'bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-200 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/20 border-black/10 dark:border-white/15'
-                    }`}
-                    title="Add Media Files & Features (+)"
-                  >
-                    <Plus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  </button>
-
-                  <QuickActionMenu
-                    activeDomain={activeDomain}
-                    isOpen={isQuickActionOpen}
-                    onClose={() => setIsQuickActionOpen(false)}
-                    onExecuteAction={(title, prompt) => handlePillClick(prompt)}
-                    onUploadClick={() => nativeFileInputRef.current?.click()}
-                    onOpenAddMedia={handleOpenAddMedia}
-                  />
-                </div>
-
-                {/* Prompt Input */}
-                <input
+                {/* Top: Auto-growing Prompt Input */}
+                <textarea
                   ref={textInputRef}
-                  type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
+                  rows={1}
                   placeholder={
                     attachedFiles.length > 0
                       ? `Ask questions about attached ${attachedFiles.length} file(s)...`
                       : 'Ask anything, summarize documents, analyze tables, or drop files...'
                   }
-                  className="flex-1 px-3 sm:px-4 py-1.5 sm:py-2.5 text-xs sm:text-[13.5px] bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-0 font-sans"
+                  className="w-full px-2 py-1 text-xs sm:text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-h-[38px] max-h-32 resize-none font-sans leading-relaxed"
                 />
 
-                {/* Liquid Glass Send Button */}
-                <button
-                  type="submit"
-                  disabled={(!input.trim() && attachedFiles.length === 0) || isLoading}
-                  className="w-9 h-9 sm:w-11 sm:h-11 rounded-full liquid-glass-button text-white flex items-center justify-center shadow-lg disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all flex-shrink-0 cursor-pointer touch-target"
-                  title="Send Message"
-                >
-                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
+                {/* Bottom Row: Function Pills (Left) + Paperclip & Send ArrowUp (Right) */}
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-black/[0.04] dark:border-white/[0.06] select-none">
+                  {/* Left: Functions Pills (in place of DeepThink / Search) */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 max-w-[calc(100%-80px)]">
+                    <button
+                      type="button"
+                      onClick={() => handlePillClick('Perform a deep risk audit on this document. Flag all liabilities, non-standard penalty clauses, and auto-renewal traps with page citations.')}
+                      className="px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
+                      title="Deep Risk Audit"
+                    >
+                      <Atom className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
+                      <span>Deep Audit</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handlePillClick('Extract all financial numerical tables and structured ledger items from this document into clean structured markdown tables.')}
+                      className="px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
+                      title="Table Matrix Extractor"
+                    >
+                      <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                      <span>Table Matrix</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handlePillClick('Draft a formal dispute letter and counter-clause remedy addressing all flagged risks in this document.')}
+                      className="hidden sm:flex px-3 py-1 rounded-full text-[11px] font-medium items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
+                      title="Action & Dispute Memo"
+                    >
+                      <Scale className="w-3.5 h-3.5 text-purple-500 flex-shrink-0" />
+                      <span>Action Memo</span>
+                    </button>
+
+                    {/* More Routines Dropup Button */}
+                    <div className="relative flex-shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => setIsQuickActionOpen(!isQuickActionOpen)}
+                        className="px-2.5 py-1 rounded-full text-[11px] font-medium flex items-center gap-1 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 transition-all cursor-pointer"
+                        title="More Super-Action Routines"
+                      >
+                        <Plus className="w-3 h-3 text-blue-500" />
+                        <span>More</span>
+                      </button>
+
+                      <QuickActionMenu
+                        activeDomain={activeDomain}
+                        isOpen={isQuickActionOpen}
+                        onClose={() => setIsQuickActionOpen(false)}
+                        onExecuteAction={(title, prompt) => handlePillClick(prompt)}
+                        onUploadClick={() => nativeFileInputRef.current?.click()}
+                        onOpenAddMedia={handleOpenAddMedia}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Right: Attachment & Send */}
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    {/* Paperclip Button */}
+                    <button
+                      type="button"
+                      onClick={() => nativeFileInputRef.current?.click()}
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer touch-target"
+                      title="Attach File or Media"
+                    >
+                      <Paperclip className="w-4 h-4 rotate-45" />
+                    </button>
+
+                    {/* ArrowUp Blue Circle Send Button */}
+                    <button
+                      type="submit"
+                      disabled={(!input.trim() && attachedFiles.length === 0) || isLoading}
+                      className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-md disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all flex-shrink-0 cursor-pointer"
+                      title="Send Message"
+                    >
+                      <ArrowUp className="w-4 h-4 font-bold stroke-[2.5]" />
+                    </button>
+                  </div>
+                </div>
               </>
             )}
-          </div>
-
-          {/* Footer Subtext */}
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 px-2 sm:px-3 select-none gap-2">
-            <span className="flex items-center gap-1 sm:gap-1.5 font-mono truncate">
-              <Sparkles className="w-3 h-3 text-blue-500 dark:text-blue-400 flex-shrink-0" />
-              <span className="truncate">DocFin AI Multimodal Assistant • Attach with <strong>[+]</strong></span>
-            </span>
-            <button
-              type="button"
-              onClick={() => nativeFileInputRef.current?.click()}
-              className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 font-mono cursor-pointer flex-shrink-0 touch-target font-semibold"
-            >
-              <FolderOpen className="w-3 h-3" />
-              <span>Browse</span>
-            </button>
           </div>
         </form>
       </div>

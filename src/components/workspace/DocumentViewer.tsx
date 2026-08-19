@@ -38,40 +38,44 @@ export default function DocumentViewer({
         </div>
 
         {/* Zoom & Page Controls */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center bg-white/5 rounded-lg p-0.5 border border-white/10">
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center bg-white/5 rounded-lg p-0.5 border border-white/10 flex-shrink-0">
             <button
               onClick={() => setZoom(Math.max(70, zoom - 15))}
-              className="p-1 text-slate-400 hover:text-white rounded"
+              className="p-1 text-slate-400 hover:text-white rounded cursor-pointer transition-colors"
               title="Zoom Out"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
-            <span className="text-[10px] font-mono px-1 text-slate-300">{zoom}%</span>
+            <span className="text-[10px] font-mono px-1.5 text-slate-300 whitespace-nowrap select-none min-w-[36px] text-center">
+              {zoom}%
+            </span>
             <button
               onClick={() => setZoom(Math.min(150, zoom + 15))}
-              className="p-1 text-slate-400 hover:text-white rounded"
+              className="p-1 text-slate-400 hover:text-white rounded cursor-pointer transition-colors"
               title="Zoom In"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <div className="flex items-center gap-1 bg-white/5 rounded-lg p-0.5 border border-white/10">
+          <div className="flex items-center bg-white/5 rounded-lg p-0.5 border border-white/10 flex-shrink-0">
             <button
               disabled={currentPage <= 1}
               onClick={() => setCurrentPage(currentPage - 1)}
-              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded"
+              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded cursor-pointer transition-colors disabled:cursor-not-allowed"
+              title="Previous Page"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
-            <span className="text-[10px] font-mono px-1.5 text-slate-300">
+            <span className="text-[10px] font-mono px-2 text-slate-300 whitespace-nowrap select-none min-w-[48px] text-center inline-block">
               {currentPage} / {totalPages}
             </span>
             <button
               disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage(currentPage + 1)}
-              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded"
+              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded cursor-pointer transition-colors disabled:cursor-not-allowed"
+              title="Next Page"
             >
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
