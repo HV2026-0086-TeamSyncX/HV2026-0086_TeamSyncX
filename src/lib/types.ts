@@ -233,12 +233,18 @@ export interface GovernmentData {
 }
 
 export interface MedicalData {
-  subjectOrPatientContext: string;
-  reportType: string;
-  observationsOrFindings: string[];
-  diagnosticResults: { testName: string; result: string; normalRange?: string; status?: string }[];
-  prescribedTreatmentsOrMedications: { name: string; dosage?: string; instructions?: string }[];
-  precautionsAndRecommendations: string[];
+  subjectOrPatientContext?: string;
+  patientName?: string;
+  labName?: string;
+  testDate?: string;
+  reportType?: string;
+  criticalMarkers?: Array<{ marker: string; value: string; referenceRange: string; status: string; interpretation: string }>;
+  physicianAdviceSummary?: string;
+  medicationSchedule?: Array<{ medicine: string; dosage: string; duration: string; timing: string }>;
+  observationsOrFindings?: string[];
+  diagnosticResults?: { testName: string; result: string; normalRange?: string; status?: string }[];
+  prescribedTreatmentsOrMedications?: { name: string; dosage?: string; instructions?: string }[];
+  precautionsAndRecommendations?: string[];
   followUpDate?: string;
 }
 
@@ -371,6 +377,7 @@ export interface DocumentAnalysis {
   trackedDates?: TrackedDate[];
   trackedRisks?: TrackedRisk[];
   classificationDetails?: DocumentClassification;
+  savingsTips?: SavingsTip[];
   
   // Extensible Domain Specific Payloads
   legalData?: {

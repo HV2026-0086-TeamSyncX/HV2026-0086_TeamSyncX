@@ -15,7 +15,7 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { DocumentAnalysis, ActionChecklistItem } from '@/lib/types';
+import { DocumentAnalysis, ActionChecklistItem, SavingsTip } from '@/lib/types';
 import MetricCard from '@/components/ui/MetricCard';
 
 export default function OverviewTab({
@@ -61,7 +61,7 @@ export default function OverviewTab({
               <Sparkles className="w-4 h-4" />
             </div>
             <h3 className="text-base font-serif font-bold text-[#101828] dark:text-white tracking-tight">
-              Executive Summary & Audit Findings
+              Executive Summary & Plain-English Translation
             </h3>
           </div>
           <button
@@ -98,7 +98,121 @@ export default function OverviewTab({
         </div>
       </div>
 
-      {/* 3. Bottom Grid: Action Checklist & Extracted Key Entities */}
+      {/* 3. Red Flags & Hidden Cons Section */}
+      {(doc.summary.risksAndConcerns && doc.summary.risksAndConcerns.length > 0) && (
+        <div className="bg-white dark:bg-[#121722] rounded-3xl p-6 sm:p-8 border border-rose-200 dark:border-rose-900/40 shadow-xs relative overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                <ShieldAlert className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-base font-serif font-bold text-[#101828] dark:text-white tracking-tight">
+                  🚩 Red Flags & Hidden Cons
+                </h3>
+                <p className="text-xs text-rose-600 dark:text-rose-400">
+                  Critical risks, hidden fees, and legal liabilities discovered in this document.
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
+              {doc.summary.risksAndConcerns.length} Flags Detected
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            {doc.summary.risksAndConcerns.map((risk) => (
+              <div
+                key={risk.id}
+                className="p-4 rounded-2xl bg-rose-50/40 dark:bg-rose-950/20 border border-rose-200/80 dark:border-rose-900/30 flex flex-col justify-between space-y-2.5"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-xs font-bold text-rose-950 dark:text-rose-200">
+                    {risk.title}
+                  </span>
+                  <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full uppercase flex-shrink-0 ${
+                    risk.riskLevel === 'Critical'
+                      ? 'bg-rose-600 text-white'
+                      : risk.riskLevel === 'High'
+                      ? 'bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300'
+                      : 'bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300'
+                  }`}>
+                    {risk.riskLevel}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {risk.plainEnglish}
+                </p>
+                {risk.mitigation && (
+                  <div className="pt-2 border-t border-rose-200/50 dark:border-rose-900/20 flex items-start gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-400">
+                    <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                    <span><strong>Fix:</strong> {risk.mitigation}</span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 4. Personalized AI Tips & Optimization Roadmap */}
+      {(doc.savingsTips && doc.savingsTips.length > 0) && (
+        <div className="bg-white dark:bg-[#121722] rounded-3xl p-6 sm:p-8 border border-emerald-200 dark:border-emerald-900/40 shadow-xs relative overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-base font-serif font-bold text-[#101828] dark:text-white tracking-tight">
+                  💡 Personalized AI Tips & Optimization Roadmap
+                </h3>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400">
+                  Custom actionable recommendations based on your document data.
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+              {doc.savingsTips.length} Smart Tips
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            {doc.savingsTips.map((tip: SavingsTip) => (
+              <div
+                key={tip.id}
+                className="p-4 rounded-2xl bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-900/30 flex flex-col justify-between space-y-2.5"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400 uppercase">
+                      {tip.difficulty || 'Smart AI Tip'}
+                    </span>
+                    {tip.potentialSavings && (
+                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+                        {tip.potentialSavings}
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                    {tip.title}
+                  </h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                    {tip.description}
+                  </p>
+                </div>
+                {tip.action && (
+                  <div className="pt-2 border-t border-emerald-200/50 dark:border-emerald-900/20 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
+                    → {tip.action}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 5. Bottom Grid: Action Checklist & Extracted Key Entities */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Action Item Checklist (7 cols) */}
         <div className="lg:col-span-7 bg-white dark:bg-[#121722] rounded-3xl p-6 sm:p-8 border border-[#DCE5F0] dark:border-white/10 shadow-xs">

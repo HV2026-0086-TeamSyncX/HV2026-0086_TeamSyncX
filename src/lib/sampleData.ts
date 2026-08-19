@@ -1,7 +1,414 @@
 import { DocumentAnalysis } from './types';
 
 export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
-  // 1. ACADEMIC RESEARCH PAPER
+  // 1. BANK STATEMENT & PERSONAL FINANCE (HDFC COMMERCIAL / SALARY ACCOUNT)
+  {
+    id: 'doc-hdfc-bank-01',
+    name: 'HDFC_Salary_Account_Bank_Statement_Jan2026.pdf',
+    fileSize: '1.4 MB',
+    pageCount: 4,
+    uploadedAt: 'Just now',
+    detectedDomain: 'finance',
+    secondaryDomains: ['business', 'billing'],
+    confidenceScore: 99.6,
+    detectionReason: 'Detected monthly commercial and personal transaction ledger, salary credits, recurring debits, and opening/closing balances.',
+    summary: {
+      tldr: 'Monthly bank statement for Jan 2026 showing healthy net savings (+₹30,800), but identifies ₹4,350 in unoptimized recurring subscriptions, high food delivery outflow (34%), and an avoidable ₹650 overdraft fee.',
+      keyTakeaways: [
+        'Total credits of ₹95,000 received with total debit outflows of ₹64,200 (Net Savings Rate: 32.4%).',
+        'Top expenditure category was Food & Dining (₹21,800), followed by Utilities & Rent (₹24,500).',
+        'Identified 4 active recurring entertainment & software subscriptions totaling ₹4,350/month.',
+        'Flagged an avoidable ₹650 overdraft penalty charge billed on Jan 14th.',
+        'Average daily balance maintained was ₹42,500, easily exceeding the ₹10,000 minimum requirement.'
+      ],
+      executiveBrief: 'This personal banking document demonstrates steady cash flow from salaried income. The account holder maintains positive liquidity, but can readily increase their monthly savings by ~₹5,000 to ₹7,500 by trimming unused digital subscriptions and disputing the non-consensual overdraft surcharge.',
+      actionChecklist: [
+        { id: 'act-1', text: 'Cancel unused Gym & OTT streaming auto-debits (Est. monthly savings: ₹2,100)', priority: 'high', completed: false, category: 'Savings', page: 3 },
+        { id: 'act-2', text: 'Submit waiver request for ₹650 Overdraft fee via NetBanking customer desk', priority: 'high', completed: false, category: 'Dispute', page: 2 },
+        { id: 'act-3', text: 'Transfer surplus ₹25,000 from savings account to High-Yield Sweep FD (7.15% p.a.)', priority: 'medium', completed: false, category: 'Investment', page: 1 },
+        { id: 'act-4', text: 'Set food delivery budget cap of ₹12,000/month to prevent 34% discretionary leakage', priority: 'medium', completed: true, category: 'Budgeting', page: 2 }
+      ],
+      importantDates: [
+        { id: 'dt-fin-1', event: 'Monthly Salary Credit Date', date: '01-Jan-2026', type: 'period', status: 'past', page: 1 },
+        { id: 'dt-fin-2', event: 'Rent & Maintenance Auto-Debit', date: '02-Jan-2026', type: 'deadline', status: 'past', page: 1 },
+        { id: 'dt-fin-3', event: 'Credit Card Bill Due Date', date: '18-Feb-2026', type: 'deadline', status: 'upcoming', page: 4 }
+      ],
+      numbersAndMetrics: [
+        { id: 'num-fin-1', label: 'Total Inflow (Credits)', value: '₹95,000', category: 'monetary', context: 'Salary + Dividend credits', page: 1 },
+        { id: 'num-fin-2', label: 'Total Outflow (Debits)', value: '₹64,200', category: 'monetary', context: '52 total debit transactions', page: 1 },
+        { id: 'num-fin-3', label: 'Net Monthly Savings', value: '₹30,800', category: 'monetary', context: '32.4% net savings rate', page: 1 },
+        { id: 'num-fin-4', label: 'Unoptimized Recurring Subs', value: '₹4,350 / mo', category: 'monetary', context: 'Digital subscriptions', page: 3 }
+      ],
+      risksAndConcerns: [
+        { id: 'rsk-fin-1', title: 'Non-Consensual Overdraft Surcharge', riskLevel: 'Critical', plainEnglish: '₹650 penalty billed on Jan 14th despite immediate balance rectification within 6 hours.', mitigation: 'Submit dispute request via NetBanking citing RBI fair-practice circular.', page: 2 },
+        { id: 'rsk-fin-2', title: 'Zombie Recurring Subscriptions Draining Capital', riskLevel: 'Warning', plainEnglish: '₹4,350/mo (₹52,200/yr) auto-debited across 5 digital streaming and gym memberships with zero recorded check-in.', mitigation: 'Cancel Cult.fit and Adobe to instantly save ₹3,200/mo.', page: 3 },
+        { id: 'rsk-fin-3', title: 'Excessive Discretionary Outflow Leakage (34%)', riskLevel: 'Caution', plainEnglish: '₹21,800 spent across 26 food delivery and dining orders with 0% cashback rewards.', mitigation: 'Cap monthly food delivery at ₹12,000 and route via 5% cashback card.', page: 2 }
+      ],
+      questionsToConsider: [
+        'How can I get the ₹650 overdraft fee refunded?',
+        'Which subscriptions am I paying for that I am not using?',
+        'What is my recommended 50/30/20 budget breakdown based on this income?'
+      ]
+    },
+    metrics: [
+      { label: 'Total Inflow (Credits)', value: '₹95,000', change: '+12% vs Dec', status: 'positive', subtext: 'Primary salary + dividend', iconName: 'TrendingUp', page: 1 },
+      { label: 'Total Outflow (Debits)', value: '₹64,200', change: '-4% vs Dec', status: 'neutral', subtext: '52 total transactions', iconName: 'CreditCard', page: 1 },
+      { label: 'Net Monthly Savings', value: '₹30,800', change: '32.4% rate', status: 'positive', subtext: 'Healthy cushion', iconName: 'PiggyBank', page: 1 },
+      { label: 'Identified Savings Potential', value: '₹5,800/mo', change: 'Quick Wins', status: 'warning', subtext: 'From subscriptions & fees', iconName: 'Zap', page: 3 }
+    ],
+    savingsTips: [
+      { id: 'tip-fin-1', title: 'Audit & Cancel 2 Idle Subscriptions', potentialSavings: '₹3,200 / month (₹38,400/yr)', description: 'Cancel Cult.fit (₹1,800) and Adobe (₹1,400) which had 0 recorded activity this billing cycle.', action: 'One-click cancel guide & dispute template', difficulty: 'Quick Win' },
+      { id: 'tip-fin-2', title: 'Dispute ₹650 Intraday Penalty', potentialSavings: '₹650 Instant Refund', description: 'RBI Fair Practice Code entitles you to 100% reversal for transient intraday balance dips.', action: 'Generate 1-click Dispute Email Draft', difficulty: 'Instant' },
+      { id: 'tip-fin-3', title: 'Activate 7.15% Auto-Sweep Fixed Deposit', potentialSavings: '₹2,100 / yr Extra Yield', description: 'Sweep surplus ₹25,000 balance into high-yield sweep FD without losing instant liquidity.', action: 'View Auto-Sweep Bank Setup Guide', difficulty: 'High Impact' },
+      { id: 'tip-fin-4', title: 'Consolidate Food Delivery on 5% Cashback Card', potentialSavings: '₹1,090 / month Cashback', description: 'You spent ₹21,800 on food delivery via UPI with 0% rewards. Switching to a dedicated co-branded card yields ₹1,090/mo.', action: 'View Card Recommendation', difficulty: 'Easy' }
+    ],
+    financeData: {
+      totalIncome: 95000,
+      totalExpense: 64200,
+      netSavings: 30800,
+      savingsRate: '32.4%',
+      burnRate: '₹2,070 / day',
+      categorySpend: [
+        { category: 'Rent & Utilities', amount: 24500, percentage: 38.2, color: '#3B82F6' },
+        { category: 'Food & Dining (Swiggy/Zomato)', amount: 21800, percentage: 34.0, color: '#F97316' },
+        { category: 'Shopping & E-Commerce', amount: 9800, percentage: 15.3, color: '#8B5CF6' },
+        { category: 'Digital Subscriptions', amount: 4350, percentage: 6.8, color: '#EC4899' },
+        { category: 'Bank Fees & Taxes', amount: 3750, percentage: 5.7, color: '#EF4444' }
+      ],
+      recurringSubs: [
+        { id: 'sub-1', name: 'Netflix Premium 4K', amount: 649, frequency: 'Monthly', status: 'active', lastBilled: '12 Jan 2026', canCancel: true },
+        { id: 'sub-2', name: 'Cult.fit Fitness Pass', amount: 1800, frequency: 'Monthly', status: 'infrequent', lastBilled: '05 Jan 2026', canCancel: true },
+        { id: 'sub-3', name: 'Adobe Creative Cloud', amount: 1400, frequency: 'Monthly', status: 'flagged', lastBilled: '18 Jan 2026', canCancel: true },
+        { id: 'sub-4', name: 'Spotify Individual', amount: 119, frequency: 'Monthly', status: 'active', lastBilled: '21 Jan 2026', canCancel: true },
+        { id: 'sub-5', name: 'Amazon Prime Yearly', amount: 382, frequency: 'Monthly eqv', status: 'active', lastBilled: '01 Jan 2026', canCancel: false }
+      ],
+      savingsTips: [
+        { id: 'tip-1', title: 'Audit & Trim 2 Idle Subscriptions', potentialSavings: '₹3,200 / month', description: 'Cancel Cult.fit (₹1,800) and Adobe (₹1,400) which had 0 recorded activity.', action: 'One-click cancel guide & letter template', difficulty: 'easy', impact: 'High' },
+        { id: 'tip-2', title: 'Dispute Non-Consensual Overdraft Charge', potentialSavings: '₹650 instant refund', description: 'HDFC debited ₹650 for an intraday balance dip on Jan 14th that was self-corrected within 6 hours. RBI guidelines allow fee reversal.', action: 'Generate Dispute Email Draft', difficulty: 'easy', impact: 'Quick Win' }
+      ],
+      feesAndPenalties: [
+        { id: 'fee-1', feeType: 'Intraday Overdraft Penalty', amount: 650, date: '14 Jan 2026', flaggedReason: 'Intraday dip rectified within 6 hours', disputeEligible: true },
+        { id: 'fee-2', feeType: 'SMS Alert Charges (Quarterly)', amount: 59, date: '01 Jan 2026', flaggedReason: 'Mandatory standard charge', disputeEligible: false },
+        { id: 'fee-3', feeType: 'ATM Non-Home Branch Surcharge', amount: 47.2, date: '19 Jan 2026', flaggedReason: 'Exceeded 5 free monthly withdrawals', disputeEligible: false }
+      ]
+    },
+    extractedEntities: [
+      { category: 'Person', key: 'Account Holder', value: 'Roshan Kumar Verma', page: 1 },
+      { category: 'ID/Reference', key: 'Account Number', value: '50100492819281 (HDFC Bank)', page: 1 },
+      { category: 'Date', key: 'Statement Period', value: '01-Jan-2026 to 31-Jan-2026', page: 1 },
+      { category: 'Amount', key: 'Opening Balance', value: '₹34,500.00', page: 1 },
+      { category: 'Amount', key: 'Closing Balance', value: '₹65,300.00', page: 4 },
+      { category: 'Organization', key: 'Branch & IFSC', value: 'Koramangala, Bengaluru - HDFC0001024', page: 1 }
+    ],
+    extractedTables: [
+      {
+        id: 'tbl-txns',
+        tableName: 'Major Transaction Ledger (Top 6 Entries)',
+        columns: ['Date', 'Description', 'Type', 'Amount (₹)', 'Balance (₹)'],
+        rows: [
+          { 'Date': '01-Jan-2026', 'Description': 'SALARY CREDIT - TECHCORP PVT LTD', 'Type': 'Credit', 'Amount (₹)': '90,000', 'Balance (₹)': '124,500' },
+          { 'Date': '02-Jan-2026', 'Description': 'RENT TRANSFER - UPI/VINAYAK_OWNER', 'Type': 'Debit', 'Amount (₹)': '22,000', 'Balance (₹)': '102,500' },
+          { 'Date': '05-Jan-2026', 'Description': 'CULTFIT AUTOPAY ACH DEBIT', 'Type': 'Debit', 'Amount (₹)': '1,800', 'Balance (₹)': '100,700' },
+          { 'Date': '14-Jan-2026', 'Description': 'OVERDRAFT SURCHARGE PENALTY', 'Type': 'Debit', 'Amount (₹)': '650', 'Balance (₹)': '88,400' },
+          { 'Date': '18-Jan-2026', 'Description': 'ADOBE SYSTEMS CREATIVE SUB', 'Type': 'Debit', 'Amount (₹)': '1,400', 'Balance (₹)': '82,300' },
+          { 'Date': '31-Jan-2026', 'Description': 'MUTUAL FUND SIP - AXIS BLUECHIP', 'Type': 'Debit', 'Amount (₹)': '10,000', 'Balance (₹)': '65,300' }
+        ],
+        page: 1
+      },
+      {
+        id: 'tbl-budget-503020',
+        tableName: '50/30/20 Budget Optimization vs Current Spending',
+        columns: ['Budget Category', 'Actual Jan Spend (₹)', 'Target 50/30/20 (₹)', 'Variance / Status'],
+        rows: [
+          { 'Budget Category': 'Needs (50% - Rent & Bills)', 'Actual Jan Spend (₹)': '₹24,500 (25.8%)', 'Target 50/30/20 (₹)': '₹47,500 (50.0%)', 'Variance / Status': 'Well Managed (-₹23,000)' },
+          { 'Budget Category': 'Wants (30% - Dining & Shopping)', 'Actual Jan Spend (₹)': '₹31,600 (33.2%)', 'Target 50/30/20 (₹)': '₹28,500 (30.0%)', 'Variance / Status': 'Over Budget (+₹3,100)' },
+          { 'Budget Category': 'Savings & Investments (20%)', 'Actual Jan Spend (₹)': '₹38,900 (41.0%)', 'Target 50/30/20 (₹)': '₹19,000 (20.0%)', 'Variance / Status': 'Excellent (+₹19,900)' }
+        ],
+        page: 2
+      }
+    ],
+    sampleQuestions: [
+      'What are all the avoidable fees and penalties in this statement?',
+      'How much did I spend on food delivery and dining out?',
+      'List all recurring subscriptions and how much I can save by cancelling idle ones.',
+      'What was my total savings rate this month?'
+    ],
+    chatHistory: [
+      {
+        id: 'msg-1',
+        sender: 'assistant',
+        text: '⚡ DocFin Forensic Analysis Complete. I audited your **HDFC Commercial Bank Statement (Jan 2026)**. You maintained healthy net savings of ₹30,800, but I identified **₹5,800/mo in potential savings** across unused subscriptions and an avoidable ₹650 overdraft fee. How can I assist you?',
+        timestamp: '12:30 PM',
+        citations: [
+          { page: 1, snippet: 'Opening Bal: ₹34,500 | Total Debits: ₹64,200 | Credits: ₹95,000' }
+        ]
+      }
+    ]
+  },
+
+  // 2. INSURANCE POLICY (STAR HEALTH PREMIER COMPREHENSIVE)
+  {
+    id: 'doc-star-health-02',
+    name: 'Star_Health_Comprehensive_Insurance_Policy.pdf',
+    fileSize: '2.8 MB',
+    pageCount: 18,
+    uploadedAt: '10 mins ago',
+    detectedDomain: 'insurance',
+    confidenceScore: 98.8,
+    detectionReason: 'Detected insurance policy schedules, sum insured tables, exclusions list, waiting period clauses, and cashless hospital claim protocols.',
+    summary: {
+      tldr: 'Individual Health Insurance Policy offering ₹15,00,000 Sum Insured with cashless hospitalization, but contains critical 20% Co-Pay for non-network hospitals and a 36-month waiting period on pre-existing conditions.',
+      keyTakeaways: [
+        'Sum Insured: ₹15,00,000 with 150% Cumulative Bonus restoration benefit.',
+        'Room Rent Capped at 1% of Sum Insured (₹15,000/day for Single Standard AC Room).',
+        '20% Mandatory Co-Payment if treated at non-network hospitals outside Tier-1 city network.',
+        'Pre-Existing Diseases (PED) carry a strict 36-month continuous coverage waiting period.',
+        'Includes ₹50,000 AYUSH alternative medicine coverage and ₹10,000 annual health checkup coupon.'
+      ],
+      executiveBrief: 'This comprehensive policy offers robust major medical coverage. However, policyholders must strictly use in-network hospitals to avoid the 20% co-payment penalty and verify that any room upgrades do not breach the 1% cap.',
+      actionChecklist: [
+        { id: 'act-ins-1', text: 'Download list of 1,400+ cashless network hospitals in your city to avoid 20% co-pay', priority: 'high', completed: false, category: 'Claim Readiness', page: 3 },
+        { id: 'act-ins-2', text: 'Redeem the ₹10,000 free Annual Health Checkup voucher before policy renewal', priority: 'medium', completed: false, category: 'Benefits', page: 12 },
+        { id: 'act-ins-3', text: 'Keep hospital admission intimation hotline (1800-425-2255) saved on emergency contacts', priority: 'high', completed: true, category: 'Emergency', page: 1 }
+      ],
+      importantDates: [
+        { id: 'dt-ins-1', event: 'Policy Commencement Date', date: '15-Mar-2025', type: 'effective', status: 'past', page: 1 },
+        { id: 'dt-ins-2', event: 'Renewal Due Date (Grace: 30 Days)', date: '14-Mar-2026', type: 'expiration', status: 'upcoming', page: 1 },
+        { id: 'dt-ins-3', event: 'PED 36-Month Waiting Period Maturity', date: '15-Mar-2028', type: 'milestone', status: 'upcoming', page: 4 }
+      ],
+      numbersAndMetrics: [
+        { id: 'num-ins-1', label: 'Total Sum Insured', value: '₹15,00,000', category: 'monetary', context: 'Base hospitalization coverage', page: 1 },
+        { id: 'num-ins-2', label: 'Room Rent Cap', value: '1% of SI (₹15,000/day)', category: 'monetary', context: 'Single Standard AC Room', page: 3 },
+        { id: 'num-ins-3', label: 'Non-Network Co-Payment', value: '20%', category: 'percentage', context: 'Penalty on non-network hospitals', page: 3 },
+        { id: 'num-ins-4', label: 'Pre & Post Hospitalization Days', value: '60 Pre / 90 Post', category: 'count', context: 'Medical bills coverage window', page: 5 }
+      ],
+      risksAndConcerns: [
+        { id: 'rsk-ins-1', title: '20% Co-Payment Penalty on Non-Network Hospitals', riskLevel: 'Critical', plainEnglish: 'If admitted to an unapproved hospital, you must pay 20% of the entire final bill out-of-pocket (e.g. ₹1,00,000 on a ₹5,00,000 bill).', mitigation: 'Always verify cashless network status via Star Health portal before planned admission.', page: 3 },
+        { id: 'rsk-ins-2', title: '1% Room Rent Proportional Deduction Clause', riskLevel: 'High', plainEnglish: 'Opting for a Suite or Deluxe room exceeding ₹15,000/day triggers proportionate cuts across doctor fees and surgery charges.', mitigation: 'Strictly choose Single Standard AC room within the ₹15,000/day limit.', page: 3 },
+        { id: 'rsk-ins-3', title: 'Exclusion of Non-Medical Hospital Consumables', riskLevel: 'Warning', plainEnglish: 'PPE kits, gloves, syringes, and admin charges (typically 8-12% of hospital bills) are not reimbursed.', mitigation: 'Add an inexpensive Consumables Protection Rider at next renewal.', page: 7 }
+      ],
+      questionsToConsider: [
+        'How does the 20% co-payment rule affect out-of-pocket expenses?',
+        'Which specific medical treatments have special waiting sub-limits?',
+        'What documents are needed for immediate cashless approval at TPA desk?'
+      ]
+    },
+    metrics: [
+      { label: 'Total Sum Insured', value: '₹15,00,000', change: '+100% Reload', status: 'positive', subtext: 'Comprehensive Individual', iconName: 'ShieldCheck', page: 1 },
+      { label: 'Room Rent Daily Limit', value: '₹15,00,000 / day', change: '1% Cap', status: 'neutral', subtext: 'Single Private AC Room', iconName: 'Home', page: 3 },
+      { label: 'Co-Payment Clause', value: '20% Non-Network', change: 'High Alert', status: 'warning', subtext: '0% in Network Hospitals', iconName: 'AlertTriangle', page: 3 },
+      { label: 'PED Waiting Period', value: '36 Months', change: '14 mo left', status: 'negative', subtext: 'Pre-existing conditions', iconName: 'Clock', page: 4 }
+    ],
+    savingsTips: [
+      { id: 'tip-ins-1', title: 'Pre-Authorize at Cashless Network Hospitals', potentialSavings: 'Save 20% Co-Pay Penalty (Up to ₹3,00,000)', description: 'Admitting to one of the 1,400+ cashless partner hospitals eliminates the 20% co-payment penalty completely.', action: 'View Nearest Cashless Hospitals', difficulty: 'Critical' },
+      { id: 'tip-ins-2', title: 'Claim Pre/Post Hospitalization Bills within 30 Days', potentialSavings: 'Average ₹25,000 Recovery', description: 'Ensure all diagnostic scans and pharmacy bills from 60 days before and 90 days after discharge are submitted.', action: 'Download Claim Submission Kit', difficulty: 'High Impact' },
+      { id: 'tip-ins-3', title: 'Redeem Free ₹10,000 Preventive Health Checkup', potentialSavings: '₹10,000 Free Health Benefit', description: 'Star Health includes a complimentary annual comprehensive metabolic and cardiac test.', action: 'Book Free Health Checkup Voucher', difficulty: 'Quick Win' }
+    ],
+    insuranceData: {
+      policyType: 'Comprehensive Health Shield Plus',
+      sumInsured: '₹15,00,000',
+      deductible: '₹0 (Zero Deductible)',
+      copay: '0% in Network / 20% in Non-Network',
+      waitingPeriod: '36 Months for Pre-Existing Diseases (PED)',
+      coveredItems: [
+        { id: 'cov-1', title: 'In-Patient Hospitalization', details: 'Full coverage for room, nursing, ICU, doctor fees up to ₹15 Lakhs', limit: '100% Sum Insured' },
+        { id: 'cov-2', title: 'Pre & Post Hospitalization', details: '60 days pre-hospitalization & 90 days post-discharge medical expenses', limit: 'Actuals' },
+        { id: 'cov-3', title: 'Day Care Treatments', details: 'All 405 advanced day-care procedures requiring < 24hr hospitalization', limit: 'Up to Sum Insured' },
+        { id: 'cov-4', title: 'Emergency Road Ambulance', details: 'Ambulance service per hospitalization event', limit: '₹3,000 / event' },
+        { id: 'cov-5', title: 'AYUSH Treatment', details: 'Ayurveda, Yoga, Unani, Siddha, and Homeopathy in Govt accredited centres', limit: 'Up to ₹50,000' }
+      ],
+      excludedItems: [
+        { id: 'ex-1', title: 'Cosmetic & Plastic Surgery', details: 'Surgeries for aesthetic appearance unless necessitated by accidental trauma', reason: 'Standard General Exclusion', severity: 'high' },
+        { id: 'ex-2', title: 'Dental Treatment (OPD)', details: 'Routine dental cleanings, root canals, and braces unless due to severe accident', reason: 'OPD Exclusion Clause 4.8', severity: 'medium' },
+        { id: 'ex-3', title: 'Non-Medical Hospital Consumables', details: 'Gloves, PPE kits, admission kits, sanitizers, and diagnostic file charges', reason: 'IRDAI List II Non-payable', severity: 'high' },
+        { id: 'ex-4', title: 'Self-Inflicted Injuries & Adventure Sports', details: 'Injury from hazardous sports (skydiving, racing) or intentional self-harm', reason: 'High Risk Activity Clause', severity: 'high' }
+      ],
+      claimChecklist: [
+        { step: 1, title: 'Emergency Hospital Intimation', description: 'Notify insurer within 24 hours of emergency admission via TPA portal or toll-free number.', docsNeeded: ['Policy Number', 'Hospital Name', 'Attending Doctor Note'] },
+        { step: 2, title: 'Cashless Desk Submission', description: 'Submit e-Health Card and Govt Photo ID at the hospital TPA desk for Pre-Authorization.', docsNeeded: ['Health Card', 'Aadhaar/PAN', 'Pre-Auth Form'] },
+        { step: 3, title: 'Discharge Summary & Itemized Invoices', description: 'Obtain final signed discharge summary, indoor case papers, and original pharmacy receipts.', docsNeeded: ['Original Bills', 'Discharge Summary', 'Payment Receipts'] },
+        { step: 4, title: 'Post-Hospitalization Claim Submission', description: 'Submit post-discharge medicine bills within 30 days of the post-hospitalization period.', docsNeeded: ['Doctor Prescriptions', 'Diagnostic Reports', 'Cancelled Cheque'] }
+      ]
+    },
+    extractedEntities: [
+      { category: 'Person', key: 'Primary Insured', value: 'Ananya Sharma (Age: 28)', page: 1 },
+      { category: 'ID/Reference', key: 'Policy Number', value: 'SH-COMP-2026-948102', page: 1 },
+      { category: 'Date', key: 'Policy Period', value: '15-Mar-2025 to 14-Mar-2026', page: 1 },
+      { category: 'Amount', key: 'Annual Premium Paid', value: '₹18,450 (incl. 18% GST)', page: 2 },
+      { category: 'Status', key: 'Claim Status', value: 'Active & Continuous (Year 2)', page: 1 }
+    ],
+    extractedTables: [
+      {
+        id: 'tbl-sublimits',
+        tableName: 'Specific Illness Sub-Limits & Waiting Schedule',
+        columns: ['Condition / Procedure', 'Waiting Period', 'Max Payout Sub-Limit', 'Co-Pay %'],
+        rows: [
+          { 'Condition / Procedure': 'Cataract Surgery', 'Waiting Period': '24 Months', 'Max Payout Sub-Limit': '₹40,000 per eye', 'Co-Pay %': '0%' },
+          { 'Condition / Procedure': 'Joint Replacement (Knee/Hip)', 'Waiting Period': '24 Months', 'Max Payout Sub-Limit': '₹3,50,000 per joint', 'Co-Pay %': '0%' },
+          { 'Condition / Procedure': 'Hernia & Kidney Stone Removal', 'Waiting Period': '24 Months', 'Max Payout Sub-Limit': '₹65,000 per surgery', 'Co-Pay %': '0%' },
+          { 'Condition / Procedure': 'Pre-Existing Diabetes / Hypertension', 'Waiting Period': '36 Months', 'Max Payout Sub-Limit': 'Full Sum Insured', 'Co-Pay %': '0% (Network)' }
+        ],
+        page: 4
+      }
+    ],
+    sampleQuestions: [
+      'What are the exclusions under this health policy?',
+      'How much co-payment will I have to pay if I go to a non-network hospital?',
+      'What is the step-by-step procedure to file a cashless claim?',
+      'Are dental procedures and OPD expenses covered?'
+    ],
+    chatHistory: [
+      {
+        id: 'msg-ins-1',
+        sender: 'assistant',
+        text: '🛡️ DocFin Policy Engine active. Your **Star Health Comprehensive Policy** provides ₹15 Lakhs sum insured. Note: there is a **20% co-payment clause if treated at non-network hospitals**, and a 36-month waiting period on pre-existing conditions.',
+        timestamp: '11:45 AM',
+        citations: [
+          { page: 3, section: 'Clause 3.2 - Co-Payment Matrix', snippet: 'Co-payment of 20% applicable on admissible claim amount in non-network hospitals.' }
+        ]
+      }
+    ]
+  },
+
+  // 3. LEGAL CONTRACT / COMMERCIAL LEASE AGREEMENT
+  {
+    id: 'doc-rental-agreement-03',
+    name: 'Commercial_Lease_Agreement_Indiranagar_2026.pdf',
+    fileSize: '890 KB',
+    pageCount: 6,
+    uploadedAt: '25 mins ago',
+    detectedDomain: 'legal',
+    confidenceScore: 97.9,
+    detectionReason: 'Detected tenancy clauses, security deposit forfeiture conditions, lock-in period penalty, and rent escalation schedules.',
+    summary: {
+      tldr: 'Commercial Tenancy Agreement for an office space in Indiranagar, Bengaluru (Rent: ₹38,000/mo, Deposit: ₹2,00,000). Flags 3 high-risk landlord-favored clauses including unilateral deposit forfeiture and automatic 10% rent escalation.',
+      keyTakeaways: [
+        'Monthly Rent: ₹38,000 due on or before 5th of each calendar month.',
+        'Security Deposit: ₹2,00,000 refundable within 30 days of vacating after painting deductions.',
+        '🔴 Red Flag 1: 6-Month strict lock-in period with full rent forfeiture upon early exit.',
+        '🟡 Red Flag 2: Landlord reserves the right to increase rent by 10% on 11-month renewal without negotiation.',
+        '🟢 Notice Period: 2 months written notice required by either party after lock-in expiration.'
+      ],
+      executiveBrief: 'This agreement favors the Landlord significantly in the deposit return and early-exit clauses. Before signing, the tenant should negotiate a mutual 1-month lock-in instead of 6 months and cap painting deductions at ₹15,000 max.',
+      actionChecklist: [
+        { id: 'act-leg-1', text: 'Request amendment to Clause 7: Cap painting & cleaning deduction to ₹15,000 max with bill proof', priority: 'high', completed: false, category: 'Negotiation', page: 4 },
+        { id: 'act-leg-2', text: 'Reduce lock-in period from 6 months to 1 month for unforeseen business relocation', priority: 'high', completed: false, category: 'Risk Mitigation', page: 2 },
+        { id: 'act-leg-3', text: 'Ensure pre-move inspection checklist with photos is attached as Annexure A', priority: 'medium', completed: true, category: 'Documentation', page: 6 }
+      ],
+      importantDates: [
+        { id: 'dt-leg-1', event: 'Agreement Effective Commencement', date: '01-Feb-2026', type: 'effective', status: 'past', page: 1 },
+        { id: 'dt-leg-2', event: '6-Month Lock-in Expiration Date', date: '31-Jul-2026', type: 'milestone', status: 'upcoming', page: 2 },
+        { id: 'dt-leg-3', event: '11-Month Tenancy Term Expiration', date: '31-Dec-2026', type: 'expiration', status: 'upcoming', page: 1 }
+      ],
+      numbersAndMetrics: [
+        { id: 'num-leg-1', label: 'Monthly Base Rent', value: '₹38,000 / mo', category: 'monetary', context: 'Excluding electricity & maintenance', page: 2 },
+        { id: 'num-leg-2', label: 'Refundable Security Deposit', value: '₹2,00,000', category: 'monetary', context: '5.26x monthly rent ratio', page: 2 },
+        { id: 'num-leg-3', label: 'Lock-in Period Duration', value: '6 Months', category: 'count', context: 'Strict forfeiture window', page: 2 },
+        { id: 'num-leg-4', label: 'Renewal Escalation Rate', value: '10%', category: 'percentage', context: 'Automatic rent increase', page: 3 }
+      ],
+      risksAndConcerns: [
+        { id: 'rsk-leg-1', title: 'Total Deposit Forfeiture on Early Exit (Lock-in)', riskLevel: 'Critical', plainEnglish: 'Clause 5.2 allows the landlord to seize your entire ₹2,00,000 security deposit if you vacate within the first 6 months, regardless of notice given.', mitigation: 'Counter-propose 1-month rent deduction instead of complete deposit forfeiture.', page: 2 },
+        { id: 'rsk-leg-2', title: 'Uncapped Painting & Wear-and-Tear Deductions', riskLevel: 'High', plainEnglish: 'Clause 8.1 allows the landlord to deduct arbitrary painting charges from your deposit without furnishing contractor receipts.', mitigation: 'Add clause capping painting deductions to ₹15,000 with mandatory GST invoices.', page: 4 },
+        { id: 'rsk-leg-3', title: 'Unilateral 10% Rent Escalation on Renewal', riskLevel: 'Warning', plainEnglish: 'Rent increases automatically by 10% after 11 months without consideration for prevailing market inflation.', mitigation: 'Negotiate standard 5% escalation or mutual market benchmarking.', page: 3 }
+      ],
+      questionsToConsider: [
+        'How can I protect my ₹2,00,000 security deposit from unfair painting deductions?',
+        'What redline clauses should I send to the landlord before signing?',
+        'What is my legal right regarding unannounced landlord inspections?'
+      ]
+    },
+    metrics: [
+      { label: 'Contract Risk Level', value: 'High Risk', change: '3 Flags Found', status: 'negative', subtext: 'Landlord-biased clauses', iconName: 'AlertOctagon', page: 2 },
+      { label: 'Security Deposit', value: '₹2,00,000', change: '5.2x Rent', status: 'warning', subtext: 'Bengaluru standard (avg 4-6x)', iconName: 'Lock', page: 2 },
+      { label: 'Lock-in Period', value: '6 Months', change: 'Full Penalty', status: 'negative', subtext: 'Rent forfeited on early exit', iconName: 'FileWarning', page: 2 },
+      { label: 'Notice Period', value: '2 Months', change: 'Mutual', status: 'neutral', subtext: 'Written notice required', iconName: 'Calendar', page: 3 }
+    ],
+    savingsTips: [
+      { id: 'tip-leg-1', title: 'Insert Painting Deduction Cap Clause', potentialSavings: 'Protect up to ₹35,000 Deposit', description: 'Cap painting and deep-cleaning deductions to 1 month rent or ₹15,000 max with mandatory contractor GST receipts.', action: 'Copy Redline Clause Draft', difficulty: 'High Impact' },
+      { id: 'tip-leg-2', title: 'Negotiate Lock-in Down to 1 Month', potentialSavings: 'Risk Shield: ₹2,00,000', description: 'Propose replacing the 6-month lock-in forfeiture with 1-month penalty notice to enable risk-free early business relocation.', action: 'Download Landlord Amendment Letter', difficulty: 'Critical' },
+      { id: 'tip-leg-3', title: 'Pre-Occupancy Photographic Inventory', potentialSavings: 'Prevents False Damage Claims', description: 'Attach a signed timestamped photo inventory (Annexure A) documenting all pre-existing wall marks and fixture states.', action: 'Generate Inspection Checklist', difficulty: 'Quick Win' }
+    ],
+    legalData: {
+      contractType: 'Commercial Tenancy Agreement (11 Months)',
+      parties: ['Landlord: Suresh V. Hegde', 'Tenant: Roshan Kumar Verma'],
+      effectiveDate: '01-Feb-2026',
+      duration: '11 Months (Expiring 31-Dec-2026)',
+      riskScore: 'High',
+      riskyClauses: [
+        {
+          id: 'cl-1',
+          clause: 'Clause 5.2: Early Termination & Lock-in Penalty',
+          page: 2,
+          riskLevel: 'Critical',
+          plainEnglish: 'If you vacate the premises before completing 6 months, the landlord will forfeit your entire ₹2,00,000 security deposit even if you give 2 months advance notice.',
+          mitigation: 'Counter-propose: Mutual 1-month lock-in or 1-month rent deduction instead of full deposit forfeiture.'
+        },
+        {
+          id: 'cl-2',
+          clause: 'Clause 8.1: Uncapped Painting & Maintenance Deductions',
+          page: 4,
+          riskLevel: 'Warning',
+          plainEnglish: 'The landlord can deduct any amount they deem necessary for repainting and deep cleaning without providing contractor invoices or receipts.',
+          mitigation: 'Add clause: "Deductions for painting capped at 1 month basic rent or ₹15,000, supported by actual GST invoices."'
+        },
+        {
+          id: 'cl-3',
+          clause: 'Clause 11.4: Right of Unannounced Entry',
+          page: 5,
+          riskLevel: 'Caution',
+          plainEnglish: 'Landlord may inspect the premises at any time without prior 24-hour written notice.',
+          mitigation: 'Modify to require minimum 24-hour advance intimation via WhatsApp or email.'
+        }
+      ],
+      obligations: [
+        { id: 'ob-1', party: 'Tenant', obligation: 'Pay monthly rent of ₹38,000 on or before 5th of every English calendar month', deadline: 'Monthly by 5th', page: 2 },
+        { id: 'ob-2', party: 'Tenant', obligation: 'Pay actual BESCOM electricity and commercial maintenance (₹3,500/mo) directly', deadline: 'Monthly as billed', page: 2 },
+        { id: 'ob-3', party: 'Landlord', obligation: 'Refund full security deposit within 30 days after deducting agreed utility dues', deadline: 'Within 30 days of handover', page: 4 }
+      ],
+      terminationTerms: '2 months advance written notice required after completion of the 6-month lock-in period.'
+    },
+    extractedEntities: [
+      { category: 'Person', key: 'Lessor / Landlord', value: 'Suresh V. Hegde', page: 1 },
+      { category: 'Person', key: 'Lessee / Tenant', value: 'Roshan Kumar Verma', page: 1 },
+      { category: 'Amount', key: 'Monthly Rent', value: '₹38,000 / month', page: 2 },
+      { category: 'Amount', key: 'Security Deposit', value: '₹2,00,000 (Refundable)', page: 2 },
+      { category: 'Date', key: 'Commencement Date', value: '01 February 2026', page: 1 },
+      { category: 'Clause', key: 'Escalation Rate', value: '10% on 11-Month Renewal', page: 3 }
+    ],
+    extractedTables: [
+      {
+        id: 'tbl-schedule',
+        tableName: 'Commercial Office Fixture & Asset Schedule',
+        columns: ['Item / Fixture', 'Quantity', 'Condition at Handover', 'Estimated Replacement Cost'],
+        rows: [
+          { 'Item / Fixture': 'Daikin 1.5 Ton Split AC', 'Quantity': '2 Units', 'Condition at Handover': 'Brand New (Operational)', 'Estimated Replacement Cost': '₹42,00,00 each' },
+          { 'Item / Fixture': 'Geyser (Havells 25L)', 'Quantity': '2 Units', 'Condition at Handover': 'Good Working Condition', 'Estimated Replacement Cost': '₹9,500 each' },
+          { 'Item / Fixture': 'Conference Room Table & Chairs', 'Quantity': '1 Set (8 Chairs)', 'Condition at Handover': 'Clean & Functional', 'Estimated Replacement Cost': '₹24,000' },
+          { 'Item / Fixture': 'Main Door Smart Digital Lock', 'Quantity': '1 Unit', 'Condition at Handover': 'Operational (2 RFID Keys)', 'Estimated Replacement Cost': '₹12,000' }
+        ],
+        page: 6
+      }
+    ],
+    sampleQuestions: [
+      'What are the high-risk clauses in this commercial lease?',
+      'What happens if I need to vacate the premises within the first 4 months?',
+      'How much can the landlord deduct from my deposit for painting?',
+      'What is the notice period required to vacate?'
+    ],
+    chatHistory: [
+      {
+        id: 'msg-leg-1',
+        sender: 'assistant',
+        text: '⚖️ DocFin Legal Engine active. I reviewed this **Commercial Lease Agreement** and flagged **3 critical risks**, including a strict 6-month lock-in penalty where your ₹2,00,000 deposit can be seized on early exit.',
+        timestamp: '10:15 AM',
+        citations: [
+          { page: 2, section: 'Clause 5.2', snippet: 'In the event of Lessee vacating before 6 months, entire security deposit stands forfeited to Lessor.' }
+        ]
+      }
+    ]
+  },
+
+  // 4. ACADEMIC RESEARCH PAPER (TRANSFORMER ATTENTION MECHANISMS)
   {
     id: 'doc-academic-01',
     name: 'Multi-Head_Attention_Mechanisms_Research_Paper.pdf',
@@ -37,7 +444,8 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
         { id: 'num-acad-4', label: 'Model Dimension (d_model)', value: 512, category: 'measurement', context: 'Dense vector embedding dimension', page: 3 }
       ],
       risksAndConcerns: [
-        { id: 'rsk-acad-1', title: 'Quadratic Sequence Complexity', riskLevel: 'Warning', plainEnglish: 'Self-attention memory complexity scales quadratically O(n^2) with sequence length n.', mitigation: 'Use sparse attention or chunked sliding windows for ultra-long context sequences.', page: 9 }
+        { id: 'rsk-acad-1', title: 'Quadratic Sequence Complexity O(n^2)', riskLevel: 'High', plainEnglish: 'Self-attention memory complexity scales quadratically with sequence length n, causing high VRAM consumption on long contexts (> 4k tokens).', mitigation: 'Use FlashAttention-2, rotary embeddings, or sliding-window attention for extended context windows.', page: 9 },
+        { id: 'rsk-acad-2', title: 'Heavy Training Compute Footprint', riskLevel: 'Warning', plainEnglish: 'Full pre-training requires substantial distributed GPU clusters (8x P100 for 3.5 days on base model).', mitigation: 'Apply LoRA parameter-efficient fine-tuning (PEFT) on frozen foundation weights.', page: 7 }
       ],
       questionsToConsider: [
         'How does Multi-Head Attention prevent attention collapse in deep layers?',
@@ -50,6 +458,10 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
       { label: 'Attention Heads', value: '8 Heads', status: 'neutral', subtext: 'd_k = 64 per subspace', page: 4 },
       { label: 'Training Hardware', value: '8x P100 GPUs', status: 'neutral', subtext: '3.5 Days Training', page: 7 },
       { label: 'Complexity Bound', value: 'O(1) Path Length', status: 'positive', subtext: 'Maximum parallelization', page: 5 }
+    ],
+    savingsTips: [
+      { id: 'tip-acad-1', title: 'Implement FlashAttention-2 Kernel', potentialSavings: '4.5x Faster Inference & -60% VRAM', description: 'Tiling self-attention matrix operations avoids full materialization in high-bandwidth memory (HBM).', action: 'View GPU Implementation Guide', difficulty: 'High Impact' },
+      { id: 'tip-acad-2', title: 'Apply LoRA Fine-Tuning (Rank r=8)', potentialSavings: '98% Training VRAM Reduction', description: 'Train low-rank adapter matrices on query/key projections instead of updating all 65M foundation parameters.', action: 'Copy LoRA Configuration Template', difficulty: 'Quick Win' }
     ],
     academicData: {
       researchQuestion: 'Can sequence transduction models achieve state-of-the-art accuracy relying entirely on self-attention without recurrent or convolutional neural networks?',
@@ -103,491 +515,16 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
     chatHistory: []
   },
 
-  // 2. TECHNICAL ARCHITECTURE SPECIFICATION
-  {
-    id: 'doc-technical-02',
-    name: 'Distributed_Microservices_API_Architecture_Spec.pdf',
-    fileSize: '3.4 MB',
-    pageCount: 16,
-    uploadedAt: '15 mins ago',
-    detectedDomain: 'technical',
-    secondaryDomains: ['business'],
-    confidenceScore: 98.9,
-    detectionReason: 'Identified enterprise engineering specification: microservice topology diagrams, gRPC/REST API endpoints, JWT authentication flows, PostgreSQL schema DDL, and Kubernetes manifests.',
-    summary: {
-      tldr: 'Technical Architecture Specification for high-throughput Distributed Document Processing Pipeline. Specifies event-driven microservices running on Kubernetes with Kafka message bus, sub-25ms vector retrieval, and zero-trust mTLS security.',
-      keyTakeaways: [
-        'Decomposes system into 4 core microservices: Ingestion Gateway, OCR Tensor Engine, Intelligence Pipeline, and Vector Indexer.',
-        'Target SLA: p99 latency < 250ms for document summarization and < 25ms for semantic Q&A vector search.',
-        'Event bus: Apache Kafka with 3-node replication factor and idempotent partition consumers.',
-        'Authentication: OAuth2.0 / OIDC with asymmetric RS256 JWT tokens and Envoy sidecar mTLS.'
-      ],
-      executiveBrief: 'This specification outlines the production cloud-native deployment for enterprise document ingestion. All microservices communicate via gRPC internally and expose REST/OpenAPI 3.1 endpoints externally. Fault tolerance is guaranteed through circuit breakers, rate limiting, and exponential backoff retry queues in Redis.',
-      actionChecklist: [
-        { id: 'act-tech-1', text: 'Configure Envoy proxy sidecars for zero-trust mTLS service mesh', priority: 'high', completed: false, page: 6 },
-        { id: 'act-tech-2', text: 'Set up Kafka dead-letter queue (DLQ) for corrupted PDF payload recovery', priority: 'high', completed: true, page: 9 },
-        { id: 'act-tech-3', text: 'Deploy Qdrant vector cluster with HNSW index parameters (m=16, ef_construct=100)', priority: 'medium', completed: false, page: 12 }
-      ],
-      importantDates: [
-        { id: 'dt-tech-1', event: 'Architecture Review Board Approval', date: '15-Feb-2026', type: 'milestone', status: 'past', page: 2 },
-        { id: 'dt-tech-2', event: 'Staging Environment Dry Run', date: '01-Mar-2026', type: 'deadline', status: 'upcoming', page: 14 }
-      ],
-      numbersAndMetrics: [
-        { id: 'num-tech-1', label: 'Target Ingestion Throughput', value: '1,200 docs/sec', category: 'measurement', context: 'Peak load capacity', page: 3 },
-        { id: 'num-tech-2', label: 'Target Vector Search SLA', value: '< 25ms p99', category: 'measurement', context: 'Semantic retrieval latency', page: 11 },
-        { id: 'num-tech-3', label: 'Kafka Partition Count', value: 16, category: 'count', context: 'Parallel event processing streams', page: 8 }
-      ],
-      risksAndConcerns: [
-        { id: 'rsk-tech-1', title: 'Large Payload Buffer Overflow', riskLevel: 'High', plainEnglish: 'Streaming 50MB PDFs directly through gRPC can cause head-of-line blocking.', mitigation: 'Use presigned S3/GCS bucket upload URLs and pass metadata tokens via Kafka.', page: 7 }
-      ],
-      questionsToConsider: [
-        'What is the failover strategy if the primary Kafka broker becomes unresponsive?',
-        'How are tenant vector partitions isolated in Qdrant collections?',
-        'What rate limits are enforced on public REST API endpoints?'
-      ]
-    },
-    metrics: [
-      { label: 'Throughput Capacity', value: '1,200 req/s', status: 'positive', subtext: 'Horizontally scaled', page: 3 },
-      { label: 'Vector Retrieval SLA', value: '< 25ms p99', status: 'positive', subtext: 'Qdrant HNSW', page: 11 },
-      { label: 'Security Standard', value: 'mTLS Zero-Trust', status: 'positive', subtext: 'Envoy mesh', page: 6 },
-      { label: 'Message Bus', value: 'Kafka 3.4', status: 'neutral', subtext: '16 Partitions', page: 8 }
-    ],
-    technicalData: {
-      systemArchitecture: 'Event-driven distributed microservices architecture on Kubernetes (EKS) with Envoy service mesh, Apache Kafka, Qdrant vector database, and PostgreSQL metadata stores.',
-      components: [
-        { name: 'Ingestion Gateway Service', description: 'Handles multipart file uploads, MIME validation, virus scanning, and presigned storage delegation.', type: 'Go / Fiber' },
-        { name: 'OCR & Tensor Extraction Worker', description: 'Decompresses PDF flate streams, coordinates spatial layout OCR, and extracts tabular bounding boxes.', type: 'Python / C++' },
-        { name: 'Intelligence & Synthesis Engine', description: 'Executes domain classification, structured entity extraction, and executive summarization via LLMs.', type: 'TypeScript / Node.js' },
-        { name: 'Vector Search Indexer', description: 'Generates 384-dimensional dense embeddings and indexes chunks in Qdrant with cosine distance.', type: 'Rust / FastEmbed' }
-      ],
-      requirements: [
-        { id: 'req-1', category: 'Scalability', description: 'Autoscale worker pods based on Kafka lag metrics (KEDA).', priority: 'Critical' },
-        { id: 'req-2', category: 'Security', description: 'Encrypt all document buffers in transit (TLS 1.3) and at rest (AES-256).', priority: 'Critical' },
-        { id: 'req-3', category: 'Availability', description: 'Maintain 99.95% uptime across Multi-AZ cloud deployments.', priority: 'High' }
-      ],
-      apisOrEndpoints: [
-        { name: 'POST /v2/documents/upload', method: 'POST', description: 'Multipart document ingestion endpoint returning tracking job ID.' },
-        { name: 'GET /v2/documents/{id}/intelligence', method: 'GET', description: 'Retrieves complete structured JSON intelligence payload.' },
-        { name: 'POST /v2/documents/{id}/query', method: 'POST', description: 'Executes conversational grounded RAG query with page citations.' }
-      ],
-      configurations: [
-        { key: 'MAX_DOCUMENT_SIZE_MB', value: '50', purpose: 'Enforce maximum upload ceiling per document' },
-        { key: 'VECTOR_INDEX_DIMENSIONS', value: '384', purpose: 'Dimension size for all-MiniLM-L6-v2 embeddings' },
-        { key: 'CACHE_TTL_SECONDS', value: '7200', purpose: 'Redis cache time-to-live for extracted analysis' }
-      ],
-      proceduresOrSteps: [
-        { step: 1, title: 'Presigned S3 Ingestion', detail: 'Client requests presigned URL, uploads document directly to object storage.' },
-        { step: 2, title: 'Event Emission', detail: 'Gateway emits DocumentUploaded event into Kafka topic docfin.ingest.events.' },
-        { step: 3, title: 'Parallel Processing', detail: 'Workers stream chunks, compute embeddings, run classification, and populate DB.' }
-      ],
-      dependencies: ['Kubernetes v1.28', 'Apache Kafka v3.4', 'Qdrant Cloud v1.8', 'PostgreSQL 16', 'Redis 7.2'],
-      warningsOrSecurityNotes: [
-        'Never log unredacted PDF content or user PII into standard stdout/logging aggregators.',
-        'Sanitize all user-provided file names to prevent directory traversal attacks.'
-      ]
-    },
-    extractedEntities: [
-      { category: 'Component', key: 'Ingestion Gateway', value: 'Go Fiber / Envoy Mesh', page: 2 },
-      { category: 'Component', key: 'Vector Database', value: 'Qdrant Cloud HNSW', page: 11 },
-      { category: 'ID/Reference', key: 'Architecture RFC', value: 'RFC-2026-DOCFIN-088', page: 1 }
-    ],
-    extractedTables: [
-      {
-        id: 'tbl-service-sla',
-        tableName: 'Microservice Latency & Throughput SLAs',
-        columns: ['Microservice Component', 'Target p50 Latency', 'Target p99 Latency', 'Autoscale Trigger (RPS)'],
-        rows: [
-          { 'Microservice Component': 'Ingestion Gateway', 'Target p50 Latency': '15ms', 'Target p99 Latency': '45ms', 'Autoscale Trigger (RPS)': '800 RPS' },
-          { 'Microservice Component': 'OCR Tensor Worker', 'Target p50 Latency': '350ms', 'Target p99 Latency': '1,200ms', 'Autoscale Trigger (RPS)': '150 RPS' },
-          { 'Microservice Component': 'Intelligence Engine', 'Target p50 Latency': '600ms', 'Target p99 Latency': '2,400ms', 'Autoscale Trigger (RPS)': '100 RPS' },
-          { 'Microservice Component': 'Vector Indexer', 'Target p50 Latency': '8ms', 'Target p99 Latency': '24ms', 'Autoscale Trigger (RPS)': '1,500 RPS' }
-        ],
-        page: 5
-      }
-    ],
-    sampleQuestions: [
-      'What is the end-to-end latency SLA for vector Q&A retrieval?',
-      'How does the system handle corrupt PDF streams in Kafka?',
-      'What security protocol is used for internal microservice communication?'
-    ],
-    chatHistory: []
-  },
-
-  {
-    id: 'doc-hdfc-bank-01',
-    name: 'HDFC_Commercial_Bank_Statement_Jan2026.pdf',
-    fileSize: '1.4 MB',
-    pageCount: 4,
-    uploadedAt: 'Just now',
-    detectedDomain: 'finance',
-    confidenceScore: 99.4,
-    detectionReason: 'Detected monthly commercial transaction ledger, IFSC/NEFT corporate transfers, debit/credit records, and opening/closing balances.',
-    
-    summary: {
-      tldr: 'Monthly commercial account statement for Jan 2026 showing healthy net savings (+₹30,800), but identifies ₹4,350 in unoptimized recurring subscriptions, high food delivery outflow (34%), and an avoidable ₹650 overdraft fee.',
-      keyTakeaways: [
-        'Total credits of ₹95,000 received with total debit outflows of ₹64,200 (Net Savings Rate: 32.4%).',
-        'Top expenditure category was Food & Dining (₹21,800), followed by Utilities & Rent (₹24,500).',
-        'Identified 4 active recurring entertainment & software subscriptions totaling ₹4,350/month.',
-        'Flagged an avoidable ₹650 overdraft & SMS penalty charge billed on Jan 14th.',
-        'Average daily balance maintained was ₹42,500, easily exceeding the ₹10,000 minimum requirement.'
-      ],
-      executiveBrief: 'This personal and commercial banking document demonstrates steady cash flow from salaried income. The account holder maintains positive liquidity, but can readily increase their monthly savings by ~₹5,000 to ₹7,500 by trimming unused digital subscriptions and disputing the non-consensual overdraft surcharge.',
-      actionChecklist: [
-        { id: 'act-1', text: 'Cancel unused Gym & OTT streaming auto-debits (Est. monthly savings: ₹2,100)', priority: 'high', completed: false, category: 'Savings' },
-        { id: 'act-2', text: 'Submit waiver request for ₹650 Overdraft fee via NetBanking customer desk', priority: 'high', completed: false, category: 'Dispute' },
-        { id: 'act-3', text: 'Transfer surplus ₹25,000 from savings account to High-Yield Sweep FD (7.15% p.a.)', priority: 'medium', completed: false, category: 'Investment' },
-        { id: 'act-4', text: 'Set food delivery budget cap of ₹12,000/month to prevent 34% discretionary leakage', priority: 'medium', completed: true, category: 'Budgeting' }
-      ]
-    },
-    
-    metrics: [
-      { label: 'Total Inflow (Credits)', value: '₹95,000', change: '+12% vs Dec', status: 'positive', subtext: 'Primary salary + dividend', iconName: 'TrendingUp' },
-      { label: 'Total Outflow (Debits)', value: '₹64,200', change: '-4% vs Dec', status: 'neutral', subtext: '52 total transactions', iconName: 'CreditCard' },
-      { label: 'Net Monthly Savings', value: '₹30,800', change: '32.4% rate', status: 'positive', subtext: 'Healthy cushion', iconName: 'PiggyBank' },
-      { label: 'Identified Savings Potential', value: '₹5,800/mo', change: 'Quick Wins', status: 'warning', subtext: 'From subscriptions & fees', iconName: 'Zap' }
-    ],
-    
-    financeData: {
-      totalIncome: 95000,
-      totalExpense: 64200,
-      netSavings: 30800,
-      savingsRate: '32.4%',
-      burnRate: '₹2,070 / day',
-      categorySpend: [
-        { category: 'Rent & Utilities', amount: 24500, percentage: 38.2, color: '#3B82F6' },
-        { category: 'Food & Dining (Swiggy/Zomato)', amount: 21800, percentage: 34.0, color: '#F97316' },
-        { category: 'Shopping & E-Commerce', amount: 9800, percentage: 15.3, color: '#8B5CF6' },
-        { category: 'Digital Subscriptions', amount: 4350, percentage: 6.8, color: '#EC4899' },
-        { category: 'Bank Fees & Taxes', amount: 3750, percentage: 5.7, color: '#EF4444' }
-      ],
-      recurringSubs: [
-        { id: 'sub-1', name: 'Netflix Premium 4K', amount: 649, frequency: 'Monthly', status: 'active', lastBilled: '12 Jan 2026', canCancel: true },
-        { id: 'sub-2', name: 'Cult.fit Fitness Pass', amount: 1800, frequency: 'Monthly', status: 'infrequent', lastBilled: '05 Jan 2026', canCancel: true },
-        { id: 'sub-3', name: 'Adobe Creative Cloud', amount: 1400, frequency: 'Monthly', status: 'flagged', lastBilled: '18 Jan 2026', canCancel: true },
-        { id: 'sub-4', name: 'Spotify Individual', amount: 119, frequency: 'Monthly', status: 'active', lastBilled: '21 Jan 2026', canCancel: true },
-        { id: 'sub-5', name: 'Amazon Prime Yearly', amount: 382, frequency: 'Monthly eqv', status: 'active', lastBilled: '01 Jan 2026', canCancel: false }
-      ],
-      savingsTips: [
-        {
-          id: 'tip-1',
-          title: 'Audit & Trim 3 Idle Subscriptions',
-          potentialSavings: '₹3,200 / month',
-          description: 'You are billed for Cult.fit (₹1,800) and Adobe (₹1,400) despite minimal recorded usage this cycle.',
-          action: 'One-click cancel guide & letter template',
-          difficulty: 'easy',
-          impact: 'High'
-        },
-        {
-          id: 'tip-2',
-          title: 'Dispute Non-Consensual Overdraft Charge',
-          potentialSavings: '₹650 instant refund',
-          description: 'HDFC debited ₹650 for an intraday balance dip on Jan 14th that was self-corrected within 6 hours. RBI guidelines allow fee reversal.',
-          action: 'Generate Dispute Email Draft',
-          difficulty: 'easy',
-          impact: 'Quick Win'
-        },
-        {
-          id: 'tip-3',
-          title: 'Deploy Idle Savings into Auto-Sweep FD',
-          potentialSavings: '₹2,100 / year extra yield',
-          description: 'An average ₹42,500 idle balance earns only 3.0% in savings account. Enabling Auto-Sweep FD earns 7.15% with zero lock-in penalty.',
-          action: 'Auto-Sweep Activation Checklist',
-          difficulty: 'medium',
-          impact: 'Medium'
-        },
-        {
-          id: 'tip-4',
-          title: 'Consolidate Swiggy/Zomato on 5% Cashback Card',
-          potentialSavings: '₹1,090 / month cashback',
-          description: 'You spent ₹21,800 on food delivery via UPI with 0% rewards. Switching to a dedicated co-branded card yields ₹1,090/mo.',
-          action: 'Card Comparison & Recommendation',
-          difficulty: 'easy',
-          impact: 'Medium'
-        }
-      ],
-      feesAndPenalties: [
-        { id: 'fee-1', feeType: 'Intraday Overdraft Penalty', amount: 650, date: '14 Jan 2026', flaggedReason: 'Intraday dip rectified within 6 hours', disputeEligible: true },
-        { id: 'fee-2', feeType: 'SMS Alert Charges (Quarterly)', amount: 59, date: '01 Jan 2026', flaggedReason: 'Mandatory standard charge', disputeEligible: false },
-        { id: 'fee-3', feeType: 'ATM Non-Home Branch Surcharge', amount: 47.2, date: '19 Jan 2026', flaggedReason: 'Exceeded 5 free monthly withdrawals', disputeEligible: false }
-      ]
-    },
-    
-    extractedEntities: [
-      { category: 'Person', key: 'Account Holder', value: 'Roshan Kumar Verma', page: 1 },
-      { category: 'ID/Reference', key: 'Account Number', value: '50100492819281 (HDFC Bank)', page: 1 },
-      { category: 'Date', key: 'Statement Period', value: '01-Jan-2026 to 31-Jan-2026', page: 1 },
-      { category: 'Amount', key: 'Opening Balance', value: '₹34,500.00', page: 1 },
-      { category: 'Amount', key: 'Closing Balance', value: '₹65,300.00', page: 4 },
-      { category: 'Organization', key: 'Branch & IFSC', value: 'Koramangala, Bengaluru - HDFC0001024', page: 1 }
-    ],
-    
-    extractedTables: [
-      {
-        id: 'tbl-txns',
-        tableName: 'Major Transaction Ledger (Top 6 Entries)',
-        columns: ['Date', 'Description', 'Type', 'Amount (₹)', 'Balance (₹)'],
-        rows: [
-          { 'Date': '01-Jan-2026', 'Description': 'SALARY CREDIT - TECHCORP PVT LTD', 'Type': 'Credit', 'Amount (₹)': 90000, 'Balance (₹)': 124500 },
-          { 'Date': '02-Jan-2026', 'Description': 'RENT TRANSFER - UPI/VINAYAK_OWNER', 'Type': 'Debit', 'Amount (₹)': 22000, 'Balance (₹)': 102500 },
-          { 'Date': '05-Jan-2026', 'Description': 'CULTFIT AUTOPAY ACH DEBIT', 'Type': 'Debit', 'Amount (₹)': 1800, 'Balance (₹)': 100700 },
-          { 'Date': '14-Jan-2026', 'Description': 'OVERDRAFT SURCHARGE PENALTY', 'Type': 'Debit', 'Amount (₹)': 650, 'Balance (₹)': 88400 },
-          { 'Date': '18-Jan-2026', 'Description': 'ADOBE SYSTEMS CREATIVE SUB', 'Type': 'Debit', 'Amount (₹)': 1400, 'Balance (₹)': 82300 },
-          { 'Date': '31-Jan-2026', 'Description': 'MUTUAL FUND SIP - AXIS BLUECHIP', 'Type': 'Debit', 'Amount (₹)': 10000, 'Balance (₹)': 65300 }
-        ]
-      }
-    ],
-    
-    sampleQuestions: [
-      'What are all the avoidable fees and penalties in this statement?',
-      'How much did I spend on food delivery and dining out?',
-      'List all recurring subscriptions and how much I can save by cancelling idle ones.',
-      'What was my total savings rate this month?'
-    ],
-    
-    chatHistory: [
-      {
-        id: 'msg-1',
-        sender: 'assistant',
-        text: '⚡ DocFin Forensic Analysis Complete. I audited your **HDFC Commercial Bank Statement (Jan 2026)**. You maintained healthy net savings of ₹30,800, but I identified **₹5,800/mo in potential savings** across unused subscriptions and an avoidable ₹650 overdraft fee. How can I assist you?',
-        timestamp: '12:30 PM',
-        citations: [
-          { page: 1, snippet: 'Opening Bal: ₹34,500 | Total Debits: ₹64,200 | Credits: ₹95,000' }
-        ]
-      }
-    ]
-  },
-  
-  {
-    id: 'doc-star-health-02',
-    name: 'Star_Health_Comprehensive_Insurance_Policy.pdf',
-    fileSize: '2.8 MB',
-    pageCount: 18,
-    uploadedAt: '10 mins ago',
-    detectedDomain: 'insurance',
-    confidenceScore: 98.8,
-    detectionReason: 'Detected insurance policy schedules, sum insured tables, exclusions list, waiting period clauses, and cashless hospital claim protocols.',
-    
-    summary: {
-      tldr: 'Individual Health Insurance Policy offering ₹15,00,000 Sum Insured with cashless hospitalization, but contains critical 20% Co-Pay for non-network hospitals and a 36-month waiting period on pre-existing conditions.',
-      keyTakeaways: [
-        'Sum Insured: ₹15,00,000 with 150% Cumulative Bonus restoration benefit.',
-        'Room Rent Capped at 1% of Sum Insured (₹15,000/day for Single Standard AC Room).',
-        '20% Mandatory Co-Payment if treated at non-network hospitals outside Tier-1 city network.',
-        'Pre-Existing Diseases (PED) carry a strict 36-month continuous coverage waiting period.',
-        'Includes ₹50,000 AYUSH alternative medicine coverage and ₹10,000 annual health checkup coupon.'
-      ],
-      executiveBrief: 'This comprehensive policy offers robust major medical coverage. However, policyholders must strictly use in-network hospitals to avoid the 20% co-payment penalty and verify that any room upgrades do not breach the 1% cap.',
-      actionChecklist: [
-        { id: 'act-ins-1', text: 'Download list of 1,400+ cashless network hospitals in your city to avoid 20% co-pay', priority: 'high', completed: false, category: 'Claim Readiness' },
-        { id: 'act-ins-2', text: 'Redeem the ₹10,000 free Annual Health Checkup voucher before policy renewal', priority: 'medium', completed: false, category: 'Benefits' },
-        { id: 'act-ins-3', text: 'Keep hospital admission intimation hotline (1800-425-2255) saved on emergency contacts', priority: 'high', completed: true, category: 'Emergency' }
-      ]
-    },
-    
-    metrics: [
-      { label: 'Total Sum Insured', value: '₹15,00,000', change: '+100% Reload', status: 'positive', subtext: 'Comprehensive Individual', iconName: 'ShieldCheck' },
-      { label: 'Room Rent Daily Limit', value: '₹15,000 / day', change: '1% Cap', status: 'neutral', subtext: 'Single Private AC Room', iconName: 'Home' },
-      { label: 'Co-Payment Clause', value: '20% Non-Network', change: 'High Alert', status: 'warning', subtext: '0% in Network Hospitals', iconName: 'AlertTriangle' },
-      { label: 'PED Waiting Period', value: '36 Months', change: '14 mo left', status: 'negative', subtext: 'Pre-existing conditions', iconName: 'Clock' }
-    ],
-    
-    insuranceData: {
-      policyType: 'Comprehensive Health Shield Plus',
-      sumInsured: '₹15,00,000',
-      deductible: '₹0 (Zero Deductible)',
-      copay: '0% in Network / 20% in Non-Network',
-      waitingPeriod: '36 Months for Pre-Existing Diseases (PED)',
-      coveredItems: [
-        { id: 'cov-1', title: 'In-Patient Hospitalization', details: 'Full coverage for room, nursing, ICU, doctor fees up to ₹15 Lakhs', limit: '100% Sum Insured' },
-        { id: 'cov-2', title: 'Pre & Post Hospitalization', details: '60 days pre-hospitalization & 90 days post-discharge medical expenses', limit: 'Actuals' },
-        { id: 'cov-3', title: 'Day Care Treatments', details: 'All 405 advanced day-care procedures requiring < 24hr hospitalization', limit: 'Up to Sum Insured' },
-        { id: 'cov-4', title: 'Emergency Road Ambulance', details: 'Ambulance service per hospitalization event', limit: '₹3,000 / event' },
-        { id: 'cov-5', title: 'AYUSH Treatment', details: 'Ayurveda, Yoga, Unani, Siddha, and Homeopathy in Govt accredited centres', limit: 'Up to ₹50,000' }
-      ],
-      excludedItems: [
-        { id: 'ex-1', title: 'Cosmetic & Plastic Surgery', details: 'Surgeries for aesthetic appearance unless necessitated by accidental trauma', reason: 'Standard General Exclusion', severity: 'high' },
-        { id: 'ex-2', title: 'Dental Treatment (OPD)', details: 'Routine dental cleanings, root canals, and braces unless due to severe accident', reason: 'OPD Exclusion Clause 4.8', severity: 'medium' },
-        { id: 'ex-3', title: 'Non-Medical Hospital Consumables', details: 'Gloves, PPE kits, admission kits, sanitizers, and diagnostic file charges', reason: 'IRDAI List II Non-payable', severity: 'high' },
-        { id: 'ex-4', title: 'Self-Inflicted Injuries & Adventure Sports', details: 'Injury from hazardous sports (skydiving, racing) or intentional self-harm', reason: 'High Risk Activity Clause', severity: 'high' }
-      ],
-      claimChecklist: [
-        { step: 1, title: 'Emergency Hospital Intimation', description: 'Notify insurer within 24 hours of emergency admission via TPA portal or toll-free number.', docsNeeded: ['Policy Number', 'Hospital Name', 'Attending Doctor Note'] },
-        { step: 2, title: 'Cashless Desk Submission', description: 'Submit e-Health Card and Govt Photo ID at the hospital TPA desk for Pre-Authorization.', docsNeeded: ['Health Card', 'Aadhaar/PAN', 'Pre-Auth Form'] },
-        { step: 3, title: 'Discharge Summary & Itemized Invoices', description: 'Obtain final signed discharge summary, indoor case papers, and original pharmacy receipts.', docsNeeded: ['Original Bills', 'Discharge Summary', 'Payment Receipts'] },
-        { step: 4, title: 'Post-Hospitalization Claim Submission', description: 'Submit post-discharge medicine bills within 30 days of the post-hospitalization period.', docsNeeded: ['Doctor Prescriptions', 'Diagnostic Reports', 'Cancelled Cheque'] }
-      ]
-    },
-    
-    extractedEntities: [
-      { category: 'Person', key: 'Primary Insured', value: 'Ananya Sharma (Age: 28)', page: 1 },
-      { category: 'ID/Reference', key: 'Policy Number', value: 'SH-COMP-2026-948102', page: 1 },
-      { category: 'Date', key: 'Policy Period', value: '15-Mar-2025 to 14-Mar-2026', page: 1 },
-      { category: 'Amount', key: 'Annual Premium Paid', value: '₹18,450 (incl. 18% GST)', page: 2 },
-      { category: 'Status', key: 'Claim Status', value: 'Active & Continuous (Year 2)', page: 1 }
-    ],
-    
-    extractedTables: [
-      {
-        id: 'tbl-sublimits',
-        tableName: 'Specific Illness Sub-Limits & Waiting Schedule',
-        columns: ['Condition / Procedure', 'Waiting Period', 'Max Payout Sub-Limit', 'Co-Pay %'],
-        rows: [
-          { 'Condition / Procedure': 'Cataract Surgery', 'Waiting Period': '24 Months', 'Max Payout Sub-Limit': '₹40,000 per eye', 'Co-Pay %': '0%' },
-          { 'Condition / Procedure': 'Joint Replacement (Knee/Hip)', 'Waiting Period': '24 Months', 'Max Payout Sub-Limit': '₹3,50,000 per joint', 'Co-Pay %': '0%' },
-          { 'Condition / Procedure': 'Hernia & Kidney Stone Removal', 'Waiting Period': '24 Months', 'Max Payout Sub-Limit': '₹65,000 per surgery', 'Co-Pay %': '0%' },
-          { 'Condition / Procedure': 'Pre-Existing Diabetes / Hypertension', 'Waiting Period': '36 Months', 'Max Payout Sub-Limit': 'Full Sum Insured', 'Co-Pay %': '0% (Network)' }
-        ]
-      }
-    ],
-    
-    sampleQuestions: [
-      'What are the exclusions under this health policy?',
-      'How much co-payment will I have to pay if I go to a non-network hospital?',
-      'What is the step-by-step procedure to file a cashless claim?',
-      'Are dental procedures and OPD expenses covered?'
-    ],
-    
-    chatHistory: [
-      {
-        id: 'msg-ins-1',
-        sender: 'assistant',
-        text: '🛡️ DocFin Policy Engine active. Your **Star Health Comprehensive Policy** provides ₹15 Lakhs sum insured. Note: there is a **20% co-payment clause if treated at non-network hospitals**, and a 36-month waiting period on pre-existing conditions.',
-        timestamp: '11:45 AM',
-        citations: [
-          { page: 3, section: 'Clause 3.2 - Co-Payment Matrix', snippet: 'Co-payment of 20% applicable on admissible claim amount in non-network hospitals.' }
-        ]
-      }
-    ]
-  },
-  
-  {
-    id: 'doc-rental-agreement-03',
-    name: 'Bengaluru_Commercial_Lease_Agreement_2026.pdf',
-    fileSize: '890 KB',
-    pageCount: 6,
-    uploadedAt: '25 mins ago',
-    detectedDomain: 'legal',
-    confidenceScore: 97.9,
-    detectionReason: 'Detected tenancy clauses, security deposit forfeiture conditions, lock-in period penalty, and rent escalation schedules.',
-    
-    summary: {
-      tldr: 'Commercial Tenancy Agreement for an office space in Indiranagar, Bengaluru (Rent: ₹38,000/mo, Deposit: ₹2,00,000). Flags 3 high-risk landlord-favored clauses including unilateral deposit forfeiture and automatic 10% rent escalation.',
-      keyTakeaways: [
-        'Monthly Rent: ₹38,000 due on or before 5th of each calendar month.',
-        'Security Deposit: ₹2,00,000 refundable within 30 days of vacating after painting deductions.',
-        '🔴 Red Flag 1: 6-Month strict lock-in period with full rent forfeiture upon early exit.',
-        '🟡 Red Flag 2: Landlord reserves the right to increase rent by 10% on 11-month renewal without negotiation.',
-        '🟢 Notice Period: 2 months written notice required by either party after lock-in expiration.'
-      ],
-      executiveBrief: 'This agreement favors the Landlord significantly in the deposit return and early-exit clauses. Before signing, the tenant should negotiate a mutual 1-month lock-in instead of 6 months and cap painting deductions at ₹15,000 max.',
-      actionChecklist: [
-        { id: 'act-leg-1', text: 'Request amendment to Clause 7: Cap painting & cleaning deduction to ₹15,000 max with bill proof', priority: 'high', completed: false, category: 'Negotiation' },
-        { id: 'act-leg-2', text: 'Reduce lock-in period from 6 months to 1 month for unforeseen business relocation', priority: 'high', completed: false, category: 'Risk Mitigation' },
-        { id: 'act-leg-3', text: 'Ensure pre-move inspection checklist with photos is attached as Annexure A', priority: 'medium', completed: true, category: 'Documentation' }
-      ]
-    },
-    
-    metrics: [
-      { label: 'Contract Risk Level', value: 'High Risk', change: '3 Flags Found', status: 'negative', subtext: 'Landlord-biased clauses', iconName: 'AlertOctagon' },
-      { label: 'Security Deposit', value: '₹2,00,000', change: '5.2x Rent', status: 'warning', subtext: 'Bengaluru standard (avg 4-6x)', iconName: 'Lock' },
-      { label: 'Lock-in Period', value: '6 Months', change: 'Full Penalty', status: 'negative', subtext: 'Rent forfeited on early exit', iconName: 'FileWarning' },
-      { label: 'Notice Period', value: '2 Months', change: 'Mutual', status: 'neutral', subtext: 'Written notice required', iconName: 'Calendar' }
-    ],
-    
-    legalData: {
-      contractType: 'Commercial Tenancy Agreement (11 Months)',
-      parties: ['Landlord: Suresh V. Hegde', 'Tenant: Roshan Kumar Verma'],
-      effectiveDate: '01-Feb-2026',
-      duration: '11 Months (Expiring 31-Dec-2026)',
-      riskScore: 'High',
-      riskyClauses: [
-        {
-          id: 'cl-1',
-          clause: 'Clause 5.2: Early Termination & Lock-in Penalty',
-          page: 2,
-          riskLevel: 'Critical',
-          plainEnglish: 'If you vacate the premises before completing 6 months, the landlord will forfeit your entire ₹2,00,000 security deposit even if you give 2 months advance notice.',
-          mitigation: 'Counter-propose: Mutual 1-month lock-in or 1-month rent deduction instead of full deposit forfeiture.'
-        },
-        {
-          id: 'cl-2',
-          clause: 'Clause 8.1: Uncapped Painting & Maintenance Deductions',
-          page: 4,
-          riskLevel: 'Warning',
-          plainEnglish: 'The landlord can deduct any amount they deem necessary for repainting and deep cleaning without providing contractor invoices or receipts.',
-          mitigation: 'Add clause: "Deductions for painting capped at 1 month basic rent or ₹15,000, supported by actual GST invoices."'
-        },
-        {
-          id: 'cl-3',
-          clause: 'Clause 11.4: Right of Unannounced Entry',
-          page: 5,
-          riskLevel: 'Caution',
-          plainEnglish: 'Landlord may inspect the premises at any time without prior 24-hour written notice.',
-          mitigation: 'Modify to require minimum 24-hour advance intimation via WhatsApp or email.'
-        }
-      ],
-      obligations: [
-        { id: 'ob-1', party: 'Tenant', obligation: 'Pay monthly rent of ₹38,000 on or before 5th of every English calendar month', deadline: 'Monthly by 5th' },
-        { id: 'ob-2', party: 'Tenant', obligation: 'Pay actual BESCOM electricity and commercial maintenance (₹3,500/mo) directly', deadline: 'Monthly as billed' },
-        { id: 'ob-3', party: 'Landlord', obligation: 'Refund full security deposit within 30 days after deducting agreed utility dues', deadline: 'Within 30 days of handover' }
-      ],
-      terminationTerms: '2 months advance written notice required after completion of the 6-month lock-in period.'
-    },
-    
-    extractedEntities: [
-      { category: 'Person', key: 'Lessor / Landlord', value: 'Suresh V. Hegde', page: 1 },
-      { category: 'Person', key: 'Lessee / Tenant', value: 'Roshan Kumar Verma', page: 1 },
-      { category: 'Amount', key: 'Monthly Rent', value: '₹38,000 / month', page: 2 },
-      { category: 'Amount', key: 'Security Deposit', value: '₹2,00,000 (Refundable)', page: 2 },
-      { category: 'Date', key: 'Commencement Date', value: '01 February 2026', page: 1 },
-      { category: 'Clause', key: 'Escalation Rate', value: '10% on 11-Month Renewal', page: 3 }
-    ],
-    
-    extractedTables: [
-      {
-        id: 'tbl-schedule',
-        tableName: 'Commercial Office Fixture Schedule',
-        columns: ['Item / Fixture', 'Quantity', 'Condition at Handover', 'Estimated Replacement Cost'],
-        rows: [
-          { 'Item / Fixture': 'Daikin 1.5 Ton Split AC', 'Quantity': 2, 'Condition at Handover': 'Brand New (Working)', 'Estimated Replacement Cost': '₹42,000 each' },
-          { 'Item / Fixture': 'Geyser (Havells 25L)', 'Quantity': 2, 'Condition at Handover': 'Good Working Condition', 'Estimated Replacement Cost': '₹9,500 each' },
-          { 'Item / Fixture': 'Conference Room Table & Chairs', 'Quantity': 1, 'Condition at Handover': 'Clean & Functional', 'Estimated Replacement Cost': '₹24,000' },
-          { 'Item / Fixture': 'Main Door Smart Digital Lock', 'Quantity': 1, 'Condition at Handover': 'Operational (2 RFID Keys)', 'Estimated Replacement Cost': '₹12,000' }
-        ]
-      }
-    ],
-    
-    sampleQuestions: [
-      'What are the high-risk clauses in this commercial lease?',
-      'What happens if I need to vacate the premises within the first 4 months?',
-      'How much can the landlord deduct from my deposit for painting?',
-      'What is the notice period required to vacate?'
-    ],
-    
-    chatHistory: [
-      {
-        id: 'msg-leg-1',
-        sender: 'assistant',
-        text: '⚖️ DocFin Legal Engine active. I reviewed this **Commercial Lease Agreement** and flagged **3 critical risks**, including a strict 6-month lock-in penalty where your ₹2,00,000 deposit can be seized on early exit.',
-        timestamp: '10:15 AM',
-        citations: [
-          { page: 2, section: 'Clause 5.2', snippet: 'In the event of Lessee vacating before 6 months, entire security deposit stands forfeited to Lessor.' }
-        ]
-      }
-    ]
-  },
-
+  // 5. CLOUD INFRASTRUCTURE TAX INVOICE (AWS BILLING)
   {
     id: 'doc-invoice-04',
-    name: 'Enterprise_Cloud_Infrastructure_Tax_Invoice_Jan2026.pdf',
+    name: 'AWS_Cloud_Infrastructure_Tax_Invoice_Jan2026.pdf',
     fileSize: '540 KB',
     pageCount: 3,
     uploadedAt: '1 hour ago',
     detectedDomain: 'billing',
     confidenceScore: 99.1,
     detectionReason: 'Detected vendor tax invoice, GSTIN/PAN numbers, itemized compute line items, SAC codes, and reverse charge tax schedules.',
-    
     summary: {
       tldr: 'Monthly B2B Cloud Services Tax Invoice from Amazon Web Services India Pvt Ltd for ₹84,370 (Base: ₹71,500 + 18% GST: ₹12,870). Detects unattached EBS volumes and unreserved EC2 on-demand instances inflating costs by 24%.',
       keyTakeaways: [
@@ -599,19 +536,42 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
       ],
       executiveBrief: 'This invoice indicates steady cloud usage. Implementing AWS Compute Savings Plans or 1-Year Reserved Instances on the 3 primary production nodes will lower the monthly compute bill from ₹48,200 to ~₹31,000 (35% recurring savings).',
       actionChecklist: [
-        { id: 'act-inv-1', text: 'Delete 4 orphaned/unattached EBS volumes in ap-south-1 (Saves ₹4,200/mo)', priority: 'high', completed: false, category: 'Cost Reduction' },
-        { id: 'act-inv-2', text: 'Forward invoice to accounts team to claim ₹12,870 GST Input Tax Credit before GSTR-3B due date', priority: 'high', completed: true, category: 'Compliance' },
-        { id: 'act-inv-3', text: 'Purchase 1-Year Savings Plan for baseline t4g.xlarge instances', priority: 'medium', completed: false, category: 'Optimization' }
+        { id: 'act-inv-1', text: 'Delete 4 orphaned/unattached EBS volumes in ap-south-1 (Saves ₹4,200/mo)', priority: 'high', completed: false, category: 'Cost Reduction', page: 2 },
+        { id: 'act-inv-2', text: 'Forward invoice to accounts team to claim ₹12,870 GST Input Tax Credit before GSTR-3B due date', priority: 'high', completed: true, category: 'Compliance', page: 1 },
+        { id: 'act-inv-3', text: 'Purchase 1-Year Savings Plan for baseline t4g.xlarge instances', priority: 'medium', completed: false, category: 'Optimization', page: 2 }
+      ],
+      importantDates: [
+        { id: 'dt-inv-1', event: 'Invoice Generation Date', date: '01-Feb-2026', type: 'effective', status: 'past', page: 1 },
+        { id: 'dt-inv-2', event: 'Payment Due Date (Auto-Debit)', date: '15-Feb-2026', type: 'deadline', status: 'upcoming', page: 1 },
+        { id: 'dt-inv-3', event: 'GSTR-3B Input Credit Filing Deadline', date: '20-Feb-2026', type: 'filing', status: 'upcoming', page: 1 }
+      ],
+      numbersAndMetrics: [
+        { id: 'num-inv-1', label: 'Total Payable Amount', value: '₹84,370', category: 'monetary', context: 'Inclusive of 18% GST', page: 1 },
+        { id: 'num-inv-2', label: '18% GST Input Credit', value: '₹12,870', category: 'monetary', context: 'Reconcilable under GSTR-2B', page: 1 },
+        { id: 'num-inv-3', label: 'EC2 Compute Cost', value: '₹48,200', category: 'monetary', context: '67.4% of total expenditure', page: 2 },
+        { id: 'num-inv-4', label: 'Orphaned Storage Waste', value: '₹4,200 / mo', category: 'monetary', context: '4 unattached EBS volumes', page: 2 }
+      ],
+      risksAndConcerns: [
+        { id: 'rsk-inv-1', title: 'Orphaned EBS Disk Volumes Billing Continuously', riskLevel: 'High', plainEnglish: '4 unattached EBS gp3 storage volumes with zero I/O activity are incurring ₹4,200 every month without purpose.', mitigation: 'Terminate or snapshot and delete orphaned EBS volumes in AWS Console.', page: 2 },
+        { id: 'rsk-inv-2', title: 'Unreserved On-Demand Compute Premium (38% Surcharge)', riskLevel: 'Warning', plainEnglish: 'Running steady-state production servers on pure On-Demand rates results in ₹17,200/mo overpayment.', mitigation: 'Switch to 1-Year Compute Savings Plan for 38% direct discount.', page: 2 }
+      ],
+      questionsToConsider: [
+        'How can I eliminate the ₹4,200 monthly orphaned EBS storage cost?',
+        'What steps are required to claim the ₹12,870 GST input tax credit?',
+        'How much will a 1-year Savings Plan reduce our EC2 bill?'
       ]
     },
-    
     metrics: [
-      { label: 'Total Payable Amount', value: '₹84,370', change: '+8.4% MoM', status: 'neutral', subtext: 'Includes 18% GST', iconName: 'FileText' },
-      { label: '18% GST Input Credit', value: '₹12,870', change: 'Eligible ITC', status: 'positive', subtext: 'GSTR-2B reconcilable', iconName: 'CheckCircle' },
-      { label: 'Identified Cloud Waste', value: '₹4,200 / mo', change: 'Orphan Disks', status: 'negative', subtext: '4 unattached EBS volumes', iconName: 'Trash2' },
-      { label: 'Payment Due Date', value: '15-Feb-2026', change: 'In 4 Days', status: 'warning', subtext: 'Auto-debit scheduled', iconName: 'Calendar' }
+      { label: 'Total Payable Amount', value: '₹84,370', change: '+8.4% MoM', status: 'neutral', subtext: 'Includes 18% GST', iconName: 'FileText', page: 1 },
+      { label: '18% GST Input Credit', value: '₹12,870', change: 'Eligible ITC', status: 'positive', subtext: 'GSTR-2B reconcilable', iconName: 'CheckCircle', page: 1 },
+      { label: 'Identified Cloud Waste', value: '₹4,200 / mo', change: 'Orphan Disks', status: 'negative', subtext: '4 unattached EBS volumes', iconName: 'Trash2', page: 2 },
+      { label: 'Payment Due Date', value: '15-Feb-2026', change: 'In 4 Days', status: 'warning', subtext: 'Auto-debit scheduled', iconName: 'Calendar', page: 1 }
     ],
-    
+    savingsTips: [
+      { id: 'tip-inv-1', title: 'Terminate 4 Orphaned EBS GP3 Volumes', potentialSavings: '₹4,200 / month (₹50,400/yr)', description: '4 detached disk volumes in ap-south-1 have had zero I/O operations for 30 days.', action: 'Execute Cleanup Script', difficulty: 'Quick Win' },
+      { id: 'tip-inv-2', title: 'Claim ₹12,870 GST Input Tax Credit (ITC)', potentialSavings: '₹12,870 Tax Refund', description: 'Reconcile AWS GSTIN (29AAACA1234F1Z5) in GSTR-2B before the 20th Feb filing deadline.', action: 'Export GSTR-2B CSV Reconciler', difficulty: 'Immediate' },
+      { id: 'tip-inv-3', title: 'Commit to 1-Year EC2 Compute Savings Plan', potentialSavings: '₹17,200 / month (35% Savings)', description: 'Lock in baseline t4g.xlarge instances to drop hourly compute rate from ₹64.78 to ₹42.10.', action: 'View Savings Plan Calculator', difficulty: 'High Impact' }
+    ],
     billingData: {
       invoiceNumber: 'INV-AWS-2026-081924',
       vendor: 'Amazon Web Services India Private Limited',
@@ -631,7 +591,6 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
       ],
       discountsOrPenalties: ['Free Tier Data Transfer Credit: -$15.00 applied', 'Late payment finance fee: 1.5% per month after Feb 15']
     },
-    
     extractedEntities: [
       { category: 'Organization', key: 'Vendor', value: 'AWS India Pvt Ltd (GSTIN: 29AAACA1234F1Z5)', page: 1 },
       { category: 'Organization', key: 'Client', value: 'DocFin Technologies LLP', page: 1 },
@@ -640,27 +599,25 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
       { category: 'Amount', key: 'Taxable Subtotal', value: '₹71,500.00', page: 1 },
       { category: 'Amount', key: 'Total with Tax', value: '₹84,370.00', page: 1 }
     ],
-    
     extractedTables: [
       {
         id: 'tbl-aws-items',
-        tableName: 'Itemized Cloud Service Breakdown',
+        tableName: 'Itemized Cloud Service Breakdown & SAC Codes',
         columns: ['Service Category', 'Usage Type / Region', 'Units Billed', 'Rate (₹)', 'Total (₹)'],
         rows: [
-          { 'Service Category': 'Amazon EC2', 'Usage Type / Region': 'ap-south-1-BoxUsage:t4g.xlarge', 'Units Billed': '744 Hours', 'Rate (₹)': 64.78, 'Total (₹)': 48200 },
-          { 'Service Category': 'Amazon RDS', 'Usage Type / Region': 'ap-south-1-InstanceUsage:db.r6g', 'Units Billed': '744 Hours', 'Rate (₹)': 20.30, 'Total (₹)': 15100 },
-          { 'Service Category': 'Amazon EBS', 'Usage Type / Region': 'ap-south-1-VolumeUsage.gp3', 'Units Billed': '1200 GB-Mo', 'Rate (₹)': 6.83, 'Total (₹)': 8200 }
-        ]
+          { 'Service Category': 'Amazon EC2 Compute', 'Usage Type / Region': 'ap-south-1-BoxUsage:t4g.xlarge', 'Units Billed': '744 Hours', 'Rate (₹)': '64.78', 'Total (₹)': '48,200' },
+          { 'Service Category': 'Amazon RDS Aurora DB', 'Usage Type / Region': 'ap-south-1-InstanceUsage:db.r6g', 'Units Billed': '744 Hours', 'Rate (₹)': '20.30', 'Total (₹)': '15,100' },
+          { 'Service Category': 'Amazon EBS Storage', 'Usage Type / Region': 'ap-south-1-VolumeUsage.gp3', 'Units Billed': '1,200 GB-Mo', 'Rate (₹)': '6.83', 'Total (₹)': '8,200' }
+        ],
+        page: 2
       }
     ],
-    
     sampleQuestions: [
       'What is the total GST breakdown on this invoice?',
       'Which service contributed the most to this month’s bill?',
       'Are there any unutilized or wasted cloud resources identified?',
       'What is the payment due date and consequence of late payment?'
     ],
-    
     chatHistory: [
       {
         id: 'msg-inv-1',
@@ -674,78 +631,104 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
     ]
   },
 
+  // 6. MEDICAL LAB REPORT (COMPREHENSIVE METABOLIC PANEL)
   {
-    id: 'doc-lending-sanction-05',
-    name: 'Commercial_Credit_Facility_Sanction_Letter_2026.pdf',
-    fileSize: '1.9 MB',
-    pageCount: 8,
-    uploadedAt: '2 hours ago',
-    detectedDomain: 'overall',
-    confidenceScore: 98.6,
-    detectionReason: 'Detected commercial credit facility terms, debt service coverage ratio (DSCR) covenants, floating rate margin schedules, and hypothecation schedules.',
-    
+    id: 'doc-medical-05',
+    name: 'Comprehensive_Metabolic_Panel_Lab_Report.pdf',
+    fileSize: '920 KB',
+    pageCount: 3,
+    uploadedAt: '3 hours ago',
+    detectedDomain: 'medical',
+    confidenceScore: 99.3,
+    detectionReason: 'Detected diagnostic clinical laboratory report, blood biomarker ranges, lipid panel profiles, HbA1c measurements, and physician consult notes.',
     summary: {
-      tldr: 'Sanction Letter for INR 50,00,000 Working Capital Credit Facility at 8.75% floating interest p.a. Identifies 2 compliance risks: mandatory 1.35x DSCR covenant maintenance and a 2.0% foreclosure penalty violating standard MSME guidelines.',
+      tldr: 'Diagnostic blood report showing elevated Fasting Blood Glucose (128 mg/dL — Pre-diabetes indicator) and low Vitamin D3 (14.2 ng/mL — Deficiency), but normal Kidney and Liver function panels.',
       keyTakeaways: [
-        'Sanctioned Limit: INR 50,00,000 with 12-month tenure subject to annual review.',
-        'Benchmark Rate: 1-Year MCLR + 1.25% spread (effective 8.75% p.a.).',
-        'Primary Covenant: Borrower must maintain Debt-Service Coverage Ratio (DSCR) >= 1.35x throughout facility tenure.',
-        'Foreclosure Penalty: 2.0% on prepaid principal if refinanced by competitor bank.',
-        'Primary Collateral: Hypothecation of book debts and inventory with 25% margin.'
+        'Fasting Blood Sugar: 128 mg/dL (Flagged: Elevated vs normal range 70-99 mg/dL).',
+        'HbA1c Glycated Hemoglobin: 6.2% (Pre-diabetes risk range 5.7% - 6.4%).',
+        'Vitamin D3 (25-OH): 14.2 ng/mL (Flagged: Severe Deficiency vs optimal > 30 ng/mL).',
+        'Total Cholesterol: 195 mg/dL (Borderline, with LDL at 122 mg/dL).',
+        'Renal & Liver Function: Serum Creatinine (0.9 mg/dL) and SGPT/ALT (28 U/L) within healthy reference intervals.'
       ],
-      executiveBrief: 'This credit facility offers competitive working capital liquidity. However, the finance team must track quarterly audited DSCR numbers to avoid covenant breaches and negotiate a waiver of the 2.0% prepayment penalty under RBI MSME fair practice circulars.',
+      executiveBrief: 'This metabolic test panel highlights early metabolic and micronutrient markers that can be corrected with targeted lifestyle modifications and Vitamin D3 supplementation before progressing to clinical diabetes.',
       actionChecklist: [
-        { id: 'act-len-1', text: 'Request deletion of Clause 8.4: Prepayment penalty waiver under RBI MSME fair lending circular', priority: 'high', completed: false, category: 'Covenant Negotiation' },
-        { id: 'act-len-2', text: 'Set up quarterly DSCR automated alerting threshold at 1.45x cushion', priority: 'high', completed: true, category: 'Compliance' },
-        { id: 'act-len-3', text: 'Submit certified stock and book debt statement before 15th of each calendar month', priority: 'medium', completed: false, category: 'Operations' }
+        { id: 'act-med-1', text: 'Initiate 60,000 IU Vitamin D3 weekly oral softgel supplementation for 8 weeks', priority: 'high', completed: false, category: 'Supplementation', page: 2 },
+        { id: 'act-med-2', text: 'Reduce refined simple sugars and adopt 30-min daily moderate aerobic walking', priority: 'high', completed: false, category: 'Lifestyle', page: 1 },
+        { id: 'act-med-3', text: 'Schedule repeat HbA1c and Fasting Glucose blood test in 90 days', priority: 'medium', completed: false, category: 'Follow-up', page: 1 }
+      ],
+      importantDates: [
+        { id: 'dt-med-1', event: 'Sample Collection Date', date: '28-Jan-2026', type: 'effective', status: 'past', page: 1 },
+        { id: 'dt-med-2', event: 'Recommended 90-Day Repeat Blood Panel', date: '28-Apr-2026', type: 'deadline', status: 'upcoming', page: 1 }
+      ],
+      numbersAndMetrics: [
+        { id: 'num-med-1', label: 'Fasting Blood Glucose', value: '128 mg/dL', category: 'measurement', context: 'Normal: 70 - 99 mg/dL', page: 1 },
+        { id: 'num-med-2', label: 'HbA1c Level', value: '6.2%', category: 'percentage', context: 'Pre-diabetes threshold: 5.7 - 6.4%', page: 1 },
+        { id: 'num-med-3', label: 'Vitamin D3 Level', value: '14.2 ng/mL', category: 'measurement', context: 'Optimal: > 30 ng/mL', page: 2 },
+        { id: 'num-med-4', label: 'Serum Creatinine', value: '0.9 mg/dL', category: 'measurement', context: 'Healthy normal: 0.7 - 1.2 mg/dL', page: 2 }
+      ],
+      risksAndConcerns: [
+        { id: 'rsk-med-1', title: 'Elevated Fasting Glucose (128 mg/dL) & HbA1c 6.2%', riskLevel: 'Critical', plainEnglish: 'Your blood sugar is currently in the pre-diabetes zone, which elevates cardiovascular and long-term metabolic strain if unaddressed.', mitigation: 'Adopt low-glycemic Mediterranean nutrition and maintain 150 mins of weekly zone-2 exercise.', page: 1 },
+        { id: 'rsk-med-2', title: 'Severe Vitamin D3 Micronutrient Deficiency (14.2 ng/mL)', riskLevel: 'High', plainEnglish: 'Severe Vitamin D deficiency impairs calcium absorption, bone density, energy levels, and immune function.', mitigation: 'Take Cholecalciferol (60k IU) once weekly with a healthy fat meal for 8 weeks.', page: 2 }
+      ],
+      questionsToConsider: [
+        'What dietary changes are most effective to reverse pre-diabetes HbA1c levels?',
+        'How long does it take to restore Vitamin D3 levels with 60,000 IU softgels?',
+        'Are my liver and kidney function markers completely within safe limits?'
       ]
     },
-    
     metrics: [
-      { label: 'Facility Limit', value: '₹50,00,000', change: 'Working Capital', status: 'positive', subtext: 'Cash Credit & OD', iconName: 'Building2' },
-      { label: 'Effective Interest Rate', value: '8.75% p.a.', change: 'MCLR + 1.25%', status: 'neutral', subtext: 'Floating spread', iconName: 'Percent' },
-      { label: 'DSCR Covenant Limit', value: '1.35x Min', change: 'Quarterly Check', status: 'warning', subtext: 'Mandatory financial ratio', iconName: 'Scale' },
-      { label: 'Foreclosure Surcharge', value: '2.0% Penalty', change: 'Disputable', status: 'negative', subtext: 'On prepaid principal', iconName: 'AlertTriangle' }
+      { label: 'Fasting Glucose', value: '128 mg/dL', change: 'Elevated', status: 'negative', subtext: 'Target < 99 mg/dL', iconName: 'Activity', page: 1 },
+      { label: 'HbA1c Level', value: '6.2%', change: 'Pre-Diabetic', status: 'warning', subtext: 'Normal < 5.7%', iconName: 'Percent', page: 1 },
+      { label: 'Vitamin D3', value: '14.2 ng/mL', change: 'Deficient', status: 'negative', subtext: 'Optimal > 30 ng/mL', iconName: 'AlertTriangle', page: 2 },
+      { label: 'Kidney Health (Creatinine)', value: '0.9 mg/dL', change: 'Optimal', status: 'positive', subtext: 'Normal 0.7 - 1.2', iconName: 'CheckCircle', page: 2 }
     ],
-    
+    savingsTips: [
+      { id: 'tip-med-1', title: 'Start 60,000 IU Weekly Vitamin D3 Protocol', potentialSavings: 'Restores Optimal Immunity in 8 Weeks', description: 'Taking 60k IU Cholecalciferol once weekly with dinner raises serum Vitamin D3 from 14.2 to > 40 ng/mL.', action: 'View Supplementation Protocol', difficulty: 'High Impact' },
+      { id: 'tip-med-2', title: 'Implement Low-Glycemic Index Food Swaps', potentialSavings: 'Lowers HbA1c by 0.4% - 0.7%', description: 'Replace white polished rice and refined sugars with steel-cut oats, lentils, and leafy greens.', action: 'Download 7-Day Meal Plan', difficulty: 'Quick Win' }
+    ],
+    medicalData: {
+      patientName: 'Roshan Kumar Verma (Age: 32 / M)',
+      labName: 'Apollo Diagnostics Super Speciality Laboratory',
+      testDate: '28-Jan-2026',
+      criticalMarkers: [
+        { marker: 'Fasting Blood Glucose', value: '128 mg/dL', referenceRange: '70 - 99 mg/dL', status: 'High', interpretation: 'Impaired Fasting Glucose (Pre-diabetes risk)' },
+        { marker: 'HbA1c (Glycated Hemoglobin)', value: '6.2 %', referenceRange: '4.0 - 5.6 %', status: 'High', interpretation: 'Pre-diabetic state; indicates average 3-month elevation' },
+        { marker: 'Vitamin D3 (25-OH)', value: '14.2 ng/mL', referenceRange: '30.0 - 100.0 ng/mL', status: 'Low', interpretation: 'Severe micronutrient deficiency' },
+        { marker: 'Total Cholesterol', value: '195 mg/dL', referenceRange: '< 200 mg/dL', status: 'Normal', interpretation: 'Borderline high desirable range' },
+        { marker: 'Serum Creatinine', value: '0.90 mg/dL', referenceRange: '0.70 - 1.20 mg/dL', status: 'Normal', interpretation: 'Healthy normal renal clearance' }
+      ],
+      physicianAdviceSummary: 'Adopt moderate caloric restriction, low refined carb diet, 150 mins weekly cardiovascular exercise, and 8-week Vitamin D3 therapy.',
+      medicationSchedule: [
+        { medicine: 'Cholecalciferol 60k IU', dosage: '1 Softgel weekly', duration: '8 Weeks', timing: 'Post dinner with milk' }
+      ]
+    },
     extractedEntities: [
-      { category: 'Organization', key: 'Lending Bank', value: 'State Bank of India (Commercial Branch)', page: 1 },
-      { category: 'Organization', key: 'Borrower', value: 'DocFin Analytics Pvt Ltd', page: 1 },
-      { category: 'Amount', key: 'Sanction Amount', value: 'INR 50,00,000.00', page: 1 },
-      { category: 'Date', key: 'Sanction Date', value: '28-Jan-2026', page: 1 },
-      { category: 'Clause', key: 'DSCR Minimum', value: '1.35x Ratio', page: 3 }
+      { category: 'Person', key: 'Patient Name', value: 'Roshan Kumar Verma (Age 32 / Male)', page: 1 },
+      { category: 'Organization', key: 'Diagnostic Lab', value: 'Apollo Diagnostics Laboratory', page: 1 },
+      { category: 'Concept', key: 'Primary Diagnosis', value: 'Pre-Diabetes & Vitamin D3 Deficiency', page: 1 },
+      { category: 'Date', key: 'Report Date', value: '28-Jan-2026', page: 1 }
     ],
-    
     extractedTables: [
       {
-        id: 'tbl-sanction-covenants',
-        tableName: 'Financial Covenants & Operating Thresholds',
-        columns: ['Financial Metric / Covenant', 'Contractual Requirement', 'Monitoring Frequency', 'Breach Consequence'],
+        id: 'tbl-biomarkers',
+        tableName: 'Complete Biomarker Laboratory Test Results',
+        columns: ['Test Marker', 'Observed Value', 'Reference Interval', 'Clinical Status'],
         rows: [
-          { 'Financial Metric / Covenant': 'Debt Service Coverage (DSCR)', 'Contractual Requirement': '>= 1.35x', 'Monitoring Frequency': 'Quarterly', 'Breach Consequence': '+1.0% penal interest' },
-          { 'Financial Metric / Covenant': 'Current Ratio', 'Contractual Requirement': '>= 1.25x', 'Monitoring Frequency': 'Annual', 'Breach Consequence': 'Facility review & freeze' },
-          { 'Financial Metric / Covenant': 'Stock Audit Submission', 'Contractual Requirement': 'Monthly by 15th', 'Monitoring Frequency': 'Monthly', 'Breach Consequence': '₹5,000/month delay fee' }
-        ]
+          { 'Test Marker': 'Fasting Blood Sugar', 'Observed Value': '128 mg/dL', 'Reference Interval': '70 - 99 mg/dL', 'Clinical Status': 'High (Pre-diabetic)' },
+          { 'Test Marker': 'HbA1c Glycated Hemoglobin', 'Observed Value': '6.2 %', 'Reference Interval': '< 5.7 %', 'Clinical Status': 'High' },
+          { 'Test Marker': 'Vitamin D3 (25-OH)', 'Observed Value': '14.2 ng/mL', 'Reference Interval': '30 - 100 ng/mL', 'Clinical Status': 'Deficient' },
+          { 'Test Marker': 'Serum Creatinine', 'Observed Value': '0.90 mg/dL', 'Reference Interval': '0.70 - 1.20 mg/dL', 'Clinical Status': 'Normal / Healthy' },
+          { 'Test Marker': 'SGPT / ALT (Liver)', 'Observed Value': '28.0 U/L', 'Reference Interval': '< 45.0 U/L', 'Clinical Status': 'Normal / Healthy' }
+        ],
+        page: 1
       }
     ],
-    
     sampleQuestions: [
-      'What are the mandatory financial covenants in this sanction letter?',
-      'What happens if our DSCR falls below 1.35x?',
-      'Is the 2% prepayment penalty compliant with RBI lending rules?',
-      'What is the inventory margin requirement?'
+      'What are the abnormal test results in my blood report?',
+      'How severe is my Vitamin D3 deficiency and what is the treatment?',
+      'What lifestyle changes can reverse my pre-diabetic HbA1c level?',
+      'Are my liver and kidney function markers normal?'
     ],
-    
-    chatHistory: [
-      {
-        id: 'msg-len-1',
-        sender: 'assistant',
-        text: '🏛️ DocFin Lending Engine active. I audited this **Commercial Credit Facility Sanction Letter (₹50,00,000)**. The 8.75% rate is competitive, but I flagged a **1.35x DSCR covenant** and a **2.0% prepayment penalty** that can be disputed under RBI MSME lending guidelines.',
-        timestamp: '08:30 AM',
-        citations: [
-          { page: 3, section: 'Clause 8.4 - Prepayment & Covenants', snippet: 'DSCR to be maintained at minimum 1.35x; 2% prepayment penalty on balance outstanding.' }
-        ]
-      }
-    ]
+    chatHistory: []
   }
 ];
