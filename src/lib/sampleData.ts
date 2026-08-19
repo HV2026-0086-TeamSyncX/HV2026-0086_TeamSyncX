@@ -143,6 +143,57 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
           { page: 1, snippet: 'Opening Bal: ₹34,500 | Total Debits: ₹64,200 | Credits: ₹95,000' }
         ]
       }
+    ],
+    rawText: `HDFC BANK LIMITED - KORAMANGALA BRANCH, BENGALURU
+Account Statement for Period: 01-Jan-2026 to 31-Jan-2026
+Account Name: Roshan Kumar Verma | Account No: 50100492819281 | IFSC: HDFC0001024
+Opening Balance: ₹34,500.00 | Total Credits: ₹95,000.00 | Total Debits: ₹64,200.00 | Closing Balance: ₹65,300.00
+Transactions:
+01-Jan-2026: SALARY CREDIT - TECHCORP PVT LTD +₹90,000.00 (Balance: ₹124,500.00)
+02-Jan-2026: RENT TRANSFER - UPI/VINAYAK_OWNER -₹22,000.00 (Balance: ₹102,500.00)
+05-Jan-2026: CULTFIT AUTOPAY ACH DEBIT -₹1,800.00 (Balance: ₹100,700.00)
+14-Jan-2026: OVERDRAFT SURCHARGE PENALTY -₹650.00 (Balance: ₹88,400.00) - Intraday dip rectified within 6 hours
+18-Jan-2026: ADOBE SYSTEMS CREATIVE SUB -₹1,400.00 (Balance: ₹82,300.00)
+31-Jan-2026: MUTUAL FUND SIP - AXIS BLUECHIP -₹10,000.00 (Balance: ₹65,300.00)
+Spending Breakdown: Food & Dining ₹21,800 (34%), Rent & Utilities ₹24,500 (38.2%), Digital Subscriptions ₹4,350 (6.8%).`,
+    pageTexts: [
+      {
+        page: 1,
+        text: `HDFC BANK LIMITED - KORAMANGALA BRANCH, BENGALURU
+Account Statement for Period: 01-Jan-2026 to 31-Jan-2026
+Account Name: Roshan Kumar Verma | Account Number: 50100492819281 | IFSC Code: HDFC0001024
+Opening Balance: ₹34,500.00 | Total Credits (Inflow): ₹95,000.00 | Total Debits (Outflow): ₹64,200.00 | Closing Balance: ₹65,300.00
+Primary Transaction Entries:
+01-Jan-2026: SALARY CREDIT - TECHCORP PVT LTD - Amount: +₹90,000.00 | Running Balance: ₹124,500.00
+02-Jan-2026: RENT TRANSFER - UPI/VINAYAK_OWNER - Amount: -₹22,000.00 | Running Balance: ₹102,500.00`
+      },
+      {
+        page: 2,
+        text: `EXPENDITURE & SPENDING CATEGORIZATION (JANUARY 2026)
+Total Monthly Inflow: ₹95,000.00 | Total Monthly Outflow: ₹64,200.00 | Net Savings: ₹30,800.00 (Savings Rate: 32.4%)
+Category 1 - Rent & Maintenance: ₹24,500.00 (38.2% of total spend)
+Category 2 - Food Delivery & Dining (Swiggy, Zomato, Dining Out): ₹21,800.00 (34.0% of total spend across 26 transactions)
+Category 3 - Shopping & Retail: ₹9,800.00 (15.3% of total spend)
+Fee Surcharge: 14-Jan-2026 OVERDRAFT SURCHARGE PENALTY of ₹650.00 debited for intraday account balance dip, self-corrected within 6 hours. Eligible for waiver under RBI fair lending guidelines.`
+      },
+      {
+        page: 3,
+        text: `RECURRING MANDATES & DIGITAL SUBSCRIPTIONS AUDIT
+1. Cult.fit All-Access Fitness Pass: ₹1,800.00 / month (Auto-debit ACH on 5th) - Flagged: 0 gym check-ins recorded in billing period.
+2. Adobe Creative Cloud Suite: ₹1,400.00 / month (Auto-debit on 18th) - Flagged: Minimal usage.
+3. Netflix Premium 4K UHD: ₹649.00 / month (Auto-debit on 12th) - Active.
+4. Spotify Individual Premium: ₹119.00 / month (Auto-debit on 21st) - Active.
+5. Amazon Prime Annual Allocation: ₹382.00 / month eqv. - Active.
+Total Recurring Subscriptions: ₹4,350.00 / month (₹52,200.00 / year). Identified Savings Potential: Cancel Cult.fit and Adobe to save ₹3,200.00 / month.`
+      },
+      {
+        page: 4,
+        text: `INVESTMENTS, TAX LIABILITIES & LIQUIDITY RECOMMENDATIONS
+Mutual Fund Monthly SIP: Axis Bluechip Growth Fund - ₹10,000.00 debited on 31-Jan-2026.
+Credit Card Outstanding Due Date: 18-Feb-2026 (Total Payable: ₹14,200.00).
+Average Daily Balance Maintained: ₹42,500.00 (Earning 3.00% p.a. standard savings rate).
+Optimization Roadmap: Activate Auto-Sweep Fixed Deposit on balance exceeding ₹15,000.00 to earn 7.15% p.a. with zero liquidity lock-in penalty.`
+      }
     ]
   },
 
@@ -266,6 +317,58 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
         citations: [
           { page: 3, section: 'Clause 3.2 - Co-Payment Matrix', snippet: 'Co-payment of 20% applicable on admissible claim amount in non-network hospitals.' }
         ]
+      }
+    ],
+    rawText: `STAR HEALTH AND ALLIED INSURANCE COMPANY LIMITED
+Comprehensive Health Shield Plus Policy Schedule
+Policy No: SH-COMP-2026-948102 | Policy Period: 15-Mar-2025 to 14-Mar-2026 | Renewal Due: 14-Mar-2026
+Primary Insured: Ananya Sharma (Age: 28) | Sum Insured: ₹15,00,000.00 | Deductible: ₹0.00
+Annual Premium Paid: ₹18,450.00 (inclusive of 18% GST) | 24x7 Claims Intimation: 1800-425-2255
+Key Coverage: In-Patient Hospitalization up to ₹15 Lakhs, 60 Days Pre-Hospitalization, 90 Days Post-Hospitalization, Day Care 405 procedures, AYUSH alternative treatment ₹50,000.
+Important Exclusions & Restrictions:
+Clause 3.2 Co-Payment: 0% at network hospitals; 20% mandatory co-payment on all admissible bills at non-network hospitals.
+Clause 3.4 Room Rent Cap: 1% of Sum Insured (₹15,000/day) for Single Private AC Room. Proportionate deductions apply on surgery/doctor fees if room limit is breached.
+Clause 4.1 Waiting Periods: 36 Months continuous coverage for Pre-Existing Diseases (PED). 24 Months for Cataract (₹40,000/eye), Joint Replacement (₹3,50,000/joint), Hernia/Kidney Stones (₹65,000).`,
+    pageTexts: [
+      {
+        page: 1,
+        text: `STAR HEALTH AND ALLIED INSURANCE COMPANY LIMITED
+COMPREHENSIVE HEALTH SHIELD PLUS - POLICY SCHEDULE & CERTIFICATE OF INSURANCE
+Policy Number: SH-COMP-2026-948102 | Insured Person: Ananya Sharma (Age: 28 Years / Female)
+Policy Commencement: 15-Mar-2025 | Expiration Date: 14-Mar-2026 | Grace Period for Renewal: 30 Days
+Total Base Sum Insured: ₹15,00,000.00 | Cumulative Bonus: 150% Guaranteed Restoration
+Annual Premium: ₹15,635.59 + 18% GST (₹2,814.41) = Total ₹18,450.00 | Deductible: ₹0 (Nil Deductible)
+Emergency 24x7 TPA Help Desk: 1800-425-2255 / 044-2828-8800 | Email: claims@starhealth.in`
+      },
+      {
+        page: 2,
+        text: `SECTION 2: IN-PATIENT & DAY-CARE HOSPITALIZATION BENEFITS
+1. In-Patient Hospitalization: Room rent, nursing, boarding, intensive care unit (ICU), surgeon, anesthetist, medical practitioner, and diagnostic scans covered up to full Sum Insured (₹15,00,000.00).
+2. Pre-Hospitalization Medical Expenses: Incurred up to 60 days prior to date of hospital admission.
+3. Post-Hospitalization Medical Expenses: Incurred up to 90 days following date of hospital discharge.
+4. Day Care Treatments: All 405 advanced procedures requiring less than 24 hours hospitalization covered.
+5. Road Ambulance: Actual charges up to ₹3,000 per hospitalization event.
+6. AYUSH Treatment: In-patient treatment under Ayurveda, Unani, Siddha, and Homeopathy covered up to ₹50,000.`
+      },
+      {
+        page: 3,
+        text: `SECTION 3: CRITICAL RESTRICTIONS, CO-PAYMENT & ROOM RENT CAP
+Clause 3.2 Co-Payment Matrix:
+- Hospitalization within Cashless Network (1,400+ hospitals): 0% Co-Payment.
+- Hospitalization in Non-Network Hospital: Mandatory 20% Co-Payment on entire admissible claim amount payable by the Insured.
+Clause 3.4 Room Rent Limit & Proportionate Deductions:
+- Room Rent is capped at 1% of Sum Insured per day (₹15,000.00/day) for Single Private Standard AC Room.
+- If Insured chooses a higher room category (Suite / Deluxe), all associated medical expenses including doctor visits and surgery fees will be proportionately deducted in the ratio of actual room rent to allowed limit.`
+      },
+      {
+        page: 4,
+        text: `SECTION 4: WAITING PERIODS, ILLNESS SUB-LIMITS & PERMANENT EXCLUSIONS
+Clause 4.1 Waiting Periods:
+- Pre-Existing Diseases (PED): 36 months continuous coverage from initial policy commencement.
+- Specific Illness Waiting (24 Months): Cataract (Sub-limit: ₹40,000 per eye), Joint Replacement (Sub-limit: ₹3,50,000 per joint), Hernia & Kidney Stones (Sub-limit: ₹65,000 per surgery).
+- Initial 30-Day Waiting Period: Illnesses within first 30 days excluded (except accidental injuries).
+General Exclusions:
+- Cosmetic & aesthetic surgeries, OPD dental procedures (Clause 4.8), and non-medical hospital consumables (PPE kits, gloves, sanitizers, admission kits under IRDAI non-payable list).`
       }
     ]
   },
@@ -405,6 +508,56 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
           { page: 2, section: 'Clause 5.2', snippet: 'In the event of Lessee vacating before 6 months, entire security deposit stands forfeited to Lessor.' }
         ]
       }
+    ],
+    rawText: `COMMERCIAL LEASE & TENANCY AGREEMENT
+Executed at Bengaluru on 01-Feb-2026 between Suresh V. Hegde (Lessor) and Roshan Kumar Verma (Lessee).
+Demised Premises: 2nd Floor Commercial Office Space, Indiranagar 100 Feet Road, Bengaluru 560038.
+Term: 11 Months expiring 31-Dec-2026. Monthly Rent: ₹38,000.00 | Security Deposit: ₹2,00,000.00.
+Clause 5.2 Lock-in Period: 6 Months lock-in. Early vacation forfeits the entire ₹2,00,000 security deposit.
+Clause 6.1 Escalation: Automatic 10% rent escalation on 11-month lease renewal.
+Clause 8.1 Painting Deductions: Landlord reserves the right to deduct painting and cleaning costs from security deposit.
+Clause 11.4 Entry: Landlord may enter for inspection. Notice period to terminate after lock-in: 2 months.`,
+    pageTexts: [
+      {
+        page: 1,
+        text: `COMMERCIAL TENANCY AGREEMENT
+This Commercial Tenancy Agreement is entered into on this 1st day of February 2026 at Bengaluru, Karnataka.
+BETWEEN: Mr. Suresh V. Hegde, residing at Indiranagar, Bengaluru (hereinafter referred to as the "LESSOR / LANDLORD")
+AND: Mr. Roshan Kumar Verma, residing at Koramangala, Bengaluru (hereinafter referred to as the "LESSEE / TENANT").
+WHEREAS the Lessor is the absolute owner of Commercial Office Unit No. 204, 2nd Floor, 100 Feet Road, Indiranagar, Bengaluru 560038.`
+      },
+      {
+        page: 2,
+        text: `RENT, SECURITY DEPOSIT & LOCK-IN COVENANTS
+Clause 3 (Rent): The Lessee agrees to pay a monthly base rent of ₹38,000.00 (Rupees Thirty-Eight Thousand only) on or before the 5th of each English calendar month. Electricity (BESCOM) and commercial maintenance (₹3,500/mo) shall be borne directly by Lessee.
+Clause 5 (Security Deposit): The Lessee has deposited an interest-free refundable security deposit of ₹2,00,000.00 (5.26x monthly rent).
+Clause 5.2 (Critical Lock-in Penalty): The Lessee shall observe a mandatory 6-month lock-in period from 01-Feb-2026 to 31-Jul-2026. If the Lessee vacates the premises prior to 31-Jul-2026, the entire security deposit of ₹2,00,000.00 shall stand forfeited to the Lessor as liquidated damages.`
+      },
+      {
+        page: 3,
+        text: `RENEWAL, ESCALATION & TERMINATION NOTICE
+Clause 6 (Escalation): Upon the expiration of the 11-month term (31-Dec-2026), the agreement may be renewed subject to an automatic 10% upward revision of the monthly rent.
+Clause 7 (Notice Period): Following the completion of the 6-month lock-in period, either party may terminate the tenancy by providing 2 (two) months advance written notice via registered post or email.`
+      },
+      {
+        page: 4,
+        text: `DEPOSIT REFUND, REPAIR DEDUCTIONS & MAINTENANCE
+Clause 8.1 (Deductions from Deposit): The Lessor shall refund the security deposit within 30 days of receiving vacant, peaceful possession of the premises, subject to deductions for unpaid utility dues, repainting, and deep-cleaning costs.
+Tenant Redline Advisory: Add clause capping painting and cleaning deductions to ₹15,000.00 maximum supported by actual GST contractor receipts.`
+      },
+      {
+        page: 5,
+        text: `INSPECTION, QUIET ENJOYMENT & ENTRY RIGHTS
+Clause 11.4 (Landlord Inspection): The Lessor or authorized representatives reserve the right to inspect the premises during normal business hours. Tenant requires minimum 24-hour advance intimation.`
+      },
+      {
+        page: 6,
+        text: `ANNEXURE A - OFFICE FIXTURES & ASSET INVENTORY SCHEDULE
+1. Daikin 1.5 Ton Split Air Conditioners (2 Units) - Operational Condition (Est. Value: ₹42,000 each).
+2. Havells 25L Water Geysers (2 Units) - Operational Condition (Est. Value: ₹9,500 each).
+3. Conference Room Table & 8 Mesh Ergonomic Chairs (1 Set) - Good Condition (Est. Value: ₹24,000).
+4. Smart RFID Digital Door Lock (1 Unit) with 2 master keys - Operational (Est. Value: ₹12,000).`
+      }
     ]
   },
 
@@ -512,7 +665,46 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
       'Why is multi-head attention superior to a single attention function?',
       'What BLEU scores were achieved on the WMT 2014 English-to-German dataset?'
     ],
-    chatHistory: []
+    chatHistory: [],
+    rawText: `MULTI-HEAD ATTENTION MECHANISMS IN NEURAL SEQUENCE TRANSDUCTION
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin
+Google Brain & Google Research
+Abstract: We propose the Transformer, a novel architecture based entirely on self-attention mechanisms without recurrence or convolution.
+Attention is computed as Attention(Q,K,V) = softmax(QK^T / sqrt(d_k)) V.
+Multi-Head Attention projects queries, keys, and values h=8 times with dimension d_k = 64, d_model = 512.
+Results: Achieves 28.4 BLEU on WMT 2014 English-to-German and 41.8 BLEU on English-to-French with 3.5 days of training on 8 NVIDIA P100 GPUs.
+Limitations: O(n^2) computational complexity on long sequence lengths n.`,
+    pageTexts: [
+      {
+        page: 1,
+        text: `MULTI-HEAD ATTENTION MECHANISMS IN NEURAL SEQUENCE TRANSDUCTION
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin
+Google Brain, Google Research, University of Toronto
+ABSTRACT: The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The Transformer relies entirely on an attention mechanism to draw global dependencies between input and output, allowing for significantly more parallelization and establishing a new state of the art in translation quality.`
+      },
+      {
+        page: 4,
+        text: `SECTION 3.2: SCALED DOT-PRODUCT & MULTI-HEAD ATTENTION
+An attention function maps a query and a set of key-value pairs to an output. The output is computed as a weighted sum of values:
+Attention(Q, K, V) = softmax((Q K^T) / sqrt(d_k)) V
+Multi-Head Attention allows the model to jointly attend to information from different representation subspaces at different positions:
+MultiHead(Q, K, V) = Concat(head_1, ..., head_h) W^O where head_i = Attention(Q W_i^Q, K W_i^K, V W_i^V)
+In our work, we employ h = 8 parallel attention layers with d_k = d_v = d_model / h = 64.`
+      },
+      {
+        page: 6,
+        text: `SECTION 3.5: POSITIONAL ENCODINGS
+Since our model contains no recurrence and no convolution, in order for the model to make use of the order of the sequence, we must inject information about the relative or absolute position of tokens:
+PE(pos, 2i) = sin(pos / 10000^(2i/d_model))
+PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))`
+      },
+      {
+        page: 8,
+        text: `SECTION 5: EMPIRICAL BENCHMARKS (WMT 2014 TRANSLATION)
+On the WMT 2014 English-to-German translation task, the Transformer (Big) achieves 28.40 BLEU score, surpassing the best previously reported models (including ConvS2S at 25.16 BLEU and ByteNet at 23.75 BLEU).
+On the WMT 2014 English-to-French translation task, the Transformer achieves 41.80 BLEU score after 3.5 days of training on 8 NVIDIA P100 GPUs.`
+      }
+    ]
   },
 
   // 5. CLOUD INFRASTRUCTURE TAX INVOICE (AWS BILLING)
@@ -628,6 +820,41 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
           { page: 2, section: 'EBS Storage Section', snippet: 'gp3 volumes: 4 unattached volumes detected with zero I/O operations in 30 days.' }
         ]
       }
+    ],
+    rawText: `AMAZON WEB SERVICES INDIA PRIVATE LIMITED - TAX INVOICE
+Invoice No: INV-AWS-2026-081924 | Date: 01-Feb-2026 | Due: 15-Feb-2026 (Auto-Debit)
+Vendor GSTIN: 29AAACA1234F1Z5 | Client: DocFin Technologies LLP
+Taxable Subtotal: ₹71,500.00 | CGST (9%): ₹6,435.00 | SGST (9%): ₹6,435.00 | Total: ₹84,370.00
+Services Billed:
+- Amazon EC2 Linux On-Demand (ap-south-1): 744 Hours x ₹64.78 = ₹48,200.00 (67.4%)
+- Amazon RDS Aurora PostgreSQL (db.r6g.large): 744 Hours x ₹20.30 = ₹15,100.00
+- Amazon EBS gp3 Volumes: 1,200 GB-Mo x ₹6.83 = ₹8,200.00 (Includes 4 unattached volumes waste ₹4,200/mo)
+Eligible Input Tax Credit: ₹12,870 reconcilable under GSTR-2B.`,
+    pageTexts: [
+      {
+        page: 1,
+        text: `AMAZON WEB SERVICES INDIA PRIVATE LIMITED
+COMMERCIAL TAX INVOICE / B2B BILLING STATEMENT
+Invoice Number: INV-AWS-2026-081924 | Invoice Date: 01-Feb-2026 | Due Date: 15-Feb-2026
+Supplier GSTIN: 29AAACA1234F1Z5 | SAC Code: 998313 (Cloud Computing & Hosting)
+Customer: DocFin Technologies LLP | Corporate Account ID: 9481-2094-1182
+Taxable Value: ₹71,500.00 | CGST (9.0%): ₹6,435.00 | SGST (9.0%): ₹6,435.00 | Total Invoice Value: ₹84,370.00
+Payment Method: Corporate Direct Debit scheduled for 15-Feb-2026.`
+      },
+      {
+        page: 2,
+        text: `ITEMIZED USAGE & COST BREAKDOWN (ASIA PACIFIC - MUMBAI REGION)
+1. Amazon Elastic Compute Cloud (EC2): ap-south-1-BoxUsage:t4g.xlarge | Units: 744.000 Hrs | Rate: ₹64.78 | Total: ₹48,200.00
+2. Amazon Relational Database Service (RDS Aurora): ap-south-1-InstanceUsage:db.r6g.large | Units: 744.000 Hrs | Rate: ₹20.30 | Total: ₹15,100.00
+3. Amazon Elastic Block Store (EBS gp3 Volumes): ap-south-1-VolumeUsage.gp3 | Units: 1,200.000 GB-Mo | Rate: ₹6.83 | Total: ₹8,200.00
+Flagged Cloud Waste: 4 detached/orphaned gp3 volumes identified with zero I/O operations in 30 days, billing ₹4,200.00/month unnecessarily.`
+      },
+      {
+        page: 3,
+        text: `TAX COMPLIANCE, GSTR-2B & SAVINGS RECOMMENDATIONS
+GST Compliance Note: Input Tax Credit (ITC) of ₹12,870.00 is fully claimable in GSTR-3B before 20-Feb-2026.
+Compute Savings Plan Recommendation: Purchasing a 1-Year All-Upfront Compute Savings Plan for baseline t4g instances reduces hourly EC2 rates by 35%, generating ₹17,200.00 in monthly recurring cost savings.`
+      }
     ]
   },
 
@@ -729,6 +956,47 @@ export const SAMPLE_DOCUMENTS: DocumentAnalysis[] = [
       'What lifestyle changes can reverse my pre-diabetic HbA1c level?',
       'Are my liver and kidney function markers normal?'
     ],
-    chatHistory: []
+    chatHistory: [],
+    rawText: `APOLLO DIAGNOSTICS SUPER SPECIALITY CLINICAL LABORATORIES
+Patient Name: Roshan Kumar Verma | Age: 32 / Male | Date: 28-Jan-2026
+Test Results:
+- Fasting Blood Sugar: 128 mg/dL (Ref: 70 - 99 mg/dL) [HIGH - Pre-diabetes risk]
+- Glycated Hemoglobin (HbA1c): 6.2 % (Ref: < 5.7 %) [HIGH - Pre-diabetic range 5.7 - 6.4%]
+- Vitamin D3 (25-OH): 14.2 ng/mL (Ref: 30 - 100 ng/mL) [DEFICIENT - Severe Hypovitaminosis D]
+- Serum Creatinine: 0.90 mg/dL (Ref: 0.70 - 1.20 mg/dL) [NORMAL]
+- SGPT / ALT: 28.0 U/L (Ref: < 45.0 U/L) [NORMAL]
+- Total Cholesterol: 195 mg/dL (Desirable < 200 mg/dL)
+Physician Advice: Prescribed Cholecalciferol 60k IU softgel once weekly for 8 weeks post dinner with milk. Reduce refined carbs, 150 mins weekly exercise, repeat HbA1c in 90 days.`,
+    pageTexts: [
+      {
+        page: 1,
+        text: `APOLLO DIAGNOSTICS SUPER SPECIALITY LABORATORIES
+COMPREHENSIVE METABOLIC PANEL & DIABETIC HEALTH SCREEN
+Patient: Roshan Kumar Verma | Age: 32 Years / Male | Specimen ID: AP-BL-2026-98102
+Sample Collected: 28-Jan-2026 | Reporting Date: 28-Jan-2026
+TEST RESULTS:
+1. Fasting Blood Glucose (Plasma): 128.0 mg/dL | Biological Reference Interval: 70.0 - 99.0 mg/dL | Clinical Status: High (Impaired Fasting Glucose / Pre-Diabetes)
+2. Glycated Hemoglobin (HbA1c - Whole Blood): 6.2 % | Biological Reference Interval: 4.0 - 5.6 % | Clinical Status: High (Pre-Diabetic 5.7 - 6.4%)`
+      },
+      {
+        page: 2,
+        text: `SECTION 2: VITAMIN PROFILES, RENAL CLEARANCE & LIVER ENZYMES
+3. Vitamin D3 (25-Hydroxy Cholecalciferol): 14.2 ng/mL | Biological Reference Interval: 30.0 - 100.0 ng/mL | Clinical Status: Severe Deficiency
+4. Renal Panel - Serum Creatinine: 0.90 mg/dL | Biological Reference Interval: 0.70 - 1.20 mg/dL | Clinical Status: Normal / Healthy Filtration
+5. Hepatic Panel - SGPT / ALT: 28.0 U/L | Biological Reference Interval: < 45.0 U/L | Clinical Status: Normal / Healthy Liver Function
+6. Lipid Profile: Total Cholesterol 195 mg/dL | LDL 122 mg/dL | HDL 48 mg/dL | Triglycerides 145 mg/dL.`
+      },
+      {
+        page: 3,
+        text: `SECTION 3: CLINICAL CONSULTATION & TREATMENT ROADMAP
+Diagnosis: Early Impaired Glucose Tolerance (Pre-Diabetes Stage) and Severe Vitamin D3 Deficiency.
+Prescribed Supplementation:
+- Cholecalciferol 60,000 IU Oral Softgel: 1 capsule once weekly with milk after dinner for 8 weeks.
+Dietary & Lifestyle Advice:
+- Eliminate refined table sugars, sweetened beverages, and bakery goods.
+- Maintain at least 150 minutes of moderate aerobic exercise (brisk walking/cycling) per week.
+- Schedule repeat HbA1c and Fasting Glucose blood test in 90 days (April 2026).`
+      }
+    ]
   }
 ];

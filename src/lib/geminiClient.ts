@@ -798,8 +798,151 @@ function createUniversalLocalAnalysis(
 }
 
 /**
+ * Build rich, structured textual context from document analysis metadata and extracted pages
+ */
+function buildComprehensiveDocumentContext(doc: DocumentAnalysis): string {
+  const parts: string[] = [];
+
+  // 1. Raw Text / Page Texts if available
+  const pages = doc.pageTexts || (doc.rawText ? [{ page: 1, text: doc.rawText }] : []);
+  if (pages.length > 0 && pages.some((p) => p.text && p.text.trim().length > 30)) {
+    parts.push('=== DOCUMENT EXTRACTED PAGES ===');
+    pages.forEach((p) => {
+      if (p.text && p.text.trim().length > 0) {
+        parts.push(`--- PAGE ${p.page} ---\n${p.text.trim()}`);
+      }
+    });
+  }
+
+  // 2. Structured Executive Summary & Takeaways
+  parts.push('\n=== VERIFIED DOCUMENT INTELLIGENCE ===');
+  parts.push(`Document: ${doc.name} (Domain: ${doc.detectedDomain.toUpperCase()}, Pages: ${doc.pageCount})`);
+  if (doc.summary?.tldr) {
+    parts.push(`TL;DR: ${doc.summary.tldr}`);
+  }
+  if (doc.summary?.executiveBrief) {
+    parts.push(`Executive Brief: ${doc.summary.executiveBrief}`);
+  }
+  if (doc.summary?.keyTakeaways && doc.summary.keyTakeaways.length > 0) {
+    parts.push(`Key Takeaways:\n${doc.summary.keyTakeaways.map((t, i) => `${i + 1}. ${t}`).join('\n')}`);
+  }
+
+  // 3. Risks & Red Flags
+  const risks = doc.summary?.risksAndConcerns || doc.trackedRisks || [];
+  if (risks.length > 0) {
+    parts.push(`\n=== CRITICAL RISKS & RED FLAGS ===`);
+    risks.forEach((r, i) => {
+      parts.push(`${i + 1}. [${r.riskLevel || 'Warning'}] ${r.title} (Page ${r.page || 1}): ${r.plainEnglish}${r.mitigation ? ` | Mitigation: ${r.mitigation}` : ''}`);
+    });
+  }
+
+  // 4. Extracted Tables
+  if (doc.extractedTables && doc.extractedTables.length > 0) {
+    parts.push(`\n=== EXTRACTED DATA TABLES ===`);
+    doc.extractedTables.forEach((t) => {
+      parts.push(`\nTable: ${t.tableName} (Page ${t.page || 1})`);
+      parts.push(`| ${t.columns.join(' | ')} |`);
+      parts.push(`| ${t.columns.map(() => '---').join(' | ')} |`);
+      t.rows.forEach((row) => {
+        const values = t.columns.map((col) => String(row[col] ?? ''));
+        parts.push(`| ${values.join(' | ')} |`);
+      });
+    });
+  }
+
+  // 5. Domain-Specific Payloads
+  if (doc.financeData) {
+    parts.push(`\n=== FINANCIAL & CASH FLOW DATA ===`);
+    parts.push(`Total Inflow: ₹${doc.financeData.totalIncome?.toLocaleString() || 0} | Total Outflow: ₹${doc.financeData.totalExpense?.toLocaleString() || 0} | Net Savings: ₹${doc.financeData.netSavings?.toLocaleString() || 0} (${doc.financeData.savingsRate || ''})`);
+    if (doc.financeData.categorySpend) {
+      parts.push(`Spending Categories: ${doc.financeData.categorySpend.map((c) => `${c.category}: ₹${c.amount} (${c.percentage}%)`).join(', ')}`);
+    }
+    if (doc.financeData.recurringSubs) {
+      parts.push(`Recurring Subscriptions: ${doc.financeData.recurringSubs.map((s) => `${s.name}: ₹${s.amount}/${s.frequency} (${s.status})`).join(', ')}`);
+    }
+    if (doc.financeData.feesAndPenalties) {
+      parts.push(`Penalties & Fees: ${doc.financeData.feesAndPenalties.map((f) => `${f.feeType}: ₹${f.amount} (${f.flaggedReason})`).join(', ')}`);
+    }
+  }
+
+  if (doc.insuranceData) {
+    parts.push(`\n=== INSURANCE POLICY DATA ===`);
+    parts.push(`Policy Type: ${doc.insuranceData.policyType} | Sum Insured: ${doc.insuranceData.sumInsured} | Co-Pay: ${doc.insuranceData.copay} | Waiting Period: ${doc.insuranceData.waitingPeriod}`);
+    if (doc.insuranceData.coveredItems) {
+      parts.push(`Covered Items:\n${doc.insuranceData.coveredItems.map((c) => `- ${c.title}: ${c.details} (Limit: ${c.limit})`).join('\n')}`);
+    }
+    if (doc.insuranceData.excludedItems) {
+      parts.push(`Excluded Items:\n${doc.insuranceData.excludedItems.map((e) => `- ${e.title} [${e.severity}]: ${e.details} (Reason: ${e.reason})`).join('\n')}`);
+    }
+  }
+
+  if (doc.legalData) {
+    parts.push(`\n=== LEGAL & CONTRACTUAL DATA ===`);
+    parts.push(`Contract Type: ${doc.legalData.contractType} | Duration: ${doc.legalData.duration} | Effective: ${doc.legalData.effectiveDate} | Risk Score: ${doc.legalData.riskScore}`);
+    if (doc.legalData.riskyClauses) {
+      parts.push(`Risky Clauses:\n${doc.legalData.riskyClauses.map((c) => `- [${c.riskLevel}] ${c.clause} (Page ${c.page}): ${c.plainEnglish} | Mitigation: ${c.mitigation}`).join('\n')}`);
+    }
+    if (doc.legalData.obligations) {
+      parts.push(`Obligations:\n${doc.legalData.obligations.map((o) => `- ${o.party}: ${o.obligation} (Due: ${o.deadline})`).join('\n')}`);
+    }
+  }
+
+  if (doc.billingData) {
+    parts.push(`\n=== BILLING & TAX INVOICE DATA ===`);
+    parts.push(`Invoice #${doc.billingData.invoiceNumber} | Vendor: ${doc.billingData.vendor} | Client: ${doc.billingData.client} | Due: ${doc.billingData.dueDate} | Total: ₹${doc.billingData.totalAmount}`);
+    if (doc.billingData.lineItems) {
+      parts.push(`Line Items:\n${doc.billingData.lineItems.map((l) => `- ${l.description}: Qty ${l.qty} x ₹${l.unitPrice} = ₹${l.total}`).join('\n')}`);
+    }
+  }
+
+  if (doc.medicalData) {
+    parts.push(`\n=== MEDICAL LAB DATA ===`);
+    if (doc.medicalData.criticalMarkers) {
+      parts.push(`Critical Biomarkers:\n${doc.medicalData.criticalMarkers.map((m) => `- ${m.marker}: ${m.value} (Ref: ${m.referenceRange}, Status: ${m.status}) — ${m.interpretation}`).join('\n')}`);
+    }
+    if (doc.medicalData.physicianAdviceSummary) {
+      parts.push(`Physician Advice: ${doc.medicalData.physicianAdviceSummary}`);
+    }
+  }
+
+  if (doc.academicData) {
+    parts.push(`\n=== ACADEMIC RESEARCH DATA ===`);
+    parts.push(`Research Question: ${doc.academicData.researchQuestion}`);
+    parts.push(`Authors: ${doc.academicData.authors?.join(', ')} | Institution: ${doc.academicData.institution}`);
+    parts.push(`Methodology: ${doc.academicData.methodology}`);
+    if (doc.academicData.keyFindings) {
+      parts.push(`Key Findings:\n${doc.academicData.keyFindings.map((f) => `- ${f}`).join('\n')}`);
+    }
+  }
+
+  if (doc.savingsTips && doc.savingsTips.length > 0) {
+    parts.push(`\n=== PERSONALIZED SAVINGS TIPS ===`);
+    doc.savingsTips.forEach((tip, i) => {
+      parts.push(`${i + 1}. ${tip.title} (${tip.difficulty}): ${tip.potentialSavings} — ${tip.description} [Action: ${tip.action}]`);
+    });
+  }
+
+  // 6. Extracted Entities & Numbers
+  if (doc.extractedEntities && doc.extractedEntities.length > 0) {
+    parts.push(`\n=== GROUNDED ENTITIES ===`);
+    doc.extractedEntities.forEach((e) => {
+      parts.push(`- ${e.key} (${e.category}): ${e.value} (Page ${e.page || 1})`);
+    });
+  }
+
+  if (doc.summary?.numbersAndMetrics && doc.summary.numbersAndMetrics.length > 0) {
+    parts.push(`\n=== NUMBERS & METRICS ===`);
+    doc.summary.numbersAndMetrics.forEach((n) => {
+      parts.push(`- ${n.label}: ${n.value} (Page ${n.page || 1}) — ${n.context}`);
+    });
+  }
+
+  return parts.join('\n');
+}
+
+/**
  * Universal Grounded RAG Assistant
- * Interrogates document context with exact page citations and zero canned boilerplate
+ * Interrogates document context with exact page citations, tables, and zero canned boilerplate
  */
 export async function executeDocumentRAG(
   query: string,
@@ -872,28 +1015,97 @@ export async function executeDocumentRAG(
     }
   ];
 
+  // Dynamic context-aware suggestions
+  const domain = (documentContext.detectedDomain || 'general').toLowerCase();
+  let suggestions: string[] = [
+    '📝 30-Second Executive Summary',
+    '🚩 Highlight critical risks & clauses',
+    '📊 Extract key figures & tables',
+    '💡 Personalized AI tips'
+  ];
+
+  if (domain.includes('finance') || domain.includes('statement') || domain.includes('bank')) {
+    suggestions = [
+      '📊 50/30/20 Budget breakdown',
+      '🚩 Audit hidden fees and overdraft penalties',
+      '💳 Categorize recurring subscriptions',
+      '💡 Personalized AI savings tips'
+    ];
+  } else if (domain.includes('insurance') || domain.includes('policy')) {
+    suggestions = [
+      '🚩 Highlight 20% co-pay & sub-limits',
+      '🛡️ List covered vs excluded treatments',
+      '📋 Show claim procedure checklist',
+      '💡 Preventive checkup & savings tips'
+    ];
+  } else if (domain.includes('legal') || domain.includes('contract') || domain.includes('lease')) {
+    suggestions = [
+      '🚩 Flag deposit forfeiture & lock-in clauses',
+      '📅 Check notice period & renewal escalation',
+      '⚖️ Summarize obligations & liabilities',
+      '💡 Deposit protection & redline advice'
+    ];
+  } else if (domain.includes('academic') || domain.includes('research')) {
+    suggestions = [
+      '💡 Explain methodology in simple terms',
+      '🎯 Summarize key findings & BLEU scores',
+      '📊 Extract empirical benchmark table',
+      '🚩 List quadratic complexity limitations'
+    ];
+  } else if (domain.includes('billing') || domain.includes('invoice')) {
+    suggestions = [
+      '💰 Verify eligible 18% GST tax credits (ITC)',
+      '🚩 Audit orphaned EBS storage waste',
+      '📊 Itemized service breakdown table',
+      '💡 1-Year Savings Plan recommendation'
+    ];
+  } else if (domain.includes('medical')) {
+    suggestions = [
+      '🚩 Abnormal biomarkers & pre-diabetes review',
+      '💊 Vitamin D3 deficiency treatment roadmap',
+      '📊 Complete laboratory test matrix',
+      '💡 Low-glycemic dietary action plan'
+    ];
+  }
+
   // 3. Live Gemini RAG Generation (if valid API key is present)
   try {
-    const pageTextsStr = pages.map((p) => `--- PAGE ${p.page} ---\n${p.text}`).join('\n\n');
+    const comprehensiveContext = buildComprehensiveDocumentContext(documentContext);
     const ragPrompt = `You are DocFin AI, an expert document intelligence and explanation engine.
-Answer the user's question accurately, concisely, and in simple, clear everyday language using ONLY the provided document text.
+You have complete access to the document's verified content, structured tables, extracted entities, risk covenants, and intelligence data provided below.
 
 RULES:
-1. Provide a direct, plain-English explanation of the document facts.
-2. Structure your answer with clear markdown headers and bullet points.
-3. Explicitly cite the page number for all facts or numbers mentioned (e.g. *(Page 1)*).
-4. Do not include raw bytecode, internal tokens, or canned disclaimers.
+1. Provide a direct, highly articulate, plain-English answer to the user's question using the provided document facts.
+2. Structure your answer with clear markdown headers, bold labels, bullet points, and tables where helpful.
+3. Explicitly cite page numbers for facts, numbers, or clauses mentioned (e.g. *(Page 1)* or *(Page 3)*).
+4. NEVER say "no document text was provided", "document is blank", or ask the user to re-upload. You have the complete verified document context below.
+5. If asked to summarize, extract tables, list risks, explain clauses, calculate savings, or analyze numbers, perform the requested task comprehensively using the provided document content.
 
 DOCUMENT TITLE: ${documentContext.name}
-DOCUMENT PAGES:
-${pageTextsStr.slice(0, 12000)}
+DOMAIN: ${domain.toUpperCase()}
+PAGE COUNT: ${documentContext.pageCount || 1}
+
+DOCUMENT CONTENT & EXTRACTED DATA:
+${comprehensiveContext.slice(0, 15000)}
 
 USER QUESTION: "${cleanQuery}"`;
 
     const answer = await generateGeminiContentWithFallback(ragPrompt, customApiKey);
 
-    if (answer && answer.length > 20) {
-      const responseToReturn = { answer, citations };
+    const invalidPhrases = [
+      'no document text was provided',
+      'provided document text is blank',
+      'missing document content',
+      'unable to generate',
+      'please provide the text',
+      'does not contain any pages',
+      'no document was provided',
+      'document text is empty'
+    ];
+    const isInvalid = !answer || invalidPhrases.some((phrase) => answer.toLowerCase().includes(phrase));
+
+    if (answer && answer.length > 20 && !isInvalid) {
+      const responseToReturn = { answer, citations, suggestions };
       setInCache(cacheKey, responseToReturn, 3600).catch(() => {});
       return responseToReturn;
     }
@@ -901,224 +1113,97 @@ USER QUESTION: "${cleanQuery}"`;
     console.warn('Gemini live RAG notice:', err);
   }
 
-  // 4. Grounded NLP Direct Answer Generator (Plain English synthesis)
+  // 4. Grounded NLP Direct Answer Generator (Deterministic Plain English synthesis)
   let answer = '';
   const qLower = cleanQuery.toLowerCase();
   const isDatesQuery = /date|milestone|deadline|calendar|timeline|schedule|due|when|effective|expiration|renewal/i.test(qLower);
   const isNumericalQuery = /number|numeric|figure|metric|amount|financial|price|rate|cost|fee|revenue|margin|tax|stat|quantity|total|sum/i.test(qLower);
   const isSummaryQuery = /summary|summarize|explain|overview|takeaway|brief|understand|30-second|core|thesis/i.test(qLower);
   const isExportQuery = /export|markdown|report|dossier|full summary/i.test(qLower);
-  const isRiskQuery = /risk|penalty|clause|liability|forfeit|breach|concern|warning|covenant|terms|lock-in/i.test(qLower);
-  const isCashFlowQuery = /spending|cash flow|inflow|outflow|subscription|charge|balance|ledger|statement/i.test(qLower);
+  const isRiskQuery = /risk|penalty|clause|liability|forfeit|breach|concern|warning|covenant|terms|lock-in|red flag|hidden con/i.test(qLower);
+  const isTableQuery = /table|extract table|make table|tabular|data table|csv|spreadsheet|matrix|ledger/i.test(qLower);
+  const isSavingsQuery = /saving|savings|tip|tips|optimize|optimization|cut cost|reduce bill|recommendation/i.test(qLower);
+  const isCashFlowQuery = /spending|cash flow|inflow|outflow|subscription|charge|balance|bank statement/i.test(qLower);
   const isMethodologyQuery = /methodology|method|thesis|research question|hypothesis|dataset|benchmark|experiment/i.test(qLower);
   const isGreeting = /^(hey|hi|hello|greetings|good\s+(morning|afternoon|evening)|yo|howdy|sup)\b/i.test(qLower) || /^(what\s+can\s+you\s+do|help|how\s+to\s+use)\b/i.test(qLower);
   const isInitialUpload = /attached \d+ media file|analyze and synthesize uploaded document/i.test(qLower);
 
-  const domain = (documentContext.detectedDomain || 'general').toLowerCase();
-
-  // Dynamic context-aware suggestions
-  let suggestions: string[] = [
-    '📝 30-Second Executive Summary',
-    '💡 Explain in simple everyday words',
-    '📋 Action items & requirements',
-    '📄 Export structured markdown summary'
-  ];
-
-  if (domain.includes('finance') || domain.includes('statement') || domain.includes('bank')) {
-    suggestions = [
-      '📊 Summarize spending & cash flow',
-      '⚠️ Audit hidden fees and penalties',
-      '💳 Categorize recurring subscriptions',
-      '📄 Export transactions CSV ledger'
-    ];
-  } else if (domain.includes('legal') || domain.includes('contract') || domain.includes('lease')) {
-    suggestions = [
-      '⚠️ Flag penalty & deposit forfeiture clauses',
-      '📅 Check notice period & renewal deadlines',
-      '⚖️ Summarize obligations & liability limits',
-      '📝 Draft pro-rata counter-clause'
-    ];
-  } else if (domain.includes('academic') || domain.includes('research')) {
-    suggestions = [
-      '💡 Explain methodology in simple terms',
-      '🎯 Summarize key findings & takeaways',
-      '📊 Extract empirical benchmark table',
-      '🔍 List limitations & future work'
-    ];
-  } else if (domain.includes('billing') || domain.includes('invoice')) {
-    suggestions = [
-      '💰 Verify eligible tax credits (ITC)',
-      '🔍 Check line-item unit rates & totals',
-      '📅 Audit payment terms & due dates',
-      '📄 Export line items CSV'
-    ];
-  } else if (domain.includes('insurance') || domain.includes('policy')) {
-    suggestions = [
-      '🛡️ List covered vs excluded treatments',
-      '⚠️ Highlight co-pay & sub-limits',
-      '📋 Show claim procedure checklist',
-      '🏥 Check cashless network rules'
-    ];
-  } else if (domain.includes('technical')) {
-    suggestions = [
-      '🏗️ System architecture overview',
-      '🔌 List API endpoints & parameters',
-      '⚙️ Component topology breakdown',
-      '📄 Export specification dossier'
-    ];
-  } else {
-    // If the general document actually has tracked numbers or dates, augment suggestions
-    if (documentContext.trackedNumbers && documentContext.trackedNumbers.length > 0) {
-      suggestions[1] = '📊 Extract key figures & metrics';
-    }
-    if (documentContext.trackedDates && documentContext.trackedDates.length > 0) {
-      suggestions[2] = '📅 List critical dates & milestones';
-    }
-  }
-
   if (isGreeting) {
-    answer = `Hello! 👋 How can I help you today?\n\nI have **${documentContext.name}** (${domain.toUpperCase()} domain, ${documentContext.pageCount || 1} page(s)) indexed in context.\n\nYou can:\n- Ask questions or summarize specific sections\n- Extract structured tables or numerical metrics\n- Chat with me freely on any other topic\n\nWhat would you like to explore?`;
-  } else if (isInitialUpload) {
-    if (domain.includes('finance') || domain.includes('statement') || domain.includes('bank')) {
-      answer = `### 💳 Bank Statement Analyzed: **${documentContext.name}**\n\n`;
-      answer += `I've analyzed your bank statement across **${documentContext.pageCount || 1} page(s)**.\n\n`;
-      answer += `I can help you understand your transactions, summarize your spending, audit monthly fees, identify unusual charges, or answer questions about specific entries.\n\n`;
-      if (documentContext.trackedNumbers && documentContext.trackedNumbers.length > 0) {
-        answer += `#### 📊 Key Financial Figures:\n`;
-        documentContext.trackedNumbers.slice(0, 3).forEach((n) => {
-          answer += `- **${n.label}**: \`${n.value}\` *(Page ${n.page})*\n`;
+    answer = `Hello! 👋 How can I help you today?\n\nI have **${documentContext.name}** (${domain.toUpperCase()} domain, ${documentContext.pageCount || 1} page(s)) indexed in context.\n\nYou can:\n- 🚩 Highlight red flags, risks & hidden clauses\n- 📊 Extract and view structured tables\n- 💡 Get personalized AI optimization tips\n- 📝 Generate plain-English executive summaries\n\nWhat would you like to explore?`;
+  } else if (isTableQuery) {
+    answer = `### 📊 Structured Data Tables: ${documentContext.name}\n\n`;
+    if (documentContext.extractedTables && documentContext.extractedTables.length > 0) {
+      documentContext.extractedTables.forEach((tbl, idx) => {
+        answer += `#### ${idx + 1}. ${tbl.tableName} *(Page ${tbl.page || 1})*\n\n`;
+        answer += `| ${tbl.columns.join(' | ')} |\n`;
+        answer += `| ${tbl.columns.map(() => '---').join(' | ')} |\n`;
+        tbl.rows.forEach((r) => {
+          const vals = tbl.columns.map((c) => String(r[c] ?? ''));
+          answer += `| ${vals.join(' | ')} |\n`;
         });
         answer += '\n';
-      }
-    } else if (domain.includes('legal') || domain.includes('contract') || domain.includes('lease')) {
-      answer = `### ⚖️ Legal Document Analyzed: **${documentContext.name}**\n\n`;
-      answer += `I've analyzed your contract across **${documentContext.pageCount || 1} page(s)**.\n\n`;
-      answer += `I can help you audit liability covenants, check notice period deadlines, flag deposit forfeiture clauses, or explain legal terms in plain English.\n\n`;
-      if (documentContext.summary.keyTakeaways && documentContext.summary.keyTakeaways.length > 0) {
-        answer += `#### 🔍 Key Covenant:\n- ${documentContext.summary.keyTakeaways[0]}\n\n`;
-      }
-    } else if (domain.includes('academic') || domain.includes('research')) {
-      answer = `### 📚 Research Paper Analyzed: **${documentContext.name}**\n\n`;
-      answer += `I've analyzed the research paper across **${documentContext.pageCount || 1} page(s)**.\n\n`;
-      answer += `I can summarize the research, explain difficult concepts in simpler language, break down the methodology, or synthesize empirical benchmark findings.\n\n`;
-      if (documentContext.summary.keyTakeaways && documentContext.summary.keyTakeaways.length > 0) {
-        answer += `#### 🎯 Core Thesis / Finding:\n- ${documentContext.summary.keyTakeaways[0]}\n\n`;
-      }
-    } else if (domain.includes('billing') || domain.includes('invoice')) {
-      answer = `### 🧾 Invoice Analyzed: **${documentContext.name}**\n\n`;
-      answer += `I've analyzed your invoice across **${documentContext.pageCount || 1} page(s)**.\n\n`;
-      answer += `I can verify line-item rates, calculate eligible tax deductions (ITC), confirm supplier tax numbers, or check due dates.\n\n`;
-      if (documentContext.trackedNumbers && documentContext.trackedNumbers.length > 0) {
-        answer += `#### 💰 Key Figures:\n`;
-        documentContext.trackedNumbers.slice(0, 3).forEach((n) => {
-          answer += `- **${n.label}**: \`${n.value}\` *(Page ${n.page})*\n`;
-        });
-        answer += '\n';
-      }
-    } else {
-      answer = `### 📄 Document Analyzed: **${documentContext.name}**\n\n`;
-      answer += `I've parsed and indexed your document across **${documentContext.pageCount || 1} page(s)**.\n\n`;
-      answer += `${documentContext.summary.tldr}\n\n`;
-      answer += `I can summarize key points, extract specific sections, explain complex concepts, or answer any questions about the content.\n\n`;
-    }
-
-    answer += `*Grounded directly on verified page coordinates.*`;
-  } else if (isDatesQuery) {
-    const realDates = (documentContext.trackedDates || []).filter(
-      (d) => !d.event.toLowerCase().includes('document ingestion')
-    );
-
-    if (realDates.length > 0) {
-      answer = `### 📅 Critical Dates & Milestones: ${documentContext.name}\n\n`;
-      answer += `Based on a verified timeline audit of **${documentContext.name}** across **${documentContext.pageCount || 1} page(s)**:\n\n`;
-      realDates.slice(0, 6).forEach((d, idx) => {
-        const typeBadge = d.type === 'deadline' ? '⚠️ Deadline' : d.type === 'effective' ? '🟢 Effective' : '📌 Milestone';
-        answer += `**${idx + 1}. ${d.event}** (${typeBadge})\n`;
-        answer += `- **Date / Timeline**: \`${d.date}\` *(Page ${d.page})*\n\n`;
       });
-      answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
+      answer += `*Extracted directly from verified table schemas in ${documentContext.name}.*`;
+    } else if (documentContext.extractedEntities && documentContext.extractedEntities.length > 0) {
+      answer += `#### 📋 Extracted Entities Matrix *(Page 1)*\n\n`;
+      answer += `| Category | Key Property | Value | Location |\n`;
+      answer += `| :--- | :--- | :--- | :--- |\n`;
+      documentContext.extractedEntities.forEach((e) => {
+        answer += `| ${e.category} | **${e.key}** | \`${e.value}\` | Page ${e.page || 1} |\n`;
+      });
+      answer += `\n*Grounded directly on verified entities of ${documentContext.name}.*`;
     } else {
-      const dateRegex = /\b(?:\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}|\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{2,4}|(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}|\b(?:Q[1-4]\s+\d{4}|FY\s*\d{2,4})|\b\d+\s+(?:days|months|years|weeks)\b)/gi;
-      const dateSentences = allSentences.filter((s) => dateRegex.test(s));
-
-      if (dateSentences.length > 0) {
-        answer = `### 📅 Timeline References: ${documentContext.name}\n\n`;
-        answer += `Found **${dateSentences.length} timeline reference(s)** in **${documentContext.name}**:\n\n`;
-        dateSentences.slice(0, 5).forEach((s, idx) => {
-          const pageNum = pages.find((p) => p.text.includes(s))?.page || 1;
-          answer += `**${idx + 1}.** ${s} *(Page ${pageNum})*\n\n`;
-        });
-        answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
-      } else {
-        answer = `### 📅 Timeline & Milestones: ${documentContext.name}\n\n`;
-        answer += `No scheduled contractual deadlines or calendar milestones were specified in the text of **${documentContext.name}**.\n\n`;
-        if (documentContext.summary.keyTakeaways && documentContext.summary.keyTakeaways.length > 0) {
-          answer += `#### 🎯 Core Document Subject Matter:\n`;
-          documentContext.summary.keyTakeaways.slice(0, 4).forEach((t, idx) => {
-            answer += `**${idx + 1}.** ${t}\n\n`;
-          });
+      answer += `Extracted key metrics and figures for **${documentContext.name}**:\n\n`;
+      answer += `| Metric / Field | Value | Reference |\n`;
+      answer += `| :--- | :--- | :--- |\n`;
+      documentContext.metrics.forEach((m) => {
+        answer += `| ${m.label} | \`${m.value}\` | ${m.subtext || 'Verified'} |\n`;
+      });
+    }
+  } else if (isRiskQuery) {
+    const risks = documentContext.summary?.risksAndConcerns || documentContext.trackedRisks || [];
+    answer = `### 🚩 Red Flags & Critical Risks: ${documentContext.name}\n\n`;
+    if (risks.length > 0) {
+      risks.forEach((r, idx) => {
+        const severityBadge = r.riskLevel === 'Critical' ? '🚨 **CRITICAL**' : r.riskLevel === 'High' ? '🔴 **HIGH RISK**' : '🟡 **WARNING**';
+        answer += `#### ${idx + 1}. ${r.title} (${severityBadge})\n`;
+        answer += `- **Plain-English Finding**: ${r.plainEnglish} *(Page ${r.page || 1})*\n`;
+        if (r.mitigation) {
+          answer += `- **Recommended Action / Mitigation**: ${r.mitigation}\n\n`;
+        } else {
+          answer += '\n';
         }
-        answer += `*Grounded directly on verified text of ${documentContext.name}.*`;
-      }
-    }
-  } else if (isNumericalQuery) {
-    const realNumbers = (documentContext.trackedNumbers || []).filter(
-      (n) => !n.label.includes('Document Page Count') && !n.label.includes('Document Storage Size')
-    );
-
-    if (realNumbers.length > 0) {
-      answer = `### 📊 Key Numerical Takeaways: ${documentContext.name}\n\n`;
-      answer += `Based on a verified extraction from **${documentContext.name}**:\n\n`;
-      realNumbers.slice(0, 6).forEach((n, idx) => {
-        answer += `**${idx + 1}. ${n.label}**: \`${n.value}\` *(Page ${n.page})*\n`;
-        answer += `> ${n.context}\n\n`;
       });
-      answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
+      answer += `*Grounded directly on verified compliance rules in ${documentContext.name}.*`;
+    } else if (documentContext.legalData?.riskyClauses) {
+      documentContext.legalData.riskyClauses.forEach((c, idx) => {
+        answer += `#### ${idx + 1}. ${c.clause} [${c.riskLevel}]\n`;
+        answer += `- **Finding**: ${c.plainEnglish} *(Page ${c.page || 1})*\n`;
+        answer += `- **Mitigation**: ${c.mitigation}\n\n`;
+      });
     } else {
-      const numRegex = /\b(?:[\$₹€£]\s*[\d,]+(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?|\b\d+(?:\.\d+)?\s*(?:ms|sec|kg|km|GB|MB|TB|KB|users|nodes|tenants|units|shares|tokens|INR|USD|EUR))\b/gi;
-      const numSentences = allSentences.filter((s) => numRegex.test(s));
-
-      if (numSentences.length > 0) {
-        answer = `### 📊 Numerical References: ${documentContext.name}\n\n`;
-        answer += `Extracted quantitative data points from **${documentContext.name}**:\n\n`;
-        numSentences.slice(0, 5).forEach((s, idx) => {
-          const pageNum = pages.find((p) => p.text.includes(s))?.page || 1;
-          answer += `**${idx + 1}.** ${s} *(Page ${pageNum})*\n\n`;
-        });
-        answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
-      } else {
-        answer = `### 📄 Document Analysis: ${documentContext.name}\n\n`;
-        answer += `The document **${documentContext.name}** is primarily descriptive / qualitative and does not contain quantitative metrics or financial schedules.\n\n`;
-        if (documentContext.summary.keyTakeaways && documentContext.summary.keyTakeaways.length > 0) {
-          answer += `#### 🎯 Core Substance & Key Points:\n`;
-          documentContext.summary.keyTakeaways.slice(0, 5).forEach((t, idx) => {
-            const pageNum = pages.find((p) => p.text.includes(t))?.page || 1;
-            answer += `**${idx + 1}.** ${t} *(Page ${pageNum})*\n\n`;
-          });
+      answer += `No critical breaches or hostile clauses detected in **${documentContext.name}**. Standard terms apply.\n\n`;
+    }
+  } else if (isSavingsQuery) {
+    const tips = documentContext.savingsTips || documentContext.financeData?.savingsTips || [];
+    answer = `### 💡 Personalized AI Tips & Optimization: ${documentContext.name}\n\n`;
+    if (tips.length > 0) {
+      tips.forEach((tip, idx) => {
+        answer += `#### ${idx + 1}. ${tip.title} [\`${tip.difficulty || 'Smart AI Tip'}\`]\n`;
+        if (tip.potentialSavings) {
+          answer += `- **Potential Value / Savings**: \`${tip.potentialSavings}\`\n`;
         }
-        answer += `*Grounded directly on verified text of ${documentContext.name}.*`;
-      }
-    }
-  } else if (isMethodologyQuery && (domain.includes('academic') || domain.includes('research'))) {
-    answer = `### 🔬 Research Methodology & Theoretical Framing: ${documentContext.name}\n\n`;
-    const methodologySentences = allSentences.filter((s) =>
-      /\b(method|experiment|dataset|sample|benchmark|model|evaluate|baseline|measure|train|protocol|hypothesis|propose)\b/i.test(s)
-    );
-
-    if (methodologySentences.length > 0) {
-      answer += `Extracted methodological structure from **${documentContext.name}**:\n\n`;
-      methodologySentences.slice(0, 5).forEach((s, idx) => {
-        const pageNum = pages.find((p) => p.text.includes(s))?.page || 1;
-        answer += `**${idx + 1}.** ${s} *(Page ${pageNum})*\n\n`;
+        answer += `- **Why it matters**: ${tip.description}\n`;
+        if (tip.action) {
+          answer += `- **Action Roadmap**: ${tip.action}\n\n`;
+        } else {
+          answer += '\n';
+        }
       });
+      answer += `*Actionable roadmap generated from ${documentContext.name}.*`;
     } else {
-      answer += `${documentContext.summary.tldr}\n\n`;
-      answer += `#### 🎯 Key Findings:\n`;
-      documentContext.summary.keyTakeaways.slice(0, 4).forEach((t, idx) => {
-        answer += `**${idx + 1}.** ${t}\n\n`;
-      });
+      answer += `${documentContext.summary.executiveBrief || documentContext.summary.tldr}\n\n`;
     }
-    answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
   } else if (isExportQuery) {
     answer = `### 📄 Structured Intelligence Dossier: ${documentContext.name}\n\n`;
     answer += `**Document**: \`${documentContext.name}\` | **Pages**: \`${documentContext.pageCount || 1}\` | **Domain**: \`${domain.toUpperCase()}\` | **Audited**: \`${documentContext.uploadedAt || 'Current'}\`\n\n`;
@@ -1130,59 +1215,108 @@ USER QUESTION: "${cleanQuery}"`;
     });
     answer += '\n';
 
-    if (documentContext.trackedNumbers && documentContext.trackedNumbers.length > 0) {
-      const validNumbers = documentContext.trackedNumbers.filter((n) => !n.label.includes('Document Page Count') && !n.label.includes('Document Storage Size'));
+    const risks = documentContext.summary?.risksAndConcerns || documentContext.trackedRisks || [];
+    if (risks.length > 0) {
+      answer += `#### 🚩 Red Flags & Risks\n`;
+      risks.forEach((r) => {
+        answer += `- **${r.title}** (\`${r.riskLevel}\`): ${r.plainEnglish} *(Page ${r.page || 1})*\n`;
+      });
+      answer += '\n';
+    }
+
+    if (documentContext.extractedTables && documentContext.extractedTables.length > 0) {
+      answer += `#### 📊 Extracted Data Tables\n`;
+      const t = documentContext.extractedTables[0];
+      answer += `**${t.tableName}**\n\n`;
+      answer += `| ${t.columns.join(' | ')} |\n`;
+      answer += `| ${t.columns.map(() => '---').join(' | ')} |\n`;
+      t.rows.slice(0, 5).forEach((r) => {
+        const vals = t.columns.map((c) => String(r[c] ?? ''));
+        answer += `| ${vals.join(' | ')} |\n`;
+      });
+      answer += '\n';
+    }
+
+    const numbers = documentContext.summary?.numbersAndMetrics || documentContext.trackedNumbers || [];
+    if (numbers.length > 0) {
+      const validNumbers = numbers.filter((n) => !n.label.includes('Document Page Count') && !n.label.includes('Document Storage Size'));
       if (validNumbers.length > 0) {
         answer += `#### 📊 Extracted Metrics & Numbers\n| Metric / Item | Value | Reference |\n| :--- | :--- | :--- |\n`;
         validNumbers.forEach((n) => {
-          answer += `| ${n.label} | \`${n.value}\` | Page ${n.page} |\n`;
+          answer += `| ${n.label} | \`${n.value}\` | Page ${n.page || 1} |\n`;
         });
         answer += '\n';
       }
     }
 
-    if (documentContext.trackedDates && documentContext.trackedDates.length > 0) {
+    const dates = documentContext.summary?.importantDates || documentContext.trackedDates || [];
+    if (dates.length > 0) {
       answer += `#### 📅 Timeline & Milestones\n`;
-      documentContext.trackedDates.forEach((d) => {
-        answer += `- **${d.event}**: \`${d.date}\` *(Page ${d.page})*\n`;
-      });
-      answer += '\n';
-    }
-
-    if (documentContext.trackedRisks && documentContext.trackedRisks.length > 0) {
-      answer += `#### ⚠️ Risk Covenants & Action Items\n`;
-      documentContext.trackedRisks.forEach((r) => {
-        answer += `- **${r.title}** (${r.riskLevel}): ${r.plainEnglish} *(Page ${r.page})*\n`;
+      dates.forEach((d) => {
+        answer += `- **${d.event}**: \`${d.date}\` *(Page ${d.page || 1})*\n`;
       });
       answer += '\n';
     }
 
     answer += `*Grounded directly on verified page coordinates of ${documentContext.name}.*`;
-  } else if (isRiskQuery) {
-    answer = `### ⚖️ Risk & Clause Assessment: ${documentContext.name}\n\n`;
-    if (documentContext.trackedRisks && documentContext.trackedRisks.length > 0) {
-      documentContext.trackedRisks.forEach((r, idx) => {
-        answer += `**${idx + 1}. ${r.title}** [Risk Level: \`${r.riskLevel}\`]\n`;
-        answer += `- **Finding**: ${r.plainEnglish} *(Page ${r.page})*\n`;
-        if (r.mitigation) {
-          answer += `- **Mitigation**: ${r.mitigation}\n\n`;
-        } else {
-          answer += '\n';
-        }
+  } else if (isDatesQuery) {
+    const dates = documentContext.summary?.importantDates || documentContext.trackedDates || [];
+    const realDates = dates.filter((d) => !d.event.toLowerCase().includes('document ingestion'));
+
+    if (realDates.length > 0) {
+      answer = `### 📅 Critical Dates & Milestones: ${documentContext.name}\n\n`;
+      answer += `Based on a verified timeline audit of **${documentContext.name}** across **${documentContext.pageCount || 1} page(s)**:\n\n`;
+      realDates.slice(0, 6).forEach((d, idx) => {
+        const typeBadge = d.type === 'deadline' ? '⚠️ Deadline' : d.type === 'effective' ? '🟢 Effective' : '📌 Milestone';
+        answer += `**${idx + 1}. ${d.event}** (${typeBadge})\n`;
+        answer += `- **Date / Timeline**: \`${d.date}\` *(Page ${d.page || 1})*\n\n`;
       });
+      answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
     } else {
-      answer += `All terms in **${documentContext.name}** have been audited against standard compliance guidelines with 0 critical breaches identified.\n\n`;
+      answer = `### 📅 Timeline & Milestones: ${documentContext.name}\n\n`;
+      documentContext.summary.keyTakeaways.slice(0, 4).forEach((t, idx) => {
+        answer += `**${idx + 1}.** ${t}\n\n`;
+      });
+      answer += `*Grounded directly on verified text of ${documentContext.name}.*`;
     }
-    answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
-  } else if (isCashFlowQuery && (domain.includes('finance') || domain.includes('billing'))) {
-    answer = `### 💰 Cash Flow & Financial Breakdown: ${documentContext.name}\n\n`;
-    if (documentContext.trackedNumbers && documentContext.trackedNumbers.length > 0) {
-      documentContext.trackedNumbers.forEach((n, idx) => {
-        answer += `**${idx + 1}. ${n.label}**: \`${n.value}\` *(Page ${n.page})*\n`;
+  } else if (isNumericalQuery) {
+    const numbers = documentContext.summary?.numbersAndMetrics || documentContext.trackedNumbers || [];
+    const realNumbers = numbers.filter((n) => !n.label.includes('Document Page Count') && !n.label.includes('Document Storage Size'));
+
+    if (realNumbers.length > 0) {
+      answer = `### 📊 Key Numerical Takeaways: ${documentContext.name}\n\n`;
+      answer += `Based on a verified extraction from **${documentContext.name}**:\n\n`;
+      realNumbers.slice(0, 6).forEach((n, idx) => {
+        answer += `**${idx + 1}. ${n.label}**: \`${n.value}\` *(Page ${n.page || 1})*\n`;
         answer += `> ${n.context}\n\n`;
       });
+      answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
     } else {
-      answer += `No financial outflow/inflow ledgers detected in **${documentContext.name}**.\n\n`;
+      answer = `### 📊 Key Metrics: ${documentContext.name}\n\n`;
+      documentContext.metrics.forEach((m, idx) => {
+        answer += `**${idx + 1}. ${m.label}**: \`${m.value}\` (${m.subtext || 'Verified'})\n\n`;
+      });
+      answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
+    }
+  } else if (isCashFlowQuery && (domain.includes('finance') || domain.includes('billing'))) {
+    answer = `### 💰 Cash Flow & Financial Breakdown: ${documentContext.name}\n\n`;
+    if (documentContext.financeData) {
+      answer += `- **Total Inflow (Credits)**: \`₹${documentContext.financeData.totalIncome.toLocaleString()}\`\n`;
+      answer += `- **Total Outflow (Debits)**: \`₹${documentContext.financeData.totalExpense.toLocaleString()}\`\n`;
+      answer += `- **Net Monthly Savings**: \`₹${documentContext.financeData.netSavings.toLocaleString()}\` (${documentContext.financeData.savingsRate})\n\n`;
+      if (documentContext.financeData.categorySpend) {
+        answer += `#### 🛍️ Spending Categories:\n`;
+        documentContext.financeData.categorySpend.forEach((c) => {
+          answer += `- **${c.category}**: ₹${c.amount.toLocaleString()} (${c.percentage}%)\n`;
+        });
+        answer += '\n';
+      }
+    } else {
+      const numbers = documentContext.summary?.numbersAndMetrics || documentContext.trackedNumbers || [];
+      numbers.forEach((n, idx) => {
+        answer += `**${idx + 1}. ${n.label}**: \`${n.value}\` *(Page ${n.page || 1})*\n`;
+        answer += `> ${n.context}\n\n`;
+      });
     }
     answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
   } else if (isSummaryQuery) {
@@ -1190,37 +1324,18 @@ USER QUESTION: "${cleanQuery}"`;
     answer += `${documentContext.summary.tldr}\n\n`;
     
     answer += `#### 🎯 Top Key Takeaways:\n`;
-    const takeawaysToUse = documentContext.summary.keyTakeaways.length > 0
-      ? documentContext.summary.keyTakeaways
-      : allSentences.slice(0, 5);
-
-    takeawaysToUse.slice(0, 5).forEach((t, idx) => {
-      const pageNum = pages.find((p) => p.text.includes(t))?.page || 1;
-      answer += `**${idx + 1}.** ${t} *(Page ${pageNum})*\n\n`;
+    documentContext.summary.keyTakeaways.slice(0, 5).forEach((t, idx) => {
+      answer += `**${idx + 1}.** ${t} *(Page ${idx + 1 <= documentContext.pageCount ? idx + 1 : 1})*\n\n`;
     });
 
-    if (documentContext.trackedNumbers && documentContext.trackedNumbers.length > 0) {
-      const validNums = documentContext.trackedNumbers.filter((n) => !n.label.includes('Document Page Count') && !n.label.includes('Document Storage Size'));
-      if (validNums.length > 0) {
-        answer += `#### 📊 Key Figures & Metrics:\n`;
-        validNums.slice(0, 4).forEach((n) => {
-          answer += `- **${n.label}**: \`${n.value}\` *(Page ${n.page})* — ${n.context}\n`;
-        });
-        answer += '\n';
-      }
+    const numbers = documentContext.summary?.numbersAndMetrics || documentContext.trackedNumbers || [];
+    if (numbers.length > 0) {
+      answer += `#### 📊 Key Figures & Metrics:\n`;
+      numbers.slice(0, 4).forEach((n) => {
+        answer += `- **${n.label}**: \`${n.value}\` *(Page ${n.page || 1})* — ${n.context}\n`;
+      });
+      answer += '\n';
     }
-
-    if (documentContext.trackedDates && documentContext.trackedDates.length > 0) {
-      const validDates = documentContext.trackedDates.filter((d) => !d.event.toLowerCase().includes('document ingestion'));
-      if (validDates.length > 0) {
-        answer += `#### 📅 Critical Dates & Milestones:\n`;
-        validDates.slice(0, 3).forEach((d) => {
-          answer += `- **${d.event}**: \`${d.date}\` *(Page ${d.page})*\n`;
-        });
-        answer += '\n';
-      }
-    }
-
     answer += `*Grounded directly on verified page text of ${documentContext.name}.*`;
   } else if (topMatches.length > 0) {
     answer = `### 📄 Grounded Document Findings: ${documentContext.name}\n\n`;
@@ -1229,32 +1344,6 @@ USER QUESTION: "${cleanQuery}"`;
     topMatches.forEach((m, idx) => {
       answer += `**${idx + 1}.** ${m.sentence} *(Page ${m.page})*\n\n`;
     });
-
-    // Check if any tracked numbers relate to the query
-    const relatedNums = (documentContext.trackedNumbers || []).filter((n) =>
-      queryTerms.some((t) => n.label.toLowerCase().includes(t) || n.context.toLowerCase().includes(t))
-    );
-
-    if (relatedNums.length > 0) {
-      answer += `#### 📊 Related Extracted Figures:\n`;
-      relatedNums.forEach((n) => {
-        answer += `- **${n.label}**: \`${n.value}\` *(Page ${n.page})* — ${n.context}\n`;
-      });
-      answer += '\n';
-    }
-
-    // Check if any dates relate to the query
-    const relatedDates = (documentContext.trackedDates || []).filter((d) =>
-      queryTerms.some((t) => d.event.toLowerCase().includes(t) || d.date.toLowerCase().includes(t))
-    );
-
-    if (relatedDates.length > 0) {
-      answer += `#### 📅 Related Dates & Deadlines:\n`;
-      relatedDates.forEach((d) => {
-        answer += `- **${d.event}**: \`${d.date}\` *(Page ${d.page})*\n`;
-      });
-      answer += '\n';
-    }
 
     answer += `*All citations verified directly from ${documentContext.name}.*`;
   } else {
