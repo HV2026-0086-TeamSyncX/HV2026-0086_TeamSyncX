@@ -593,7 +593,7 @@ export default function PromptBar({
                       ? `Ask questions about attached ${attachedFiles.length} file(s)...`
                       : 'Ask anything, summarize documents, analyze tables, or drop files...'
                   }
-                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-0 font-sans"
+                  className="flex-1 px-3 sm:px-4 py-1.5 sm:py-2.5 text-xs sm:text-[13.5px] bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-0 font-sans"
                 />
 
                 {/* Liquid Glass Send Button */}

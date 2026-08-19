@@ -1026,14 +1026,14 @@ function DashboardWorkspaceContent() {
                   {messages.length === 0 && (
                     <div className="space-y-10 max-w-4xl lg:max-w-5xl mx-auto pt-4 animate-in fade-in select-none">
                       {/* Top Header */}
-                      <div className="text-center space-y-3">
-                        <div className="w-14 h-14 rounded-3xl bg-[#2563EB]/10 dark:bg-[#2563EB]/20 text-[#2563EB] dark:text-blue-400 flex items-center justify-center mx-auto shadow-sm">
-                          <Sparkles className="w-7 h-7" />
+                      <div className="text-center space-y-2.5">
+                        <div className="w-12 h-12 rounded-2xl bg-[#2563EB]/10 dark:bg-[#2563EB]/20 text-[#2563EB] dark:text-blue-400 flex items-center justify-center mx-auto shadow-sm">
+                          <Sparkles className="w-5 h-5" />
                         </div>
-                        <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#101828] dark:text-white">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-[#101828] dark:text-white">
                           {currentDoc ? `Auditing ${currentDoc.name}` : 'How can I help you today?'}
                         </h2>
-                        <p className="text-xs sm:text-base text-[#53627A] dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
+                        <p className="text-xs sm:text-sm text-[#53627A] dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
                           {currentDoc
                             ? `Ask any question about ${currentDoc.name}, extract tables into CSV, or audit specific clauses.`
                             : 'Chat freely on any topic, write & debug code, or inspect pre-loaded demo documents.'}
@@ -1042,39 +1042,39 @@ function DashboardWorkspaceContent() {
 
                       {/* 1-Click Pre-Loaded Demo Audits Showcase (When no document selected) */}
                       {!currentDoc && (
-                        <div className="space-y-4">
+                        <div className="space-y-3.5">
                           <div className="flex items-center justify-between px-1">
-                            <span className="text-xs font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-2">
-                              <Sparkles className="w-4 h-4" />
+                            <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5" />
                               Pre-Loaded Demo Audits (1-Click Live Inspect)
                             </span>
-                            <span className="text-xs text-slate-400 font-mono">Click to test instantly</span>
+                            <span className="text-[11px] text-slate-400 font-mono">Click to test instantly</span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             {SAMPLE_DOCUMENTS.slice(0, 4).map((demoDoc) => (
                               <button
                                 key={demoDoc.id}
                                 onClick={() => handleLoadDemoDoc(demoDoc)}
-                                className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-aesthetic hover:shadow-aesthetic-lg cursor-pointer flex flex-col justify-between"
+                                className="p-4 sm:p-4.5 rounded-2xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-aesthetic hover:shadow-aesthetic-lg cursor-pointer flex flex-col justify-between"
                               >
                                 <div>
-                                  <div className="flex items-center justify-between gap-2 mb-2.5">
-                                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 font-bold uppercase border border-blue-500/20">
+                                  <div className="flex items-center justify-between gap-2 mb-2">
+                                    <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 font-bold uppercase border border-blue-500/20">
                                       {demoDoc.detectedDomain}
                                     </span>
-                                    <span className="text-[11px] text-slate-400 font-mono">{demoDoc.pageCount} Pages</span>
+                                    <span className="text-[10px] text-slate-400 font-mono">{demoDoc.pageCount} Pages</span>
                                   </div>
-                                  <h3 className="text-sm font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                                  <h3 className="text-xs sm:text-sm font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
                                     {demoDoc.name}
                                   </h3>
-                                  <p className="text-xs text-[#53627A] dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
+                                  <p className="text-[11px] text-[#53627A] dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                                     {demoDoc.summary.tldr}
                                   </p>
                                 </div>
-                                <div className="mt-4 pt-3 border-t border-black/[0.06] dark:border-white/10 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                <div className="mt-3.5 pt-2.5 border-t border-black/[0.06] dark:border-white/10 flex items-center justify-between text-[11px] font-semibold text-blue-600 dark:text-blue-400">
                                   <span>Inspect Demo Audit</span>
-                                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                                 </div>
                               </button>
                             ))}
@@ -1084,41 +1084,41 @@ function DashboardWorkspaceContent() {
 
                       {/* 1-Click Document Intelligence Functions (When a document is actively loaded) */}
                       {currentDoc && (
-                        <div className="space-y-4">
+                        <div className="space-y-3.5">
                           <div className="flex items-center justify-between px-1">
-                            <span className="text-xs font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-2">
-                              <Zap className="w-4 h-4 text-amber-500" />
+                            <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#2563EB] dark:text-blue-400 flex items-center gap-1.5">
+                              <Zap className="w-3.5 h-3.5 text-amber-500" />
                               1-Click Audit & Reasoning Functions
                             </span>
-                            <span className="text-xs text-slate-400 font-mono">Click any function to execute</span>
+                            <span className="text-[11px] text-slate-400 font-mono">Click any function to execute</span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             {getDocumentFunctions(currentDoc).map((fn) => {
                               const Icon = fn.icon;
                               return (
                                 <button
                                   key={fn.id}
                                   onClick={() => handleSendMessage(fn.prompt)}
-                                  className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-aesthetic hover:shadow-aesthetic-lg cursor-pointer flex flex-col justify-between"
+                                  className="p-4 sm:p-4.5 rounded-2xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-aesthetic hover:shadow-aesthetic-lg cursor-pointer flex flex-col justify-between"
                                 >
                                   <div>
-                                    <div className="flex items-center justify-between gap-2 mb-2.5">
-                                      <span className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full border font-bold uppercase ${fn.badgeColor}`}>
+                                    <div className="flex items-center justify-between gap-2 mb-2">
+                                      <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full border font-bold uppercase ${fn.badgeColor}`}>
                                         {fn.badge}
                                       </span>
-                                      <Icon className="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                      <Icon className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                                     </div>
-                                    <h3 className="text-sm font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                                    <h3 className="text-xs sm:text-sm font-bold text-[#101828] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
                                       {fn.title}
                                     </h3>
-                                    <p className="text-xs text-[#53627A] dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
+                                    <p className="text-[11px] text-[#53627A] dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                                       {fn.subtitle}
                                     </p>
                                   </div>
-                                  <div className="mt-4 pt-3 border-t border-black/[0.06] dark:border-white/10 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                  <div className="mt-3.5 pt-2.5 border-t border-black/[0.06] dark:border-white/10 flex items-center justify-between text-[11px] font-semibold text-blue-600 dark:text-blue-400">
                                     <span>Execute Function</span>
-                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                                   </div>
                                 </button>
                               );
@@ -1136,22 +1136,22 @@ function DashboardWorkspaceContent() {
                     return (
                       <div
                         key={msg.id}
-                        className={`flex gap-4 max-w-4xl lg:max-w-5xl w-full ${isAssistant ? '' : 'ml-auto flex-row-reverse'}`}
+                        className={`flex gap-3.5 max-w-4xl lg:max-w-5xl w-full ${isAssistant ? '' : 'ml-auto flex-row-reverse'}`}
                       >
                         {/* Avatar */}
                         <div
-                          className={`w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 text-xs font-bold ${
+                          className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-xs font-bold ${
                             isAssistant
                               ? 'bg-[#2563EB] text-white shadow-xs'
                               : 'bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-xs'
                           }`}
                         >
-                          {isAssistant ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
+                          {isAssistant ? <Bot className="w-3.5 h-3.5" /> : <User className="w-3.5 h-3.5" />}
                         </div>
 
                         {/* Message Content */}
-                        <div className={`space-y-2 flex-1 min-w-0 ${isAssistant ? 'max-w-4xl' : 'max-w-xl text-right'}`}>
-                          <div className="flex items-center gap-2 text-[11px] text-[#8092A7] font-mono">
+                        <div className={`space-y-1.5 flex-1 min-w-0 ${isAssistant ? 'max-w-4xl' : 'max-w-xl text-right'}`}>
+                          <div className="flex items-center gap-2 text-[10px] sm:text-[11px] text-[#8092A7] font-mono">
                             <span>{isAssistant ? 'DocFin Intelligence Engine' : 'You'}</span>
                             <span>•</span>
                             <span>{msg.timestamp}</span>
@@ -1163,11 +1163,11 @@ function DashboardWorkspaceContent() {
                               {msg.attachedMedia.map((f, fIdx) => (
                                 <div
                                   key={fIdx}
-                                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[#1E40AF] text-white border border-blue-400/30 text-xs font-mono shadow-sm"
+                                  className="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-[#1E40AF] text-white border border-blue-400/30 text-[11px] font-mono shadow-sm"
                                 >
-                                  <FileText className="w-3.5 h-3.5 text-blue-200" />
+                                  <FileText className="w-3 h-3 text-blue-200" />
                                   <span className="font-semibold truncate max-w-[150px]">{f.name}</span>
-                                  <span className="text-[10px] opacity-75">{f.sizeFormatted}</span>
+                                  <span className="text-[9px] opacity-75">{f.sizeFormatted}</span>
                                 </div>
                               ))}
                             </div>
@@ -1175,7 +1175,7 @@ function DashboardWorkspaceContent() {
 
                           {/* Main Text Bubble */}
                           <div
-                            className={`p-6 sm:p-7 rounded-3xl text-sm leading-relaxed text-left transition-all ${
+                            className={`p-4 sm:p-5 rounded-2xl text-xs sm:text-[13px] leading-relaxed text-left transition-all ${
                               isAssistant
                                 ? 'bg-white/90 dark:bg-[#121722]/90 border border-black/10 dark:border-white/10 text-[#0F172A] dark:text-slate-200 shadow-aesthetic-lg backdrop-blur-md'
                                 : 'bg-[#2563EB] text-white shadow-aesthetic-lg'

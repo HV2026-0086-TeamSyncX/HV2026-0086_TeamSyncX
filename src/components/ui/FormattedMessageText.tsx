@@ -15,7 +15,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
   const blocks = content.split(/\n\s*\n/);
 
   return (
-    <div className="space-y-4 font-sans text-sm sm:text-[15px] leading-relaxed text-slate-800 dark:text-slate-200">
+    <div className="space-y-3 font-sans text-xs sm:text-[13px] leading-relaxed text-slate-800 dark:text-slate-200">
       {blocks.map((block, bIdx) => {
         const trimmed = block.trim();
         if (!trimmed) return null;
@@ -25,7 +25,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
           return (
             <div
               key={bIdx}
-              className="my-5 border-t border-black/[0.08] dark:border-white/[0.08]"
+              className="my-3.5 border-t border-black/[0.08] dark:border-white/[0.08]"
             />
           );
         }
@@ -36,9 +36,9 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
           return (
             <div
               key={bIdx}
-              className="text-base sm:text-lg font-serif font-bold text-[#0F172A] dark:text-white pt-2 pb-1.5 flex items-center gap-2 border-b border-black/[0.06] dark:border-white/[0.08]"
+              className="text-xs sm:text-sm font-serif font-bold text-[#0F172A] dark:text-white pt-2 pb-1 flex items-center gap-2 border-b border-black/[0.06] dark:border-white/[0.08]"
             >
-              <span className="w-2 h-2 rounded-full bg-[#2563EB] dark:bg-blue-400 flex-shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] dark:bg-blue-400 flex-shrink-0" />
               <span>{cleanHeading}</span>
             </div>
           );
@@ -60,9 +60,9 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
           return (
             <div
               key={bIdx}
-              className="text-base sm:text-lg font-serif font-bold text-[#0F172A] dark:text-white pt-3 pb-1.5 flex items-center gap-2 border-b border-black/[0.06] dark:border-white/[0.08]"
+              className="text-xs sm:text-sm font-serif font-bold text-[#0F172A] dark:text-white pt-2 pb-1 flex items-center gap-2 border-b border-black/[0.06] dark:border-white/[0.08]"
             >
-              <span className="w-2 h-2 rounded-full bg-[#2563EB] dark:bg-blue-400 flex-shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] dark:bg-blue-400 flex-shrink-0" />
               <span>{trimmed.replace(/\*\*/g, '')}</span>
             </div>
           );
@@ -82,15 +82,15 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
             return (
               <div
                 key={bIdx}
-                className="overflow-x-auto my-4 rounded-2xl border border-black/10 dark:border-white/10 shadow-sm studio-card table-scroll-container max-w-[calc(100vw-3.5rem)] sm:max-w-none scrollbar-thin"
+                className="overflow-x-auto my-3 rounded-2xl border border-black/10 dark:border-white/10 shadow-sm studio-card table-scroll-container max-w-[calc(100vw-3.5rem)] sm:max-w-none scrollbar-thin"
               >
-                <table className="min-w-full text-left text-xs sm:text-sm divide-y divide-black/[0.06] dark:divide-white/[0.08]">
+                <table className="min-w-full text-left text-[11px] sm:text-xs divide-y divide-black/[0.06] dark:divide-white/[0.08]">
                   <thead className="bg-black/[0.03] dark:bg-white/5 font-semibold text-[#0F172A] dark:text-white">
                     <tr>
                       {headers.map((h, hIdx) => (
                         <th
                           key={hIdx}
-                          className="px-4 py-3 border-b border-black/[0.06] dark:border-white/[0.08] whitespace-nowrap font-mono text-[11px] sm:text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                          className="px-3 py-2 border-b border-black/[0.06] dark:border-white/[0.08] whitespace-nowrap font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-700 dark:text-slate-300"
                         >
                           {h.replace(/\*\*/g, '')}
                         </th>
@@ -98,20 +98,21 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.05]">
-                    {dataLines.map((rowLine, rIdx) => {
-                      const cells = rowLine
+                    {dataLines.map((row, rIdx) => {
+                      const cells = row
                         .split('|')
                         .map((c) => c.trim())
                         .filter(Boolean);
+                      if (cells.length === 0) return null;
                       return (
                         <tr
                           key={rIdx}
-                          className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
+                          className="hover:bg-blue-50/40 dark:hover:bg-white/[0.02] transition-colors"
                         >
                           {cells.map((cell, cIdx) => (
                             <td
                               key={cIdx}
-                              className="px-4 py-3 text-slate-700 dark:text-slate-300 font-sans text-xs sm:text-sm break-words-anywhere"
+                              className="px-3 py-1.5 whitespace-nowrap text-slate-700 dark:text-slate-300 font-sans text-[11px] sm:text-xs"
                             >
                               {renderFormattedInline(cell)}
                             </td>
@@ -138,7 +139,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
 
         if (hasListItems && lines.length > 1) {
           return (
-            <div key={bIdx} className="space-y-3 pl-0.5 my-2">
+            <div key={bIdx} className="space-y-2 pl-0.5 my-1.5">
               {lines.map((line, lIdx) => {
                 const lineTrimmed = line.trim();
                 if (!lineTrimmed) return null;
@@ -157,12 +158,12 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
                   return (
                     <div
                       key={lIdx}
-                      className="p-3.5 sm:p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] flex items-start gap-3.5 hover:border-black/15 dark:hover:border-white/15 transition-colors"
+                      className="p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.08] shadow-aesthetic-sm flex items-start gap-3 hover:border-black/15 dark:hover:border-white/15 transition-colors"
                     >
-                      <div className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono text-xs font-bold flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono text-[11px] font-bold flex-shrink-0 mt-0.5 shadow-2xs">
                         {numStr}
                       </div>
-                      <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-sm leading-relaxed">
+                      <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-[13px] leading-relaxed">
                         {renderFormattedInline(cleanItemText)}
                       </div>
                     </div>
@@ -172,9 +173,9 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
                 if (isBullet) {
                   const cleanItemText = lineTrimmed.replace(/^[-*•]\s*/, '').trim();
                   return (
-                    <div key={lIdx} className="flex items-start gap-3 pl-1">
-                      <span className="w-2 h-2 rounded-full bg-[#2563EB] dark:bg-blue-400 mt-2 flex-shrink-0" />
-                      <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-sm leading-relaxed">
+                    <div key={lIdx} className="flex items-start gap-2.5 pl-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] dark:bg-blue-400 mt-1.5 flex-shrink-0" />
+                      <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-[13px] leading-relaxed">
                         {renderFormattedInline(cleanItemText)}
                       </div>
                     </div>
@@ -182,7 +183,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
                 }
 
                 return (
-                  <p key={lIdx} className="text-slate-800 dark:text-slate-200 font-semibold mb-1 text-xs sm:text-sm">
+                  <p key={lIdx} className="text-slate-800 dark:text-slate-200 font-semibold mb-1 text-xs sm:text-[13px]">
                     {renderFormattedInline(lineTrimmed)}
                   </p>
                 );
@@ -191,7 +192,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
           );
         }
 
-        // 5. Standalone Numbered Block (e.g., "1. Needs (Essential Outflows)...")
+        // 5. Standalone Numbered Block
         if (/^\d+[\.\)]\s/.test(trimmed) || /^\*\*\d+[\.\)]\*\*/.test(trimmed)) {
           const numberMatch = trimmed.match(/^(\d+)[\.\)]/) || trimmed.match(/^\*\*(\d+)[\.\)]\*\*/);
           const numStr = numberMatch ? numberMatch[1] : '1';
@@ -203,12 +204,12 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
           return (
             <div
               key={bIdx}
-              className="p-4 sm:p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/[0.08] shadow-aesthetic-sm flex items-start gap-3.5 my-2 hover:border-black/15 dark:hover:border-white/15 transition-all"
+              className="p-3 sm:p-3.5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/[0.08] shadow-aesthetic-sm flex items-start gap-3 my-1.5 hover:border-black/15 dark:hover:border-white/15 transition-all"
             >
-              <div className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono text-xs font-bold flex-shrink-0 mt-0.5 shadow-2xs">
+              <div className="w-5 h-5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono text-[11px] font-bold flex-shrink-0 mt-0.5 shadow-2xs">
                 {numStr}
               </div>
-              <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-sm leading-relaxed">
+              <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-[13px] leading-relaxed">
                 {renderFormattedInline(cleanItemText)}
               </div>
             </div>
@@ -219,7 +220,7 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
         return (
           <p
             key={bIdx}
-            className={`text-xs sm:text-sm sm:text-[15px] leading-relaxed ${
+            className={`text-xs sm:text-[13px] leading-relaxed ${
               isAssistant ? 'text-slate-800 dark:text-slate-200' : 'text-white font-medium'
             }`}
           >
@@ -257,7 +258,7 @@ function renderFormattedInline(text: string): React.ReactNode {
           return (
             <code
               key={idx}
-              className="px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/10 font-mono text-xs text-blue-600 dark:text-blue-400 font-semibold"
+              className="px-1.5 py-0.5 rounded-md bg-black/5 dark:bg-white/10 font-mono text-[11px] text-blue-600 dark:text-blue-400 font-semibold"
             >
               {part.slice(1, -1)}
             </code>
@@ -273,9 +274,9 @@ function renderFormattedInline(text: string): React.ReactNode {
           return (
             <span
               key={idx}
-              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-500/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-400 font-mono text-[11px] font-bold border border-blue-500/20 mx-1 align-baseline shadow-2xs"
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-blue-500/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-400 font-mono text-[10px] font-bold border border-blue-500/20 mx-1 align-baseline shadow-2xs"
             >
-              <FileText className="w-3 h-3" />
+              <FileText className="w-2.5 h-2.5" />
               <span>{pageClean}</span>
             </span>
           );
