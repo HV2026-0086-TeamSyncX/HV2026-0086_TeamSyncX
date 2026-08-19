@@ -1275,21 +1275,6 @@ function DashboardWorkspaceContent() {
                               </div>
                             )}
                           </div>
-
-                          {/* Dynamic Context-Aware Suggestion Chips (ChatGPT Style) */}
-                          {isAssistant && msg.suggestions && msg.suggestions.length > 0 && (
-                            <div className="flex flex-wrap gap-2 pt-1.5 animate-in fade-in select-none">
-                              {msg.suggestions.map((sug, sIdx) => (
-                                <button
-                                  key={sIdx}
-                                  onClick={() => handleSendMessage(sug)}
-                                  className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white dark:bg-white/5 hover:bg-blue-50/80 dark:hover:bg-blue-500/20 border border-slate-200 dark:border-white/10 hover:border-blue-400 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-300 transition-all cursor-pointer shadow-2xs hover:scale-[1.02] active:scale-[0.98]"
-                                >
-                                  {sug}
-                                </button>
-                              ))}
-                            </div>
-                          )}
                         </div>
                       </div>
                     );
@@ -1325,7 +1310,18 @@ function DashboardWorkspaceContent() {
               currentDoc={currentDoc}
               onSelectDoc={handleSelectDoc}
               onFileDrop={handleFileDropUpload}
-              suggestions={messages.length > 0 ? messages[messages.length - 1].suggestions : undefined}
+              suggestions={
+                (() => {
+                  const lastAssistant = [...messages].reverse().find(m => m.sender === 'assistant' && m.suggestions && m.suggestions.length > 0);
+                  if (lastAssistant?.suggestions && lastAssistant.suggestions.length > 0) {
+                    return lastAssistant.suggestions;
+                  }
+                  if (currentDoc) {
+                    return getDocumentFunctions(currentDoc).map(f => f.title);
+                  }
+                  return undefined;
+                })()
+              }
             />
           </div>
 

@@ -23,7 +23,9 @@ import {
   Scale,
   Search,
   Zap,
-  ShieldAlert
+  ShieldAlert,
+  CreditCard,
+  TrendingUp
 } from 'lucide-react';
 import { DocumentDomain, DocumentAnalysis, AttachedMediaFile, MediaType } from '@/lib/types';
 import QuickActionMenu from '@/components/ui/QuickActionMenu';
@@ -584,39 +586,81 @@ export default function PromptBar({
                   className="w-full px-2 py-1 text-xs sm:text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-h-[38px] max-h-32 resize-none font-sans leading-relaxed"
                 />
 
-                {/* Bottom Row: Function Pills (Left) + Paperclip & Send ArrowUp (Right) */}
+                {/* Bottom Row: Dynamic Contextual Feature Pills (Left) + Paperclip & Send ArrowUp (Right) */}
                 <div className="flex items-center justify-between gap-2 pt-2 border-t border-black/[0.04] dark:border-white/[0.06] select-none">
-                  {/* Left: Functions Pills (in place of DeepThink / Search) */}
+                  {/* Left: Dynamic Functions & Features Pills */}
                   <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 max-w-[calc(100%-80px)]">
-                    <button
-                      type="button"
-                      onClick={() => handlePillClick('Perform a deep risk audit on this document. Flag all liabilities, non-standard penalty clauses, and auto-renewal traps with page citations.')}
-                      className="px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
-                      title="Deep Risk Audit"
-                    >
-                      <Atom className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
-                      <span>Deep Audit</span>
-                    </button>
+                    {suggestions && suggestions.length > 0 ? (
+                      suggestions.slice(0, 4).map((sug, idx) => {
+                        const getIcon = (text: string) => {
+                          const t = text.toLowerCase();
+                          if (t.includes('50/30/20') || t.includes('budget') || t.includes('table') || t.includes('csv') || t.includes('matrix')) {
+                            return <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />;
+                          }
+                          if (t.includes('fee') || t.includes('penalty') || t.includes('risk') || t.includes('red flag') || t.includes('audit')) {
+                            return <ShieldAlert className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />;
+                          }
+                          if (t.includes('subscription') || t.includes('recurring') || t.includes('credit') || t.includes('bank') || t.includes('card')) {
+                            return <CreditCard className="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" />;
+                          }
+                          if (t.includes('tip') || t.includes('saving') || t.includes('ai') || t.includes('optimize') || t.includes('strategy')) {
+                            return <Sparkles className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />;
+                          }
+                          if (t.includes('dispute') || t.includes('legal') || t.includes('clause') || t.includes('counter') || t.includes('memo') || t.includes('remedy')) {
+                            return <Scale className="w-3.5 h-3.5 text-purple-500 flex-shrink-0" />;
+                          }
+                          if (t.includes('date') || t.includes('timeline') || t.includes('deadline') || t.includes('growth')) {
+                            return <TrendingUp className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />;
+                          }
+                          return <Atom className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />;
+                        };
 
-                    <button
-                      type="button"
-                      onClick={() => handlePillClick('Extract all financial numerical tables and structured ledger items from this document into clean structured markdown tables.')}
-                      className="px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
-                      title="Table Matrix Extractor"
-                    >
-                      <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
-                      <span>Table Matrix</span>
-                    </button>
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => handlePillClick(sug)}
+                            className="px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0 whitespace-nowrap"
+                            title={sug}
+                          >
+                            {getIcon(sug)}
+                            <span className="truncate max-w-[170px] sm:max-w-[220px]">{sug}</span>
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handlePillClick('Perform a deep risk audit on this document. Flag all liabilities, non-standard penalty clauses, and auto-renewal traps with page citations.')}
+                          className="px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
+                          title="Deep Risk Audit"
+                        >
+                          <Atom className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
+                          <span>Deep Audit</span>
+                        </button>
 
-                    <button
-                      type="button"
-                      onClick={() => handlePillClick('Draft a formal dispute letter and counter-clause remedy addressing all flagged risks in this document.')}
-                      className="hidden sm:flex px-3 py-1 rounded-full text-[11px] font-medium items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
-                      title="Action & Dispute Memo"
-                    >
-                      <Scale className="w-3.5 h-3.5 text-purple-500 flex-shrink-0" />
-                      <span>Action Memo</span>
-                    </button>
+                        <button
+                          type="button"
+                          onClick={() => handlePillClick('Extract all financial numerical tables and structured ledger items from this document into clean structured markdown tables.')}
+                          className="px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
+                          title="Table Matrix Extractor"
+                        >
+                          <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                          <span>Table Matrix</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handlePillClick('Draft a formal dispute letter and counter-clause remedy addressing all flagged risks in this document.')}
+                          className="hidden sm:flex px-3 py-1 rounded-full text-[11px] font-medium items-center gap-1.5 border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-50/60 dark:hover:bg-blue-500/10 cursor-pointer transition-all active:scale-95 flex-shrink-0"
+                          title="Action & Dispute Memo"
+                        >
+                          <Scale className="w-3.5 h-3.5 text-purple-500 flex-shrink-0" />
+                          <span>Action Memo</span>
+                        </button>
+                      </>
+                    )}
 
                     {/* More Routines Dropup Button */}
                     <div className="relative flex-shrink-0">
