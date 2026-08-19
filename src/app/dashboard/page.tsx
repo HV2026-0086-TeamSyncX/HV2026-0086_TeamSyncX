@@ -993,7 +993,12 @@ function DashboardWorkspaceContent() {
               currentDoc && mobileActiveView === 'doc' ? 'hidden md:flex' : 'flex'
             }`}
           >
-            <div className="flex-1 flex overflow-hidden w-full">
+            {/* Ambient Background Studio Grid & Smooth Lighting for Dashboard */}
+            <div className="absolute inset-0 bg-studio-grid pointer-events-none opacity-85 dark:opacity-40 [mask-image:radial-gradient(ellipse_90%_80%_at_50%_40%,black_70%,transparent_100%)] z-0" />
+            <div className="absolute inset-0 bg-studio-dots pointer-events-none opacity-35 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black_70%,transparent_100%)] z-0" />
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[38rem] h-[38rem] bg-emerald-500/5 dark:bg-emerald-500/8 rounded-full blur-3xl pointer-events-none z-0" />
+
+            <div className="flex-1 flex overflow-hidden w-full relative z-10">
               <div className="flex-1 flex flex-col h-full overflow-hidden relative w-full">
                 {/* Conversational Stream */}
                 <div className="flex-1 overflow-y-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-8 space-y-8 max-w-5xl lg:max-w-6xl w-full mx-auto">
@@ -1366,6 +1371,7 @@ function DashboardWorkspaceContent() {
         onOpenExport={() => setIsExportModalOpen(true)}
         onOpenRawJson={() => setIsRawJsonOpen(true)}
         onToggleHistory={() => setIsRightHistoryOpen(!isRightHistoryOpen)}
+        onOpenOnboarding={() => setIsOnboardingOpen(true)}
       />
 
       {/* Onboarding Tour Modal */}

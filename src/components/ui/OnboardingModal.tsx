@@ -1,15 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
   UploadCloud,
   Key,
   CheckCircle2,
   ArrowRight,
+  ArrowLeft,
   X,
   FileSearch,
-  Zap
+  Zap,
+  ChevronLeft,
+  ChevronRight,
+  Cpu,
+  Layers
 } from 'lucide-react';
 
 interface OnboardingModalProps {
@@ -27,122 +32,227 @@ export default function OnboardingModal({
 }: OnboardingModalProps) {
   const [step, setStep] = useState(1);
 
+  const handleClose = () => {
+    setStep(1);
+    onClose();
+  };
+
+  // Keyboard navigation for Left & Right arrow keys
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        e.preventDefault();
+        setStep((prev) => Math.min(prev + 1, 3));
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        setStep((prev) => Math.max(prev - 1, 1));
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        handleClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
+  const totalSteps = 3;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-6 bg-black/65 backdrop-blur-2xl animate-in fade-in select-none">
-      {/* Liquid Glass Modal Window */}
-      <div className="liquid-glass-modal rounded-[24px] sm:rounded-[32px] w-full max-w-lg text-white overflow-hidden flex flex-col relative animate-in zoom-in-95 duration-250 group max-h-[92vh] overflow-y-auto">
-        {/* Ambient Fluid Glow */}
-        <div className="absolute top-0 left-1/4 w-56 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute bottom-0 right-1/4 w-56 h-40 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none -z-10" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 dark:bg-black/75 backdrop-blur-2xl animate-in fade-in select-none">
+      {/* Floating Ambient Glow Behind Modal */}
+      <div className="absolute w-[32rem] h-[32rem] bg-emerald-500/15 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" />
+      <div className="absolute w-[28rem] h-[28rem] bg-blue-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      {/* Floating Left Arrow (Previous Step) */}
+      {step > 1 && (
+        <button
+          onClick={() => setStep((prev) => Math.max(prev - 1, 1))}
+          className="hidden md:flex absolute left-8 lg:left-12 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 dark:bg-[#121722]/80 hover:bg-white dark:hover:bg-[#161c28] border border-black/10 dark:border-white/15 backdrop-blur-xl shadow-xl items-center justify-center text-slate-700 dark:text-slate-200 hover:scale-110 active:scale-95 transition-all z-20 cursor-pointer"
+          title="Previous Step (Left Arrow)"
+          aria-label="Previous step"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Floating Right Arrow (Next Step) */}
+      {step < totalSteps && (
+        <button
+          onClick={() => setStep((prev) => Math.min(prev + 1, totalSteps))}
+          className="hidden md:flex absolute right-8 lg:left-auto lg:right-12 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 dark:bg-[#121722]/80 hover:bg-white dark:hover:bg-[#161c28] border border-black/10 dark:border-white/15 backdrop-blur-xl shadow-xl items-center justify-center text-slate-700 dark:text-slate-200 hover:scale-110 active:scale-95 transition-all z-20 cursor-pointer"
+          title="Next Step (Right Arrow)"
+          aria-label="Next step"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Glassmorphic Modal Window Container */}
+      <div className="card-glass bg-white/90 dark:bg-[#0E1210]/92 backdrop-blur-3xl rounded-3xl sm:rounded-[32px] w-full max-w-xl text-[#0F172A] dark:text-[#F2F4F3] border border-black/10 dark:border-white/15 shadow-2xl shadow-emerald-950/20 overflow-hidden flex flex-col relative animate-in zoom-in-95 duration-200 group max-h-[92vh] overflow-y-auto">
+        {/* Top Specular Light Highlight */}
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent pointer-events-none" />
 
         {/* Close Button */}
         <button
-          onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all z-10 cursor-pointer backdrop-blur-md touch-target"
+          onClick={handleClose}
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 border border-black/10 dark:border-white/15 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white transition-all z-20 cursor-pointer backdrop-blur-md touch-target"
+          title="Close Tour (Esc)"
         >
           <X className="w-4 h-4" />
         </button>
 
-        {/* Step Indicator */}
-        <div className="flex gap-2 px-6 sm:px-8 pt-5 sm:pt-7">
-          {[1, 2, 3].map((s) => (
-            <div
-              key={s}
-              className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                step >= s
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]'
-                  : 'bg-white/10'
-              }`}
-            />
-          ))}
+        {/* Interactive 2-Way Step Progress Indicators */}
+        <div className="px-6 sm:px-8 pt-6 sm:pt-7">
+          <div className="flex items-center gap-2">
+            {[1, 2, 3].map((s) => (
+              <button
+                key={s}
+                onClick={() => setStep(s)}
+                className="flex-1 h-2 rounded-full relative overflow-hidden transition-all duration-300 group cursor-pointer"
+                title={`Jump to Step ${s}`}
+              >
+                <div
+                  className={`absolute inset-0 rounded-full transition-all duration-300 ${
+                    step >= s
+                      ? 'bg-gradient-to-r from-emerald-500 to-[#288E4F] dark:from-emerald-400 dark:to-teal-400 shadow-[0_0_12px_rgba(40,142,79,0.5)]'
+                      : 'bg-black/10 dark:bg-white/10 group-hover:bg-black/15 dark:group-hover:bg-white/20'
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-[#8E9690] mt-2 font-medium">
+            <span>Step {step} of {totalSteps}</span>
+            <span className="hidden sm:inline">Use ← → arrow keys to navigate</span>
+          </div>
         </div>
 
-        {/* Step 1: Welcome */}
+        {/* =========================================================================
+            STEP 1: WELCOME & MULTIMODAL INTELLIGENCE
+           ========================================================================= */}
         {step === 1 && (
-          <div className="p-4 sm:p-6 sm:p-8 space-y-5 sm:space-y-6 text-center animate-in fade-in">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-blue-600/30 to-indigo-500/20 border border-white/20 text-blue-300 mx-auto flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
-              <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />
-            </div>
-
-            <div className="space-y-1.5 sm:space-y-2">
-              <h3 className="text-lg sm:text-2xl font-serif font-bold text-white tracking-tight">
-                Welcome to DocFin
-              </h3>
-              <p className="text-xs text-slate-300/80 leading-relaxed max-w-sm mx-auto font-sans">
-                DocFin ingests dense documents, extracts structured data tables, flags liability clauses, and provides 100% grounded answers with page coordinate citations.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 pt-1 text-center text-xs">
-              <div className="p-3 sm:p-3.5 rounded-2xl liquid-glass-card flex sm:flex-col items-center gap-2.5 sm:gap-1">
-                <FileSearch className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 flex-shrink-0" />
-                <span className="font-semibold text-[11px] text-white block">Multimodal OCR</span>
-              </div>
-              <div className="p-3 sm:p-3.5 rounded-2xl liquid-glass-card flex sm:flex-col items-center gap-2.5 sm:gap-1">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 flex-shrink-0" />
-                <span className="font-semibold text-[11px] text-white block">Grounded RAG</span>
-              </div>
-              <div className="p-3 sm:p-3.5 rounded-2xl liquid-glass-card flex sm:flex-col items-center gap-2.5 sm:gap-1">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400 flex-shrink-0" />
-                <span className="font-semibold text-[11px] text-white block">0 Hallucinations</span>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setStep(2)}
-              className="liquid-glass-button w-full py-3 sm:py-3.5 px-4 rounded-full text-white text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer hover:scale-102 active:scale-98 touch-target"
-            >
-              <span>Next: API & Engine</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-
-        {/* Step 2: API Keys */}
-        {step === 2 && (
           <div className="p-6 sm:p-8 space-y-6 text-center animate-in fade-in">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600/30 to-teal-500/20 border border-white/20 text-emerald-300 mx-auto flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
-              <Key className="w-8 h-8" />
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center shadow-sm">
+              <Sparkles className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight">
-                Live Cloud Engine Connected
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0F172A] dark:text-[#F2F4F3] tracking-tight">
+                Welcome to DocFin Intelligence
               </h3>
-              <p className="text-xs text-slate-300/80 leading-relaxed max-w-sm mx-auto font-sans">
-                DocFin is pre-configured with Google Gemini 1.5/2.0 Flash, Qdrant Cloud Vector Database, and Upstash Redis. You can also add custom BYOK keys anytime in Settings.
+              <p className="text-xs sm:text-sm text-[#2E503B] dark:text-[#8E9690] leading-relaxed max-w-md mx-auto">
+                DocFin ingests dense documents, extracts structured data tables into CSV, flags liability traps, and grounds answers with page coordinate citations.
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl liquid-glass-card text-left space-y-2 text-xs font-mono">
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Gemini Engine:</span>
-                <span className="text-emerald-400 font-bold flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Active (2.0 Flash)
-                </span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-center">
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/10 flex sm:flex-col items-center gap-2.5 sm:gap-1.5 hover:border-emerald-500/30 transition-all">
+                <FileSearch className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                <div>
+                  <span className="font-bold text-xs text-[#0F172A] dark:text-white block">Multimodal OCR</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">1.0M Token Context</span>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Qdrant Vectors:</span>
-                <span className="text-emerald-400 font-bold">Online (docfin_documents)</span>
+
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/10 flex sm:flex-col items-center gap-2.5 sm:gap-1.5 hover:border-emerald-500/30 transition-all">
+                <Zap className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                <div>
+                  <span className="font-bold text-xs text-[#0F172A] dark:text-white block">Spatial Grounding</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Pixel Bounding Boxes</span>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Redis Acceleration:</span>
-                <span className="text-emerald-400 font-bold">Connected (&lt;10ms)</span>
+
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/10 flex sm:flex-col items-center gap-2.5 sm:gap-1.5 hover:border-emerald-500/30 transition-all">
+                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+                <div>
+                  <span className="font-bold text-xs text-[#0F172A] dark:text-white block">Zero Hallucinations</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Exact Text Quotations</span>
+                </div>
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="pt-2 flex items-center justify-end">
               <button
-                onClick={() => { onClose(); onOpenSettings(); }}
-                className="flex-1 py-3 px-4 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs font-semibold transition-colors cursor-pointer"
+                onClick={() => setStep(2)}
+                className="btn-primary w-full py-3.5 px-5 rounded-full bg-[#288E4F] dark:bg-[#4CAF6B] text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <span>Next: AI Engines & Vector DB</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            STEP 2: ENGINES & CLOUD CONNECTION
+           ========================================================================= */}
+        {step === 2 && (
+          <div className="p-6 sm:p-8 space-y-6 text-center animate-in fade-in">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center shadow-sm">
+              <Key className="w-7 h-7 sm:w-8 sm:h-8" />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0F172A] dark:text-[#F2F4F3] tracking-tight">
+                Live Cloud Engine Connected
+              </h3>
+              <p className="text-xs sm:text-sm text-[#2E503B] dark:text-[#8E9690] leading-relaxed max-w-md mx-auto">
+                DocFin is pre-configured with Google Gemini 2.0 Flash, Qdrant Cloud Vector DB, and Upstash Redis. You can also configure custom BYOK keys in Settings.
+              </p>
+            </div>
+
+            <div className="p-4 sm:p-5 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/10 text-left space-y-2.5 text-xs font-mono">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5 text-blue-500" />
+                  Gemini Model:
+                </span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Active (2.0 Flash)
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-purple-500" />
+                  Qdrant Vector DB:
+                </span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">Online (docfin_documents)</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-amber-500" />
+                  Redis In-Memory Cache:
+                </span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">Connected (&lt;10ms)</span>
+              </div>
+            </div>
+
+            {/* 2-Way Left & Right Controls */}
+            <div className="pt-2 flex items-center gap-3">
+              <button
+                onClick={() => setStep(1)}
+                className="py-3 sm:py-3.5 px-4 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/15 text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back</span>
+              </button>
+
+              <button
+                onClick={() => { handleClose(); onOpenSettings(); }}
+                className="py-3 sm:py-3.5 px-4 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/15 text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center cursor-pointer"
               >
                 Configure Keys
               </button>
+
               <button
                 onClick={() => setStep(3)}
-                className="liquid-glass-button flex-1 py-3 px-4 rounded-full text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer hover:scale-102 active:scale-98"
+                className="btn-primary flex-1 py-3 sm:py-3.5 px-4 rounded-full bg-[#288E4F] dark:bg-[#4CAF6B] text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />
@@ -151,41 +261,57 @@ export default function OnboardingModal({
           </div>
         )}
 
-        {/* Step 3: Ready to Upload */}
+        {/* =========================================================================
+            STEP 3: READY & SUPER ACTIONS
+           ========================================================================= */}
         {step === 3 && (
           <div className="p-6 sm:p-8 space-y-6 text-center animate-in fade-in">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600/30 to-emerald-400/20 border border-white/20 text-emerald-300 mx-auto flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
-              <UploadCloud className="w-8 h-8" />
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center shadow-sm">
+              <UploadCloud className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0F172A] dark:text-[#F2F4F3] tracking-tight">
                 You&apos;re All Set!
               </h3>
-              <p className="text-xs text-slate-300/80 leading-relaxed max-w-sm mx-auto font-sans">
-                Drop your first file (PDF, Contract, Tax Invoice, Bank Statement, Photo, or Sheet) to run an instantaneous spatial audit.
+              <p className="text-xs sm:text-sm text-[#2E503B] dark:text-[#8E9690] leading-relaxed max-w-md mx-auto">
+                Drop your first file (PDF, Contract, Invoice, Bank Statement, Photo, or Sheet) to run an instantaneous spatial audit.
               </p>
             </div>
 
-            <div className="space-y-2.5 text-left text-xs text-slate-300 liquid-glass-card p-4 sm:p-5 rounded-2xl font-sans">
+            <div className="space-y-3 text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/10 p-4 sm:p-5 rounded-2xl">
               <p className="flex items-center gap-2.5">
-                <span className="font-mono text-blue-400 font-bold">1.</span> Drag & drop or click anywhere to upload
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">1.</span>
+                <span>Drag & drop or click anywhere to upload documents</span>
               </p>
               <p className="flex items-center gap-2.5">
-                <span className="font-mono text-blue-400 font-bold">2.</span> Click <strong className="text-white">[+]</strong> in the prompt bar for 1-click super-actions
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">2.</span>
+                <span>Click <strong className="text-[#0F172A] dark:text-white">[+]</strong> in the prompt bar for 1-click super-actions</span>
               </p>
               <p className="flex items-center gap-2.5">
-                <span className="font-mono text-blue-400 font-bold">3.</span> Grounded citations and CSV tables generated in seconds
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">3.</span>
+                <span>Grounded citations and CSV tables generated in seconds</span>
               </p>
             </div>
 
-            <button
-              onClick={() => { onClose(); onStartAudit(); }}
-              className="liquid-glass-button w-full py-3.5 px-4 rounded-full text-white text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer hover:scale-102 active:scale-98"
-            >
-              <span>Launch Workspace Now</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            {/* 2-Way Left & Right Controls */}
+            <div className="pt-2 flex items-center gap-3">
+              <button
+                onClick={() => setStep(2)}
+                className="py-3.5 px-4 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/15 text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back</span>
+              </button>
+
+              <button
+                onClick={() => { handleClose(); onStartAudit(); }}
+                className="btn-primary flex-1 py-3.5 px-5 rounded-full bg-[#288E4F] dark:bg-[#4CAF6B] text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <span>Launch Workspace Now</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         )}
       </div>

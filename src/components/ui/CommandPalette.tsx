@@ -11,7 +11,8 @@ import {
   Settings,
   FileText,
   FileJson,
-  Command
+  Command,
+  Sparkles
 } from 'lucide-react';
 import { DocumentAnalysis } from '@/lib/types';
 import { useTheme } from '@/context/ThemeContext';
@@ -26,6 +27,7 @@ interface CommandPaletteProps {
   onOpenExport: () => void;
   onOpenRawJson: () => void;
   onToggleHistory: () => void;
+  onOpenOnboarding?: () => void;
 }
 
 export default function CommandPalette({
@@ -37,7 +39,8 @@ export default function CommandPalette({
   onOpenSettings,
   onOpenExport,
   onOpenRawJson,
-  onToggleHistory
+  onToggleHistory,
+  onOpenOnboarding
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -75,6 +78,7 @@ export default function CommandPalette({
     { id: 'export_memo', title: 'Export Structured Audit Memo', category: 'Actions', icon: Download, shortcut: '⌘E', action: () => { onOpenExport(); onClose(); } },
     { id: 'raw_json', title: 'Inspect Raw JSON Output', category: 'Actions', icon: FileJson, shortcut: '⌘J', action: () => { onOpenRawJson(); onClose(); } },
     { id: 'toggle_history', title: 'Toggle Document History Sidebar', category: 'Navigation', icon: History, shortcut: '⌘H', action: () => { onToggleHistory(); onClose(); } },
+    ...(onOpenOnboarding ? [{ id: 'tour', title: 'Launch Interactive Product Tour', category: 'Help', icon: Sparkles, shortcut: '⌘?', action: () => { onOpenOnboarding(); onClose(); } }] : []),
     { id: 'settings', title: 'Open Settings & API Key Config', category: 'Settings', icon: Settings, shortcut: '⌘,', action: () => { onOpenSettings(); onClose(); } },
     { id: 'theme', title: theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme', category: 'Preferences', icon: theme === 'dark' ? Sun : Moon, shortcut: '⌘T', action: () => { toggleTheme(); onClose(); } }
   ];

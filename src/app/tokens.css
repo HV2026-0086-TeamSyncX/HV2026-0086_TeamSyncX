@@ -27,7 +27,7 @@
   --glow-brand: 0 10px 32px rgba(34, 124, 68, 0.16);
   --orb-1: rgba(40, 142, 79, 0.18);
   --orb-2: rgba(25, 95, 50, 0.12);
-  --grid-line: rgba(20, 75, 45, 0.16);
+  --grid-line: rgba(20, 75, 45, 0.22);
 
   /* Spacing */
   --space-1: 4px;
@@ -88,7 +88,7 @@
   --glow-brand: 0 0 32px rgba(76, 175, 107, 0.14);
   --orb-1: rgba(76, 175, 107, 0.12);
   --orb-2: rgba(46, 125, 79, 0.08);
-  --grid-line: rgba(255, 255, 255, 0.10);
+  --grid-line: rgba(255, 255, 255, 0.12);
 
   --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.60);
