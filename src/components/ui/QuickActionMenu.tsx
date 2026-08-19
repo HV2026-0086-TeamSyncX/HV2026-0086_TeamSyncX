@@ -378,39 +378,6 @@ export default function QuickActionMenu({
       badge: 'Multimodal',
       isUpload: true,
       mediaCategory: 'all'
-    },
-    {
-      id: 'act_add_images',
-      icon: ImageIcon,
-      iconColor: 'text-emerald-400',
-      title: 'Photos & Images',
-      description: 'High-res photos, receipts, charts & UI captures',
-      prompt: '',
-      badge: 'PNG / JPG',
-      isUpload: true,
-      mediaCategory: 'image'
-    },
-    {
-      id: 'act_add_docs',
-      icon: FileText,
-      iconColor: 'text-rose-400',
-      title: 'PDFs & Text Documents',
-      description: 'PDFs, Word documents, research papers & reports',
-      prompt: '',
-      badge: 'PDF / DOCX',
-      isUpload: true,
-      mediaCategory: 'pdf'
-    },
-    {
-      id: 'act_add_sheets',
-      icon: FileSpreadsheet,
-      iconColor: 'text-blue-400',
-      title: 'Spreadsheets (Excel / CSV)',
-      description: 'Financial ledgers, data matrices & CSV files',
-      prompt: '',
-      badge: 'XLSX / CSV',
-      isUpload: true,
-      mediaCategory: 'spreadsheet'
     }
   ];
 
