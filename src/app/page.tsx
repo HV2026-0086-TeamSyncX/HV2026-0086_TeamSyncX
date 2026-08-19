@@ -3,12 +3,8 @@
 import React from 'react';
 import Navbar from '@/components/landing/Navbar';
 import HeroSection from '@/components/landing/HeroSection';
-import WhyItMattersSection from '@/components/landing/WhyItMattersSection';
-import HowItWorksSection from '@/components/landing/HowItWorksSection';
-import WhoItIsForSection from '@/components/landing/WhoItIsForSection';
-import WhatDocFinFinds from '@/components/landing/WhatDocFinFinds';
+import StudioBentoGrid from '@/components/landing/StudioBentoGrid';
 import InteractiveRoiCalculator from '@/components/landing/InteractiveRoiCalculator';
-import DocumentTypesSection from '@/components/landing/DocumentTypesSection';
 import FinalCtaSection from '@/components/landing/FinalCtaSection';
 import Footer from '@/components/landing/Footer';
 
@@ -18,30 +14,18 @@ export default function LandingPage() {
       {/* 1. Global Navigation */}
       <Navbar />
 
-      {/* 2. Structured Narrative Flow (What -> Why -> How -> Who -> Where -> ROI -> Lenses -> CTA) */}
+      {/* 2. Google AI Studio-Grade Streamlined Layout */}
       <main className="flex-1">
-        {/* WHAT: Problem & Thesis Statement */}
+        {/* Interactive Studio Hero & Playground */}
         <HeroSection />
 
-        {/* WHY: The Critical Need for Automated Document Intelligence */}
-        <WhyItMattersSection />
+        {/* Studio Bento Grid: 1M Multimodal Window + Spatial Grounding + Persona Workflows */}
+        <StudioBentoGrid />
 
-        {/* HOW: 3-Stage Ingestion, Spatial Parsing & Grounded Synthesis */}
-        <HowItWorksSection />
-
-        {/* WHO: Target Personas (Accountants, Legal Counsel, SMBs, Researchers) */}
-        <WhoItIsForSection />
-
-        {/* WHERE: Real-World Discoveries & Automated AI Remedies */}
-        <WhatDocFinFinds />
-
-        {/* ROI: Quantified Hours Reclaimed & Financial Leakage Caught */}
+        {/* Operational Model & ROI Slider */}
         <InteractiveRoiCalculator />
 
-        {/* LENSES: 6 Specialized Domain Extraction Engines */}
-        <DocumentTypesSection />
-
-        {/* FINAL CTA: Launch Workspace */}
+        {/* Final Launch Studio CTA */}
         <FinalCtaSection />
       </main>
 

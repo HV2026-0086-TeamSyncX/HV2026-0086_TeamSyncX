@@ -627,6 +627,8 @@ function DashboardWorkspaceContent() {
           setCurrentDoc(null);
           setMessages([]);
         }}
+        isHistoryOpen={isRightHistoryOpen}
+        onToggleHistory={() => setIsRightHistoryOpen(!isRightHistoryOpen)}
       />
 
       {/* 2. Main Central Conversational Canvas */}

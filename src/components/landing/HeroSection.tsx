@@ -18,264 +18,257 @@ import {
   Layers,
   ChevronRight,
   TrendingUp,
-  Clock
+  Clock,
+  Play,
+  RotateCcw,
+  Cpu,
+  Terminal
 } from 'lucide-react';
 
 export default function HeroSection() {
-  const [activeDocType, setActiveDocType] = useState<'lease' | 'report' | 'statement' | 'invoice'>('lease');
+  const [activeDocType, setActiveDocType] = useState<'lease' | 'statement' | 'report' | 'invoice'>('lease');
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [executionCount, setExecutionCount] = useState(1);
+
+  const handleRun = () => {
+    setIsExecuting(true);
+    setTimeout(() => {
+      setIsExecuting(false);
+      setExecutionCount((prev) => prev + 1);
+    }, 600);
+  };
+
+  const demoData = {
+    lease: {
+      fileName: 'Commercial_Lease_Agreement.pdf',
+      domain: 'LEGAL CONTRACT',
+      page: 1,
+      coords: '[124, 48, 380, 92]',
+      systemInstruction: 'Radar: Extract non-standard liabilities, auto-renewals & penalty clauses.',
+      metric: '₹2,00,000 Deposit Forfeiture Risk',
+      quote: 'Clause 5.2 stipulates full security deposit forfeiture upon early lease termination without 90 days notice.',
+      action: 'Drafted counter-clause capping liability to 1 month pro-rata rent.',
+      status: 'CRITICAL CLAUSE',
+      statusColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20'
+    },
+    statement: {
+      fileName: 'HDFC_Bank_Statement_Jan2026.pdf',
+      domain: 'FINANCE & BANKING',
+      page: 2,
+      coords: '[88, 142, 290, 168]',
+      systemInstruction: 'Fee Radar: Reconcile intraday balance surcharges & transaction fees.',
+      metric: '-₹650.00 Erroneous Overdraft Surcharge',
+      quote: 'Intraday penalty debited on 18 Jan despite positive closing ledger balance.',
+      action: 'Dispute letter drafted citing RBI master circular on min balance rules.',
+      status: 'RECOVERABLE FEE',
+      statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
+    },
+    report: {
+      fileName: 'WMT14_Translation_Benchmarks.pdf',
+      domain: 'AI RESEARCH',
+      page: 4,
+      coords: '[210, 310, 480, 390]',
+      systemInstruction: 'Synthesizer: Extract empirical BLEU benchmarks and dataset matrices.',
+      metric: '28.4 BLEU Score (Big Model)',
+      quote: 'Transformer (big) outperforms all previous models by 2.0+ BLEU points on English-to-German.',
+      action: 'Table 3.1 extracted into 5-column CSV matrix ready for download.',
+      status: 'BENCHMARK VERIFIED',
+      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+    },
+    invoice: {
+      fileName: 'Supplier_Tax_Invoice_INV-8492.pdf',
+      domain: 'BILLING & TAXATION',
+      page: 1,
+      coords: '[42, 220, 340, 260]',
+      systemInstruction: 'Tax Engine: Verify GSTIN unit rates, HSN codes & input tax credits.',
+      metric: '₹12,870.00 Eligible ITC Claim',
+      quote: '18% IGST matches supplier master record and valid GSTR-1 filing ledger.',
+      action: 'Confirmed 100% direct input tax credit deduction eligibility.',
+      status: 'TAX CREDIT APPROVED',
+      statusColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20'
+    }
+  };
+
+  const current = demoData[activeDocType];
 
   return (
-    <section className="relative pt-32 sm:pt-40 pb-24 select-none bg-[var(--bg-canvas)] overflow-hidden transition-colors duration-300">
-      {/* 1. Atmospheric Ambient Lighting & Subtle Dot Grid */}
-      <div className="absolute inset-0 bg-hero-ambient pointer-events-none" />
-      <div className="absolute inset-0 bg-dot-matrix pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,black_70%,transparent_100%)]" />
-      <div className="absolute inset-0 bg-stardust pointer-events-none opacity-0 dark:opacity-100 transition-opacity" />
+    <section className="relative pt-28 sm:pt-36 pb-16 sm:pb-20 select-none bg-[var(--bg-canvas)] overflow-hidden transition-colors duration-300">
+      {/* Background Google AI Studio Style Grid & Beam */}
+      <div className="absolute inset-0 bg-studio-dots pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black_70%,transparent_100%)]" />
+      <div className="absolute inset-0 bg-studio-beam pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Main 2-Column Hero Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-          {/* Left Column: Clear Bold Headline & Value Proposition (7 cols) */}
-          <div className="lg:col-span-7 text-left space-y-6">
-            {/* Pill Eyebrow */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-400/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-mono font-medium shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 animate-ping" />
-              <span>DocFin 2.0 • Multimodal Document Intelligence</span>
-            </div>
-
-            {/* High-Contrast Primary Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[58px] font-serif text-[#0F172A] dark:text-white tracking-tight leading-[1.1] sm:leading-[1.08] font-bold">
-              Understand the details inside <br className="hidden sm:inline" />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#2563EB] via-indigo-500 to-blue-400">
-                any complex document.
-              </span>
-            </h1>
-
-            {/* High-Contrast Readable Paragraph */}
-            <p className="text-sm sm:text-lg text-[#334155] dark:text-slate-300 leading-relaxed font-sans max-w-xl">
-              DocFin extracts buried clauses, key numbers, financial ledgers, and obligations from contracts, research papers, bank statements, and invoices in seconds.
-            </p>
-
-            {/* Actions: Primary Emerald Pill CTA & Secondary Link */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-              <Link
-                href="/dashboard"
-                className="group px-7 sm:px-8 py-3 sm:py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.45)] border border-emerald-400/30 transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] touch-target"
-              >
-                <span>Open Workspace</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-
-              <Link
-                href="/login"
-                className="px-6 py-3 sm:py-3.5 rounded-full bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer backdrop-blur-md text-center touch-target"
-              >
-                Sign in to account
-              </Link>
-            </div>
-
-            {/* Capability Trust Micro-Strip */}
-            <div className="pt-3 sm:pt-4 flex flex-wrap items-center gap-y-2 gap-x-4 sm:gap-x-6 text-[11px] text-[#64748B] dark:text-slate-400 font-mono">
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
-                <span>Zero Data Retention</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
-                <span>Page-Grounded Citations</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
-                <span>Multi-Format Reasoning</span>
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
+        {/* Top Header: Clean, Sleek, Non-Bulky */}
+        <div className="text-center max-w-3xl mx-auto space-y-4">
+          {/* Studio Model Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full studio-card text-[11px] font-mono text-slate-700 dark:text-slate-300 shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-semibold text-[#0F172A] dark:text-white">Gemini 2.0 Flash</span>
+            <span className="text-slate-400">•</span>
+            <span className="text-slate-500 dark:text-slate-400">1.0M Multimodal Context</span>
           </div>
 
-          {/* Right Column: Realistic Interactive Document Intelligence Canvas (5 cols) */}
-          <div className="lg:col-span-5">
-            <div className="p-4 sm:p-7 rounded-3xl bg-white/80 dark:bg-[#0c1017]/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.6)] text-left space-y-4 relative group">
-              {/* Outer Subtle Gradient Rim Glow */}
-              <div className="absolute -inset-[1px] bg-gradient-to-r from-blue-500/20 via-indigo-500/10 to-emerald-500/20 rounded-3xl -z-10 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+          {/* Crisp, Modern Headline */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#0F172A] dark:text-white tracking-tight leading-[1.12] font-bold">
+            The Document Studio for <br className="hidden sm:inline" />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#2563EB] via-indigo-500 to-emerald-500">
+              High-Stakes Decisions.
+            </span>
+          </h1>
 
-              {/* Product Card Top Bar */}
-              <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 pb-3 border-b border-black/[0.06] dark:border-white/[0.08]">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0">
-                    <FileText className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-bold text-[#0F172A] dark:text-white font-mono">
-                    Live Document Audit
-                  </span>
-                </div>
+          {/* High-Readability Minimal Paragraph */}
+          <p className="text-xs sm:text-base text-[#53627A] dark:text-slate-300 leading-relaxed font-sans max-w-xl mx-auto">
+            Audit commercial contracts, bank statements, research papers, and invoices with exact page-coordinate citations and zero hallucination.
+          </p>
 
-                {/* Document Type Switcher */}
-                <div className="flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/10 text-[10px] font-medium overflow-x-auto scrollbar-none">
-                  {[
-                    { id: 'lease', label: 'Contract' },
-                    { id: 'report', label: 'Report' },
-                    { id: 'statement', label: 'Statement' },
-                    { id: 'invoice', label: 'Invoice' }
-                  ].map((tab) => (
+          {/* Sleek Action Buttons */}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/dashboard"
+              className="glass-button-emerald px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-white text-xs sm:text-sm font-bold flex items-center gap-2 touch-target shadow-md"
+            >
+              <span>Launch Studio</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <Link
+              href="/login"
+              className="studio-card px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-all touch-target"
+            >
+              Sign In
+            </Link>
+          </div>
+        </div>
+
+        {/* Interactive Google AI Studio Playground Canvas */}
+        <div className="max-w-5xl mx-auto">
+          <div className="rounded-3xl studio-card overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 text-left">
+            {/* Studio Workspace Top Bar */}
+            <div className="px-4 sm:px-6 py-3 border-b border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-black/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              {/* Document Switcher Tabs */}
+              <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5">
+                {[
+                  { id: 'lease', label: 'Commercial Lease', icon: Scale },
+                  { id: 'statement', label: 'Bank Statement', icon: CreditCard },
+                  { id: 'report', label: 'Research Paper', icon: BookOpen },
+                  { id: 'invoice', label: 'Tax Invoice', icon: Receipt }
+                ].map((tab) => {
+                  const Icon = tab.icon;
+                  return (
                     <button
                       key={tab.id}
                       onClick={() => setActiveDocType(tab.id as any)}
-                      className={`px-2.5 py-1 rounded-full transition-all cursor-pointer whitespace-nowrap touch-target ${
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap touch-target ${
                         activeDocType === tab.id
-                          ? 'bg-[#2563EB] text-white font-bold shadow-xs'
-                          : 'text-[#53627A] dark:text-slate-400 hover:text-[#0F172A] dark:hover:text-white'
+                          ? 'bg-[#2563EB] text-white font-semibold shadow-xs'
+                          : 'text-[#53627A] dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                       }`}
                     >
-                      {tab.label}
+                      <Icon className="w-3.5 h-3.5" />
+                      <span>{tab.label}</span>
                     </button>
-                  ))}
+                  );
+                })}
+              </div>
+
+              {/* Run Trigger & Model Telemetry */}
+              <div className="flex items-center gap-2.5 justify-between sm:justify-end">
+                <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                  <Zap className="w-3 h-3 text-amber-500" />
+                  <span>48ms Latency</span>
+                </span>
+
+                <button
+                  onClick={handleRun}
+                  disabled={isExecuting}
+                  className="px-3.5 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold font-mono flex items-center gap-1.5 transition-all cursor-pointer shadow-xs disabled:opacity-50 touch-target"
+                >
+                  {isExecuting ? (
+                    <RotateCcw className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                  )}
+                  <span>{isExecuting ? 'Extracting...' : 'Run Audit'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Studio Workspace 2-Column Split */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-black/[0.08] dark:divide-white/[0.08]">
+              {/* Left Column: System & Spatial Input (5 cols) */}
+              <div className="lg:col-span-5 p-5 sm:p-6 bg-black/[0.01] dark:bg-black/20 space-y-4">
+                <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
+                  <span className="uppercase tracking-wider flex items-center gap-1.5">
+                    <Terminal className="w-3.5 h-3.5 text-blue-500" />
+                    Input Document
+                  </span>
+                  <span className="px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 font-bold">
+                    Page {current.page}
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h4 className="text-xs font-mono font-bold text-[#0F172A] dark:text-white truncate">
+                    {current.fileName}
+                  </h4>
+                  <div className="p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 font-mono text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <span className="text-blue-600 dark:text-blue-400 font-bold">SYSTEM_PROMPT: </span>
+                    {current.systemInstruction}
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl border border-dashed border-black/15 dark:border-white/15 text-[11px] font-mono text-slate-500 space-y-1">
+                  <div className="flex justify-between">
+                    <span>SPATIAL_COORDINATES:</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">{current.coords}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>TENSOR_CONFIDENCE:</span>
+                    <span className="text-[#0F172A] dark:text-white font-bold">99.4%</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Document Findings Content */}
-              {activeDocType === 'lease' && (
-                <div className="space-y-3 animate-in fade-in">
-                  <div className="flex items-center justify-between text-xs text-[#53627A] dark:text-slate-400 font-mono">
-                    <span className="truncate max-w-[200px]">Commercial_Lease_Agreement.pdf</span>
-                    <span className="text-rose-600 dark:text-rose-400 font-semibold flex items-center gap-1">
-                      <AlertTriangle className="w-3 h-3" />
-                      2 critical covenants
-                    </span>
-                  </div>
+              {/* Right Column: Grounded AI Output (7 cols) */}
+              <div className="lg:col-span-7 p-5 sm:p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border ${current.statusColor}`}>
+                    {current.status}
+                  </span>
+                  <span className="text-[11px] font-mono text-slate-400">
+                    Spatial Grounding Verified
+                  </span>
+                </div>
 
-                  <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-xs">
-                    <div className="flex items-center justify-between text-rose-700 dark:text-rose-300 font-bold mb-0.5">
-                      <span className="flex items-center gap-1.5">
-                        <Scale className="w-3.5 h-3.5" />
-                        Deposit Forfeiture (Clause 5.2)
-                      </span>
-                      <span className="font-mono text-rose-600 dark:text-rose-400">₹2,00,000</span>
-                    </div>
-                    <p className="text-[11px] text-[#334155] dark:text-slate-300 leading-relaxed">
-                      Forfeits entire deposit upon early exit. Pro-rata counter-clause generated capping liability to 1 month notice rent.
-                    </p>
-                  </div>
-
+                <div className="space-y-2">
+                  <h3 className="text-base sm:text-lg font-serif font-bold text-[#0F172A] dark:text-white">
+                    {current.metric}
+                  </h3>
+                  
+                  {/* Verified Quote Box */}
                   <div className="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs">
-                    <div className="flex items-center justify-between text-[#0F172A] dark:text-white font-bold mb-0.5">
-                      <span className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-blue-500" />
-                        Notice Period Deadline
-                      </span>
-                      <span className="font-mono text-[#2563EB] dark:text-blue-400">60 Days</span>
-                    </div>
-                    <p className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">
-                      Written notice required prior to lock-in renewal on 14 Sept 2026.
+                    <p className="text-[10px] font-mono uppercase text-slate-400 mb-1">
+                      Exact Page Excerpt:
+                    </p>
+                    <p className="font-serif text-[#0F172A] dark:text-slate-200 italic leading-relaxed">
+                      "{current.quote}"
                     </p>
                   </div>
                 </div>
-              )}
 
-              {activeDocType === 'report' && (
-                <div className="space-y-3 animate-in fade-in">
-                  <div className="flex items-center justify-between text-xs text-[#53627A] dark:text-slate-400 font-mono">
-                    <span className="truncate max-w-[200px]">Q4_Corporate_Performance_Report.pdf</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3" />
-                      4 key metrics
+                {/* AI Remedy Box */}
+                <div className="p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/20 text-xs flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-emerald-800 dark:text-emerald-300">
+                      Studio Action Taken:
                     </span>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs">
-                    <div className="flex items-center justify-between text-emerald-700 dark:text-emerald-300 font-bold mb-0.5">
-                      <span className="flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Operating Margin Expansion
-                      </span>
-                      <span className="font-mono text-emerald-600 dark:text-emerald-400">+24.6% YoY</span>
-                    </div>
-                    <p className="text-[11px] text-[#334155] dark:text-slate-300 leading-relaxed">
-                      Driven by automation of document review workflows across 12 branch offices.
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs">
-                    <div className="flex items-center justify-between text-[#0F172A] dark:text-white font-bold mb-0.5">
-                      <span className="flex items-center gap-1.5">
-                        <FileSpreadsheet className="w-3.5 h-3.5 text-cyan-500" />
-                        Extracted Data Matrix
-                      </span>
-                      <span className="font-mono text-[#2563EB] dark:text-blue-400">18 Rows • CSV Ready</span>
-                    </div>
-                    <p className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">
-                      Table 3.1 regional headcount and revenue matrix converted into structured spreadsheet.
+                    <p className="text-[#334155] dark:text-slate-300 mt-0.5 leading-relaxed font-sans">
+                      {current.action}
                     </p>
                   </div>
                 </div>
-              )}
-
-              {activeDocType === 'statement' && (
-                <div className="space-y-3 animate-in fade-in">
-                  <div className="flex items-center justify-between text-xs text-[#53627A] dark:text-slate-400 font-mono">
-                    <span className="truncate max-w-[200px]">Account_Statement_Jan2026.pdf</span>
-                    <span className="text-amber-600 dark:text-amber-400 font-semibold flex items-center gap-1">
-                      <CreditCard className="w-3 h-3" />
-                      Fee Radar
-                    </span>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-xs">
-                    <div className="flex items-center justify-between text-rose-700 dark:text-rose-300 font-bold mb-0.5">
-                      <span className="flex items-center gap-1.5">
-                        <AlertTriangle className="w-3.5 h-3.5" />
-                        Disputable Overdraft Penalty
-                      </span>
-                      <span className="font-mono text-rose-600 dark:text-rose-400">-₹650.00</span>
-                    </div>
-                    <p className="text-[11px] text-[#334155] dark:text-slate-300 leading-relaxed">
-                      Intraday minimum balance penalty charged erroneously. Dispute letter drafted citing RBI master circular.
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs">
-                    <div className="flex items-center justify-between text-[#0F172A] dark:text-white font-bold mb-0.5">
-                      <span>Monthly Net Outflow</span>
-                      <span className="font-mono text-emerald-600 dark:text-emerald-400">₹84,210.00</span>
-                    </div>
-                    <p className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">
-                      Categorized across 4 recurring subscriptions, utilities, and tax payments.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeDocType === 'invoice' && (
-                <div className="space-y-3 animate-in fade-in">
-                  <div className="flex items-center justify-between text-xs text-[#53627A] dark:text-slate-400 font-mono">
-                    <span className="truncate max-w-[200px]">Vendor_Invoice_INV-8492.pdf</span>
-                    <span className="text-purple-600 dark:text-purple-400 font-semibold flex items-center gap-1">
-                      <Receipt className="w-3 h-3" />
-                      Tax Line Item
-                    </span>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs">
-                    <div className="flex items-center justify-between text-purple-700 dark:text-purple-300 font-bold mb-0.5">
-                      <span className="flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Eligible ITC Tax Credit
-                      </span>
-                      <span className="font-mono text-purple-600 dark:text-purple-400">₹12,870.00</span>
-                    </div>
-                    <p className="text-[11px] text-[#334155] dark:text-slate-300 leading-relaxed">
-                      GSTIN match verified on GST portal. Eligible for 100% direct input tax deduction.
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs">
-                    <div className="flex items-center justify-between text-[#0F172A] dark:text-white font-bold mb-0.5">
-                      <span>Payment Due Date</span>
-                      <span className="font-mono text-amber-600 dark:text-amber-400">28 Aug 2026</span>
-                    </div>
-                    <p className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">
-                      Net-30 term agreement with 2% early settlement discount before 20 Aug.
-                    </p>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

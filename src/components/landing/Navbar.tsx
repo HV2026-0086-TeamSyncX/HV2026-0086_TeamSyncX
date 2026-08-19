@@ -38,29 +38,23 @@ export default function Navbar() {
         {/* Center Navigation Links */}
         <nav className="hidden md:flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-slate-300">
           <a
-            href="#how-it-works"
+            href="#capabilities"
             className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all"
           >
-            How it works
+            Capabilities & Bento
           </a>
           <a
-            href="#who-it-is-for"
+            href="#roi"
             className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all"
           >
-            Who it's for
+            ROI Model
           </a>
-          <a
-            href="#what-we-find"
-            className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all"
+          <Link
+            href="/dashboard"
+            className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all font-semibold text-blue-600 dark:text-blue-400"
           >
-            What we find
-          </a>
-          <a
-            href="#document-types"
-            className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all"
-          >
-            Document types
-          </a>
+            Studio Lab
+          </Link>
         </nav>
 
         {/* Right Actions */}
@@ -121,33 +115,26 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="sm:hidden mt-2 p-5 rounded-3xl bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-2xl space-y-3 animate-in slide-in-from-top-2">
           <a
-            href="#how-it-works"
+            href="#capabilities"
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200"
           >
-            How it works
+            Capabilities & Bento
           </a>
           <a
-            href="#who-it-is-for"
+            href="#roi"
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200"
           >
-            Who it's for
+            ROI Model
           </a>
-          <a
-            href="#what-we-find"
+          <Link
+            href="/dashboard"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="block py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200"
+            className="block py-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 font-bold"
           >
-            What we find
-          </a>
-          <a
-            href="#document-types"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200"
-          >
-            Document types
-          </a>
+            Open Studio Lab
+          </Link>
           <div className="pt-3 border-t border-black/10 dark:border-white/10 space-y-2">
             {isAuthenticated ? (
               <Link

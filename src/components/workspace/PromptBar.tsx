@@ -582,20 +582,6 @@ export default function PromptBar({
                   />
                 </div>
 
-                {/* Mic / Voice Dictation Button */}
-                <button
-                  type="button"
-                  onClick={toggleMic}
-                  className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all shadow-xs flex-shrink-0 cursor-pointer touch-target ${
-                    isRecording
-                      ? 'bg-rose-600 text-white border-rose-500 animate-pulse ring-2 ring-rose-500/40'
-                      : 'bg-white/10 dark:bg-white/5 border-white/15 text-slate-300 hover:text-white hover:bg-white/15'
-                  }`}
-                  title={isRecording ? 'Listening to voice...' : 'Voice Dictation'}
-                >
-                  <Mic className="w-4 h-4" />
-                </button>
-
                 {/* Prompt Input */}
                 <input
                   ref={textInputRef}

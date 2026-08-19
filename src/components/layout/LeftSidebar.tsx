@@ -41,6 +41,8 @@ interface LeftSidebarProps {
   onSelectDomain?: (domain: DocumentDomain) => void;
   onOpenAddMedia?: (category?: MediaType | 'all') => void;
   onOpenSearch?: () => void;
+  isHistoryOpen?: boolean;
+  onToggleHistory?: () => void;
 }
 
 export default function LeftSidebar({
@@ -54,7 +56,9 @@ export default function LeftSidebar({
   activeDomain,
   onSelectDomain,
   onOpenAddMedia,
-  onOpenSearch
+  onOpenSearch,
+  isHistoryOpen = false,
+  onToggleHistory
 }: LeftSidebarProps) {
   const router = useRouter();
   const { logout, user } = useAuth();
@@ -157,30 +161,25 @@ export default function LeftSidebar({
           {!isCollapsed && <span>New chat</span>}
         </button>
 
-        {/* Images / Media Ingestion */}
-        <button
-          onClick={() => onOpenAddMedia && onOpenAddMedia('image')}
-          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ${
-            isCollapsed ? 'justify-center px-0' : ''
-          }`}
-          title="Images & Media"
-        >
-          <ImageIcon className="w-4 h-4 text-slate-400" />
-          {!isCollapsed && <span>Images</span>}
-        </button>
-
-        {/* Library */}
+        {/* Library (Toggles Right History Sidebar) */}
         <button
           onClick={() => {
-            if (onSelectDomain) onSelectDomain('general');
+            if (onToggleHistory) onToggleHistory();
           }}
-          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ${
-            isCollapsed ? 'justify-center px-0' : ''
-          }`}
-          title="Library"
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
+            isHistoryOpen
+              ? 'bg-blue-600/30 text-white border border-blue-500/40 shadow-xs'
+              : 'text-slate-300 hover:text-white hover:bg-white/10'
+          } ${isCollapsed ? 'justify-center px-0' : ''}`}
+          title="Library (Document History)"
         >
-          <Library className="w-4 h-4 text-slate-400" />
-          {!isCollapsed && <span>Library</span>}
+          <Library className={`w-4 h-4 ${isHistoryOpen ? 'text-blue-400' : 'text-slate-400'}`} />
+          {!isCollapsed && (
+            <div className="flex-1 flex items-center justify-between">
+              <span>Library</span>
+              {isHistoryOpen && <span className="text-[10px] font-mono text-blue-400 font-bold">OPEN</span>}
+            </div>
+          )}
         </button>
 
         {/* Capabilities / Plugins */}

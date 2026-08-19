@@ -332,6 +332,64 @@ body {
   background-image: linear-gradient(to bottom, transparent 27px, rgba(255, 255, 255, 0.03) 28px);
 }
 
+/* Google AI Studio Inspired Visual Patterns */
+.bg-studio-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+.dark .bg-studio-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.bg-studio-dots {
+  background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.dark .bg-studio-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.10) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-studio-beam {
+  background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15) 0%, rgba(99, 102, 241, 0.08) 35%, transparent 70%);
+}
+
+.dark .bg-studio-beam {
+  background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.22) 0%, rgba(139, 92, 246, 0.12) 40%, transparent 75%);
+}
+
+/* Studio Precision Cards */
+.studio-card {
+  background: rgba(255, 255, 255, 0.70);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .studio-card {
+  background: rgba(14, 18, 26, 0.70);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.studio-card:hover {
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 12px 30px -4px rgba(37, 99, 235, 0.08), 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+.dark .studio-card:hover {
+  border-color: rgba(96, 165, 250, 0.35);
+  box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.7), 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
 /* Stardust Background Speckle Pattern (Dark Mode) */
 .dark .bg-stardust {
   background-image: 

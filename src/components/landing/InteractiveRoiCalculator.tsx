@@ -13,14 +13,14 @@ export default function InteractiveRoiCalculator() {
   const errorReductionPct = 96.4;
 
   return (
-    <section className="py-28 sm:py-36 border-t border-slate-200/80 dark:border-white/10 select-none bg-[var(--bg-canvas)] transition-colors duration-300">
+    <section id="roi" className="py-16 sm:py-24 border-t border-black/[0.06] dark:border-white/[0.08] select-none bg-[var(--bg-canvas)] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 text-xs font-semibold mb-4">
-            <Calculator className="w-3.5 h-3.5" />
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full studio-card text-xs font-mono font-medium mb-3">
+            <Calculator className="w-3.5 h-3.5 text-blue-500" />
             <span>Interactive Operational Model</span>
           </div>
-          <h2 className="text-3xl sm:text-6xl font-serif text-slate-900 dark:text-white tracking-tight mt-2 mb-4 sm:mb-6 font-normal">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif text-[#0F172A] dark:text-white tracking-tight mt-1 mb-3 font-bold">
             Calculate Your Organization’s ROI
           </h2>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-sans max-w-2xl mx-auto">
