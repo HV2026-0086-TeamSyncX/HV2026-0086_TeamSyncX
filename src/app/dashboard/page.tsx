@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import LeftSidebar from '@/components/layout/LeftSidebar';
 import Header from '@/components/layout/Header';
@@ -345,10 +345,18 @@ function getDocumentFunctions(doc: DocumentAnalysis) {
 }
 
 function DashboardWorkspaceContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const docIdParam = searchParams.get('docId');
   const lensParam = searchParams.get('lens') as DocumentDomain | null;
-  const { user } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
+
+  // Authentication Route Protection
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [isAuthenticated, isLoading, router]);
 
   // Navigation & Workspace State
   const [activeDomain, setActiveDomain] = useState<DocumentDomain>(lensParam || 'overall');
@@ -909,6 +917,18 @@ function DashboardWorkspaceContent() {
     URL.revokeObjectURL(url);
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-[#F8FAFD] dark:bg-[#07090E]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#2563EB]" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[var(--bg-canvas)] text-[var(--text-primary)] antialiased font-sans transition-colors duration-200">
       {/* 1. Left Control Sidebar */}
@@ -1036,7 +1056,7 @@ function DashboardWorkspaceContent() {
                               <button
                                 key={demoDoc.id}
                                 onClick={() => handleLoadDemoDoc(demoDoc)}
-                                className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-xs cursor-pointer flex flex-col justify-between"
+                                className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-aesthetic hover:shadow-aesthetic-lg cursor-pointer flex flex-col justify-between"
                               >
                                 <div>
                                   <div className="flex items-center justify-between gap-2 mb-2.5">
@@ -1080,7 +1100,7 @@ function DashboardWorkspaceContent() {
                                 <button
                                   key={fn.id}
                                   onClick={() => handleSendMessage(fn.prompt)}
-                                  className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-xs cursor-pointer flex flex-col justify-between"
+                                  className="p-5 rounded-3xl bg-white/90 dark:bg-[#121722]/90 hover:bg-blue-50/60 dark:hover:bg-blue-950/40 border border-black/10 dark:border-white/10 hover:border-blue-400 dark:hover:border-blue-600 transition-all text-left group shadow-aesthetic hover:shadow-aesthetic-lg cursor-pointer flex flex-col justify-between"
                                 >
                                   <div>
                                     <div className="flex items-center justify-between gap-2 mb-2.5">
@@ -1123,7 +1143,7 @@ function DashboardWorkspaceContent() {
                           className={`w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 text-xs font-bold ${
                             isAssistant
                               ? 'bg-[#2563EB] text-white shadow-xs'
-                              : 'bg-[#0F172A] text-white dark:bg-white dark:text-[#0F172A]'
+                              : 'bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-xs'
                           }`}
                         >
                           {isAssistant ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
@@ -1157,8 +1177,8 @@ function DashboardWorkspaceContent() {
                           <div
                             className={`p-6 sm:p-7 rounded-3xl text-sm leading-relaxed text-left transition-all ${
                               isAssistant
-                                ? 'bg-white/90 dark:bg-[#121722]/90 border border-black/10 dark:border-white/10 text-[#0F172A] dark:text-slate-200 shadow-md backdrop-blur-md'
-                                : 'bg-[#2563EB] text-white shadow-md'
+                                ? 'bg-white/90 dark:bg-[#121722]/90 border border-black/10 dark:border-white/10 text-[#0F172A] dark:text-slate-200 shadow-aesthetic-lg backdrop-blur-md'
+                                : 'bg-[#2563EB] text-white shadow-aesthetic-lg'
                             }`}
                           >
                             <FormattedMessageText content={msg.text} isAssistant={isAssistant} />
@@ -1263,7 +1283,7 @@ function DashboardWorkspaceContent() {
                                 <button
                                   key={sIdx}
                                   onClick={() => handleSendMessage(sug)}
-                                  className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-black/5 dark:bg-white/5 hover:bg-blue-500/10 dark:hover:bg-blue-500/20 border border-black/10 dark:border-white/10 hover:border-blue-400 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-300 transition-all cursor-pointer shadow-xs hover:scale-[1.02] active:scale-[0.98]"
+                                  className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white dark:bg-white/5 hover:bg-blue-50/80 dark:hover:bg-blue-500/20 border border-slate-200 dark:border-white/10 hover:border-blue-400 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-300 transition-all cursor-pointer shadow-2xs hover:scale-[1.02] active:scale-[0.98]"
                                 >
                                   {sug}
                                 </button>

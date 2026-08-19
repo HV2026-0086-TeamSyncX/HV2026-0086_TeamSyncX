@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 import {
   ArrowRight,
   FileText,
@@ -26,6 +27,7 @@ import {
 } from 'lucide-react';
 
 export default function HeroSection() {
+  const { isAuthenticated } = useAuth();
   const [activeDocType, setActiveDocType] = useState<'lease' | 'statement' | 'report' | 'invoice'>('lease');
   const [isExecuting, setIsExecuting] = useState(false);
   const [executionCount, setExecutionCount] = useState(1);
@@ -125,19 +127,28 @@ export default function HeroSection() {
           {/* Sleek Action Buttons */}
           <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/dashboard"
+              href={isAuthenticated ? "/dashboard" : "/login"}
               className="glass-button-emerald px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-white text-xs sm:text-sm font-bold flex items-center gap-2 touch-target shadow-md"
             >
-              <span>Launch Studio</span>
+              <span>{isAuthenticated ? 'Open Studio Workspace' : 'Launch Studio'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
-            <Link
-              href="/login"
-              className="studio-card px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-all touch-target"
-            >
-              Sign In
-            </Link>
+            {!isAuthenticated ? (
+              <Link
+                href="/login"
+                className="studio-card px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-all touch-target"
+              >
+                Sign In
+              </Link>
+            ) : (
+              <Link
+                href="/dashboard"
+                className="studio-card px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-all touch-target"
+              >
+                My Audits
+              </Link>
+            )}
           </div>
         </div>
 

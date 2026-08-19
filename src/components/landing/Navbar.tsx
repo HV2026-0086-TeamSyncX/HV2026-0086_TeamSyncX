@@ -64,7 +64,7 @@ export default function Navbar({ onOpenTour }: NavbarProps) {
             </button>
           )}
           <Link
-            href="/dashboard"
+            href={isAuthenticated ? "/dashboard" : "/login"}
             className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all font-semibold text-blue-600 dark:text-blue-400"
           >
             Studio Lab
@@ -176,7 +176,7 @@ export default function Navbar({ onOpenTour }: NavbarProps) {
             </button>
           )}
           <Link
-            href="/dashboard"
+            href={isAuthenticated ? "/dashboard" : "/login"}
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 font-bold"
           >

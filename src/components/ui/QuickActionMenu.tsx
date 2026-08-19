@@ -405,27 +405,27 @@ export default function QuickActionMenu({
   return (
     <div
       ref={menuRef}
-      className="absolute bottom-full mb-3 -left-2 sm:left-0 z-50 w-[calc(100vw-2rem)] max-w-[460px] bg-[#0c1017]/90 backdrop-blur-2xl backdrop-saturate-200 text-white border border-white/15 dark:border-white/10 rounded-[22px] sm:rounded-[26px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7),0_0_35px_rgba(37,99,235,0.2)] ring-1 ring-white/10 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200 select-none max-h-[75vh] flex flex-col"
+      className="absolute bottom-full mb-3 -left-2 sm:left-0 z-50 w-[calc(100vw-2rem)] max-w-[460px] bg-white/95 dark:bg-[#0c1017]/90 backdrop-blur-2xl backdrop-saturate-200 text-slate-900 dark:text-white border border-black/10 dark:border-white/10 rounded-[22px] sm:rounded-[26px] shadow-2xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200 select-none max-h-[75vh] flex flex-col"
     >
       {/* Glassmorphic Header */}
-      <div className="px-3.5 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 flex items-center justify-between text-xs bg-gradient-to-r from-blue-600/20 via-indigo-600/10 to-transparent flex-shrink-0">
+      <div className="px-3.5 sm:px-4 py-2.5 sm:py-3 border-b border-black/[0.06] dark:border-white/10 flex items-center justify-between text-xs bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-transparent flex-shrink-0">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400">
+          <div className="w-5 h-5 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 border border-blue-500/20 dark:border-blue-400/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
             <Sparkles className="w-3 h-3" />
           </div>
-          <span className="font-bold text-white text-xs tracking-tight">
+          <span className="font-bold text-[#0F172A] dark:text-white text-xs tracking-tight">
             DocFin Routines
           </span>
         </div>
-        <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-blue-500/25 border border-blue-400/30 text-blue-200 font-bold tracking-wider shadow-inner">
+        <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-500/25 border border-blue-200 dark:border-blue-400/30 text-blue-700 dark:text-blue-200 font-bold tracking-wider">
           {activeDomain}
         </span>
       </div>
 
       {/* Menu List */}
-      <div className="p-1.5 sm:p-2 space-y-1 max-h-[min(350px,50vh)] overflow-y-auto scrollbar-thin scrollbar-thumb-white/15 hover:scrollbar-thumb-white/25 scrollbar-track-transparent flex-1">
+      <div className="p-1.5 sm:p-2 space-y-1 max-h-[min(350px,50vh)] overflow-y-auto scrollbar-thin scrollbar-thumb-black/10 dark:scrollbar-thumb-white/15 hover:scrollbar-thumb-black/20 dark:hover:scrollbar-thumb-white/25 scrollbar-track-transparent flex-1">
         {filteredActions.length === 0 ? (
-          <div className="p-6 text-center text-xs text-slate-400">
+          <div className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
             No matching routines found for &quot;{searchQuery}&quot;
           </div>
         ) : (
@@ -439,16 +439,16 @@ export default function QuickActionMenu({
                 onClick={() => handleSelect(action)}
                 className={`w-full text-left px-3.5 py-2.5 rounded-2xl transition-all flex items-center gap-3.5 group cursor-pointer border ${
                   isHeroMedia
-                    ? 'bg-blue-600/20 hover:bg-blue-600/30 border-blue-500/40 shadow-sm shadow-blue-600/20 mb-1'
-                    : 'bg-white/[0.02] hover:bg-white/[0.08] active:bg-white/[0.12] border-transparent hover:border-white/10 hover:shadow-lg hover:shadow-black/25'
+                    ? 'bg-blue-50 dark:bg-blue-600/20 hover:bg-blue-100 dark:hover:bg-blue-600/30 border-blue-200 dark:border-blue-500/40 shadow-xs mb-1'
+                    : 'bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:bg-black/[0.08] dark:active:bg-white/[0.12] border-transparent hover:border-black/5 dark:hover:border-white/10 hover:shadow-sm'
                 }`}
               >
                 <div
                   className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-all border ${
                     isHeroMedia
                       ? 'bg-blue-600 text-white border-blue-400/50 shadow-md'
-                      : 'bg-white/[0.06] border-white/10 group-hover:bg-white/[0.12]'
-                  } ${action.iconColor || 'text-blue-400'}`}
+                      : 'bg-black/5 dark:bg-white/[0.06] border-black/5 dark:border-white/10 group-hover:bg-black/10 dark:group-hover:bg-white/[0.12]'
+                  } ${action.iconColor || 'text-blue-600 dark:text-blue-400'}`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
@@ -456,7 +456,7 @@ export default function QuickActionMenu({
                   <div className="flex items-center justify-between">
                     <span
                       className={`text-xs font-semibold truncate transition-colors ${
-                        isHeroMedia ? 'text-blue-200 font-bold' : 'text-white group-hover:text-blue-300'
+                        isHeroMedia ? 'text-blue-700 dark:text-blue-200 font-bold' : 'text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-300'
                       }`}
                     >
                       {action.title}
@@ -465,15 +465,15 @@ export default function QuickActionMenu({
                       <span
                         className={`text-[9px] px-2 py-0.5 rounded-full font-mono border ${
                           isHeroMedia
-                            ? 'bg-blue-500/40 text-white border-blue-300/40'
-                            : 'bg-blue-500/20 text-blue-300 border-blue-400/20'
+                            ? 'bg-blue-100 dark:bg-blue-500/40 text-blue-700 dark:text-white border-blue-200 dark:border-blue-300/40 font-bold'
+                            : 'bg-blue-50 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300 border-blue-200/60 dark:border-blue-400/20'
                         }`}
                       >
                         {action.badge}
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-400 group-hover:text-slate-200 transition-colors truncate mt-0.5 font-normal">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors truncate mt-0.5 font-normal">
                     {action.description}
                   </p>
                 </div>
@@ -484,7 +484,7 @@ export default function QuickActionMenu({
       </div>
 
       {/* Glassmorphic Search Filter Footer */}
-      <div className="p-3 border-t border-white/10 bg-white/[0.03] backdrop-blur-md flex items-center gap-2.5">
+      <div className="p-3 border-t border-black/[0.06] dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.03] backdrop-blur-md flex items-center gap-2.5">
         <Search className="w-4 h-4 text-slate-400 flex-shrink-0 ml-1" />
         <input
           ref={inputRef}
@@ -498,13 +498,13 @@ export default function QuickActionMenu({
             }
           }}
           placeholder="Type to search routines, files & skills..."
-          className="w-full bg-transparent border-none text-xs text-white placeholder:text-slate-400 focus:outline-none"
+          className="w-full bg-transparent border-none text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
         />
         {searchQuery && (
           <button
             type="button"
             onClick={() => setSearchQuery('')}
-            className="text-[10px] text-slate-300 hover:text-white px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 transition-colors"
+            className="text-[10px] text-slate-600 dark:text-slate-300 hover:text-black dark:hover:text-white px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors cursor-pointer"
           >
             Clear
           </button>

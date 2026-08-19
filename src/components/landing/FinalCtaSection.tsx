@@ -2,9 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 export default function FinalCtaSection() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <section className="py-16 sm:py-24 border-t border-black/[0.06] dark:border-white/[0.08] select-none bg-[var(--bg-canvas)] relative overflow-hidden transition-colors duration-300">
       {/* Background Subtle Dots */}
@@ -28,19 +31,28 @@ export default function FinalCtaSection() {
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/dashboard"
+              href={isAuthenticated ? "/dashboard" : "/login"}
               className="glass-button-emerald px-7 py-3 rounded-full text-white text-xs sm:text-sm font-bold transition-all flex items-center gap-2 touch-target shadow-md"
             >
-              <span>Launch Free Workspace</span>
+              <span>{isAuthenticated ? 'Open Studio Workspace' : 'Launch Free Workspace'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
-            <Link
-              href="/login"
-              className="studio-card px-6 py-3 rounded-full text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-all touch-target"
-            >
-              Sign In
-            </Link>
+            {!isAuthenticated ? (
+              <Link
+                href="/login"
+                className="studio-card px-6 py-3 rounded-full text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-all touch-target"
+              >
+                Sign In
+              </Link>
+            ) : (
+              <Link
+                href="/dashboard"
+                className="studio-card px-6 py-3 rounded-full text-[#0F172A] dark:text-white text-xs sm:text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-all touch-target"
+              >
+                My Audits
+              </Link>
+            )}
           </div>
         </div>
       </div>

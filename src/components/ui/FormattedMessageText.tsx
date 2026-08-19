@@ -203,9 +203,9 @@ export default function FormattedMessageText({ content, isAssistant = true }: Fo
           return (
             <div
               key={bIdx}
-              className="p-4 sm:p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] flex items-start gap-3.5 my-2 hover:border-black/15 dark:hover:border-white/15 transition-colors"
+              className="p-4 sm:p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/[0.08] shadow-aesthetic-sm flex items-start gap-3.5 my-2 hover:border-black/15 dark:hover:border-white/15 transition-all"
             >
-              <div className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono text-xs font-bold flex-shrink-0 mt-0.5">
+              <div className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono text-xs font-bold flex-shrink-0 mt-0.5 shadow-2xs">
                 {numStr}
               </div>
               <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-sm leading-relaxed">

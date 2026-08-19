@@ -490,39 +490,39 @@ export default function PromptBar({
               {attachedFiles.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center gap-3 px-3.5 py-2 liquid-glass-card rounded-2xl text-xs text-white shadow-xl flex-shrink-0 animate-in zoom-in-95 group relative border border-white/15"
+                  className="flex items-center gap-3 px-3.5 py-2 bg-white/90 dark:bg-white/10 backdrop-blur-md rounded-2xl text-xs text-slate-800 dark:text-white shadow-md flex-shrink-0 animate-in zoom-in-95 group relative border border-black/10 dark:border-white/15"
                 >
                   {/* Thumbnail or Media Icon */}
                   {file.previewUrl ? (
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden border border-white/20 flex-shrink-0 bg-black/40">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden border border-black/10 dark:border-white/20 flex-shrink-0 bg-black/10 dark:bg-black/40">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={file.previewUrl} alt={file.name} className="w-full h-full object-cover" />
                     </div>
                   ) : (
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-black/5 dark:bg-white/10 border border-black/5 dark:border-white/10 flex items-center justify-center flex-shrink-0">
                       {getMediaBadgeIcon(file.mediaType)}
                     </div>
                   )}
 
                   <div className="flex flex-col min-w-0 pr-1">
-                    <span className="font-semibold text-xs truncate max-w-[140px] sm:max-w-[180px] text-white">
+                    <span className="font-semibold text-xs truncate max-w-[140px] sm:max-w-[180px] text-slate-900 dark:text-white">
                       {file.name}
                     </span>
-                    <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-400">
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-500 dark:text-slate-400">
                       <span>{file.sizeFormatted}</span>
                       <span>•</span>
                       {file.status === 'uploading' && (
-                        <span className="text-amber-400 flex items-center gap-1">
+                        <span className="text-amber-500 dark:text-amber-400 flex items-center gap-1">
                           <Loader2 className="w-2.5 h-2.5 animate-spin" /> Uploading
                         </span>
                       )}
                       {file.status === 'processing' && (
-                        <span className="text-blue-400 flex items-center gap-1">
+                        <span className="text-blue-600 dark:text-blue-400 flex items-center gap-1">
                           <Loader2 className="w-2.5 h-2.5 animate-spin" /> Processing
                         </span>
                       )}
                       {(!file.status || file.status === 'ready') && (
-                        <span className="text-emerald-400 flex items-center gap-1 font-semibold">
+                        <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-semibold">
                           <CheckCircle2 className="w-2.5 h-2.5" /> Ready
                         </span>
                       )}
@@ -532,7 +532,7 @@ export default function PromptBar({
                   <button
                     type="button"
                     onClick={() => handleRemoveAttached(file.id)}
-                    className="w-6 h-6 rounded-full bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 transition-colors flex items-center justify-center cursor-pointer ml-1 touch-target"
+                    className="w-6 h-6 rounded-full bg-black/5 dark:bg-white/10 hover:bg-rose-500/20 text-slate-500 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-300 transition-colors flex items-center justify-center cursor-pointer ml-1 touch-target"
                     title="Remove attachment"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -547,11 +547,11 @@ export default function PromptBar({
             className={`flex items-center gap-2 sm:gap-3 rounded-full p-2 sm:p-2.5 sm:px-4 shadow-2xl transition-all relative ${
               isDragOver
                 ? 'border-2 border-dashed border-blue-400 bg-blue-500/20 ring-4 ring-blue-500/30 scale-[1.01]'
-                : 'liquid-glass-capsule border border-white/20 dark:border-white/15 focus-within:border-blue-400/80 focus-within:ring-2 focus-within:ring-blue-500/30'
+                : 'liquid-glass-capsule border border-black/10 dark:border-white/15 focus-within:border-blue-400/80 focus-within:ring-2 focus-within:ring-blue-500/30'
             }`}
           >
             {isDragOver ? (
-              <div className="flex-1 flex items-center justify-center gap-2 py-2 text-sm text-blue-300 font-bold animate-pulse">
+              <div className="flex-1 flex items-center justify-center gap-2 py-2 text-sm text-blue-600 dark:text-blue-300 font-bold animate-pulse">
                 <UploadCloud className="w-5 h-5" />
                 <span>Drop files anywhere to attach to conversation...</span>
               </div>
@@ -565,11 +565,11 @@ export default function PromptBar({
                     className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full border transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95 touch-target ${
                       isQuickActionOpen
                         ? 'bg-blue-600 text-white border-blue-400 rotate-45 ring-2 ring-blue-500/40'
-                        : 'bg-white/10 dark:bg-white/5 text-slate-200 hover:text-white hover:bg-white/15 border-white/15'
+                        : 'bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-200 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/20 border-black/10 dark:border-white/15'
                     }`}
                     title="Add Media Files & Features (+)"
                   >
-                    <Plus className="w-5 h-5 text-blue-400" />
+                    <Plus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   </button>
 
                   <QuickActionMenu
@@ -593,7 +593,7 @@ export default function PromptBar({
                       ? `Ask questions about attached ${attachedFiles.length} file(s)...`
                       : 'Ask anything, summarize documents, analyze tables, or drop files...'
                   }
-                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-0"
+                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 min-w-0 font-sans"
                 />
 
                 {/* Liquid Glass Send Button */}
@@ -610,15 +610,15 @@ export default function PromptBar({
           </div>
 
           {/* Footer Subtext */}
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-400 px-2 sm:px-3 select-none gap-2">
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 px-2 sm:px-3 select-none gap-2">
             <span className="flex items-center gap-1 sm:gap-1.5 font-mono truncate">
-              <Sparkles className="w-3 h-3 text-blue-400 flex-shrink-0" />
+              <Sparkles className="w-3 h-3 text-blue-500 dark:text-blue-400 flex-shrink-0" />
               <span className="truncate">DocFin AI Multimodal Assistant • Attach with <strong>[+]</strong></span>
             </span>
             <button
               type="button"
               onClick={() => nativeFileInputRef.current?.click()}
-              className="text-blue-400 hover:underline flex items-center gap-1 font-mono cursor-pointer flex-shrink-0 touch-target"
+              className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 font-mono cursor-pointer flex-shrink-0 touch-target font-semibold"
             >
               <FolderOpen className="w-3 h-3" />
               <span>Browse</span>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import Navbar from '@/components/landing/Navbar';
 import HeroSection from '@/components/landing/HeroSection';
 import StudioBentoGrid from '@/components/landing/StudioBentoGrid';
@@ -9,10 +10,11 @@ import WhyWhatWhereSection from '@/components/landing/WhyWhatWhereSection';
 import FinalCtaSection from '@/components/landing/FinalCtaSection';
 import Footer from '@/components/landing/Footer';
 import OnboardingModal from '@/components/ui/OnboardingModal';
-import { Sparkles, HelpCircle } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export default function LandingPage() {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const [isTourOpen, setIsTourOpen] = useState(false);
 
   return (
@@ -53,8 +55,8 @@ export default function LandingPage() {
       <OnboardingModal
         isOpen={isTourOpen}
         onClose={() => setIsTourOpen(false)}
-        onStartAudit={() => router.push('/dashboard')}
-        onOpenSettings={() => router.push('/dashboard')}
+        onStartAudit={() => router.push(isAuthenticated ? '/dashboard' : '/login')}
+        onOpenSettings={() => router.push(isAuthenticated ? '/dashboard' : '/login')}
       />
 
       {/* 5. Footer */}
