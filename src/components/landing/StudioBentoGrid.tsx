@@ -65,7 +65,7 @@ export default function StudioBentoGrid() {
   return (
     <section id="capabilities" className="py-20 sm:py-28 select-none bg-[var(--bg-canvas)] relative overflow-hidden transition-colors duration-300">
       {/* Background Studio Grid */}
-      <div className="absolute inset-0 bg-studio-grid pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,black_60%,transparent_100%)]" />
+      <div className="absolute inset-0 bg-studio-grid pointer-events-none opacity-70 dark:opacity-40 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,black_60%,transparent_100%)]" />
       <div className="absolute inset-0 bg-hero-ambient pointer-events-none opacity-30" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12 sm:space-y-16">

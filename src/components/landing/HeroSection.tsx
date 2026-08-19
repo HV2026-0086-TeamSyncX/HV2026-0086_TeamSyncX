@@ -94,7 +94,8 @@ export default function HeroSection() {
   return (
     <section className="relative pt-28 sm:pt-36 pb-16 sm:pb-20 select-none bg-[var(--bg-canvas)] overflow-hidden transition-colors duration-300">
       {/* Background Google AI Studio Style Grid & Beam */}
-      <div className="absolute inset-0 bg-studio-dots pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black_70%,transparent_100%)]" />
+      <div className="absolute inset-0 bg-studio-grid pointer-events-none opacity-70 dark:opacity-40 [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black_70%,transparent_100%)]" />
+      <div className="absolute inset-0 bg-studio-dots pointer-events-none opacity-30 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black_70%,transparent_100%)]" />
       <div className="absolute inset-0 bg-studio-beam pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">

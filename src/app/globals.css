@@ -32,6 +32,7 @@
     --risk-safe: #16a34a;
     --selection-bg: #2563eb;
     --selection-text: #ffffff;
+    --grid-line: rgba(15, 23, 42, 0.08);
   }
 
   .dark {
@@ -62,6 +63,7 @@
     --risk-safe: #34d399;
     --selection-bg: #3b82f6;
     --selection-text: #ffffff;
+    --grid-line: rgba(255, 255, 255, 0.045);
   }
 }
 
@@ -103,6 +105,18 @@ body {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Safe Area Inset Helpers for Modern Mobile Devices */
@@ -337,14 +351,14 @@ body {
 .bg-studio-grid {
   background-size: 32px 32px;
   background-image: 
-    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
 }
 
 .dark .bg-studio-grid {
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
 .bg-studio-dots {
