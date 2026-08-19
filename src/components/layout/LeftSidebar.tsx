@@ -293,7 +293,7 @@ export default function LeftSidebar({
             </p>
           )}
 
-          {!mounted || docsList.length === 0 ? (
+          {!mounted || recentDocs.length === 0 ? (
             !isCollapsed && (
               <div className="px-3 py-4 text-center">
                 <p className="text-[11px] text-slate-500">No recent chats</p>
@@ -301,7 +301,7 @@ export default function LeftSidebar({
             )
           ) : (
             <div className="space-y-0.5">
-              {(pinnedDocs.length > 0 ? recentDocs : docsList).map((doc) => {
+              {recentDocs.map((doc) => {
                 const isActive = currentDoc?.id === doc.id;
                 const formattedName = doc.name.replace(/_/g, ' ');
                 return (

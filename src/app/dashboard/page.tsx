@@ -127,7 +127,7 @@ function DashboardWorkspaceContent() {
       if (found) {
         setCurrentDoc(found);
         setActiveDomain(found.detectedDomain);
-        setMessages([]);
+        setMessages(found.chatHistory || []);
       }
     }
   }, [docIdParam, docsList]);
@@ -432,8 +432,61 @@ function DashboardWorkspaceContent() {
           rawJson: data,
           chartData: generatedChart
         };
-        setMessages((prev) => [...prev, assistantMessage]);
-        setGenerationState('completed');
+        const finalizeChat = (asstMsg: ChatMessage) => {
+          const updatedHistory = [...messages, userMessage, asstMsg];
+          setMessages(updatedHistory);
+          setGenerationState('completed');
+
+          let sessionDoc: DocumentAnalysis;
+          if (targetDoc) {
+            sessionDoc = {
+              ...targetDoc,
+              chatHistory: updatedHistory,
+              uploadedAt: 'Just now'
+            };
+          } else {
+            const titleText = queryText.trim() || 'AI Chat Conversation';
+            const formattedTitle = titleText.length > 32 ? titleText.slice(0, 29).trim() + '...' : titleText;
+            sessionDoc = {
+              id: `chat_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+              name: formattedTitle.charAt(0).toUpperCase() + formattedTitle.slice(1),
+              fileSize: 'Chat Session',
+              pageCount: 1,
+              uploadedAt: 'Just now',
+              detectedDomain: activeDomain || 'general',
+              confidenceScore: 99.0,
+              detectionReason: 'Interactive AI Chat Conversation Session',
+              summary: {
+                tldr: queryText,
+                keyTakeaways: [queryText],
+                executiveBrief: queryText,
+                actionChecklist: []
+              },
+              metrics: [],
+              extractedEntities: [],
+              extractedTables: [],
+              sampleQuestions: [],
+              chatHistory: updatedHistory
+            };
+          }
+
+          setCurrentDoc(sessionDoc);
+          setDocsList((prev) => [sessionDoc, ...prev.filter((d) => d.id !== sessionDoc.id)]);
+
+          // Sync to dev.db
+          fetch('/api/documents', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ document: sessionDoc })
+          }).catch((err) => console.warn('Failed to sync chat to dev.db:', err));
+
+          if (typeof window !== 'undefined') {
+            const stored = [sessionDoc, ...docsList.filter((d) => d.id !== sessionDoc.id)];
+            localStorage.setItem('docfin_user_documents', JSON.stringify(stored));
+          }
+        };
+
+        finalizeChat(assistantMessage);
       } else {
         throw new Error(data.error || 'Fallback response needed');
       }
@@ -481,8 +534,53 @@ function DashboardWorkspaceContent() {
           '📊 Extract structured data'
         ]
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+
+      const updatedHistory = [...messages, userMessage, assistantMessage];
+      setMessages(updatedHistory);
       setGenerationState('completed');
+
+      let sessionDoc: DocumentAnalysis;
+      if (targetDoc) {
+        sessionDoc = {
+          ...targetDoc,
+          chatHistory: updatedHistory,
+          uploadedAt: 'Just now'
+        };
+      } else {
+        const titleText = queryText.trim() || 'AI Chat Conversation';
+        const formattedTitle = titleText.length > 32 ? titleText.slice(0, 29).trim() + '...' : titleText;
+        sessionDoc = {
+          id: `chat_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+          name: formattedTitle.charAt(0).toUpperCase() + formattedTitle.slice(1),
+          fileSize: 'Chat Session',
+          pageCount: 1,
+          uploadedAt: 'Just now',
+          detectedDomain: activeDomain || 'general',
+          confidenceScore: 99.0,
+          detectionReason: 'Interactive AI Chat Conversation Session',
+          summary: {
+            tldr: queryText,
+            keyTakeaways: [queryText],
+            executiveBrief: queryText,
+            actionChecklist: []
+          },
+          metrics: [],
+          extractedEntities: [],
+          extractedTables: [],
+          sampleQuestions: [],
+          chatHistory: updatedHistory
+        };
+      }
+
+      setCurrentDoc(sessionDoc);
+      setDocsList((prev) => [sessionDoc, ...prev.filter((d) => d.id !== sessionDoc.id)]);
+
+      // Sync to dev.db
+      fetch('/api/documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ document: sessionDoc })
+      }).catch((err) => console.warn('Failed to sync chat to dev.db:', err));
     }
   };
 
