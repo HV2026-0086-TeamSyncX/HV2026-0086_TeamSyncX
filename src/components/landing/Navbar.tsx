@@ -5,9 +5,13 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
 import Logo from '@/components/brand/Logo';
-import { Sun, Moon, Menu, X, ArrowRight, User } from 'lucide-react';
+import { Sun, Moon, Menu, X, ArrowRight, User, HelpCircle, Sparkles } from 'lucide-react';
 
-export default function Navbar() {
+interface NavbarProps {
+  onOpenTour?: () => void;
+}
+
+export default function Navbar({ onOpenTour }: NavbarProps) {
   const { isAuthenticated } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,8 +30,8 @@ export default function Navbar() {
       <div
         className={`max-w-5xl mx-auto rounded-full px-5 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/65 dark:bg-black/50 backdrop-blur-2xl backdrop-saturate-150 border border-black/[0.08] dark:border-white/[0.14] shadow-[0_12px_40px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)]'
-            : 'bg-white/45 dark:bg-[#07090e]/40 backdrop-blur-xl backdrop-saturate-150 border border-black/[0.06] dark:border-white/[0.10] shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.36),inset_0_1px_0_rgba(255,255,255,0.08)]'
+            ? 'bg-white/75 dark:bg-black/60 backdrop-blur-2xl backdrop-saturate-150 border border-black/[0.10] dark:border-white/[0.16] shadow-[0_12px_40px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)]'
+            : 'bg-white/55 dark:bg-[#07090e]/50 backdrop-blur-xl backdrop-saturate-150 border border-black/[0.08] dark:border-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.36),inset_0_1px_0_rgba(255,255,255,0.08)]'
         }`}
       >
         {/* Brand */}
@@ -49,6 +53,16 @@ export default function Navbar() {
           >
             What • Why • Where
           </a>
+          {onOpenTour && (
+            <button
+              onClick={onOpenTour}
+              className="px-3.5 py-1.5 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-all flex items-center gap-1.5 font-semibold cursor-pointer"
+              title="Interactive Product Tour"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>Product Tour</span>
+            </button>
+          )}
           <Link
             href="/dashboard"
             className="px-3.5 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-all font-semibold text-blue-600 dark:text-blue-400"
@@ -59,6 +73,18 @@ export default function Navbar() {
 
         {/* Right Actions */}
         <div className="hidden sm:flex items-center gap-2.5 text-xs font-semibold">
+          {/* Quick Tour Pill Trigger (When on smaller desktop) */}
+          {onOpenTour && (
+            <button
+              onClick={onOpenTour}
+              className="md:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/20 transition-all cursor-pointer"
+              title="Interactive Product Tour"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Tour</span>
+            </button>
+          )}
+
           {/* Glassmorphic Theme Toggle */}
           <button
             onClick={toggleTheme}
@@ -96,6 +122,15 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <div className="sm:hidden flex items-center gap-1.5">
+          {onOpenTour && (
+            <button
+              onClick={onOpenTour}
+              className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center"
+              title="Product Tour"
+            >
+              <HelpCircle className="w-4 h-4" />
+            </button>
+          )}
           <button
             onClick={toggleTheme}
             className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 flex items-center justify-center text-slate-700 dark:text-slate-300"
@@ -113,7 +148,7 @@ export default function Navbar() {
 
       {/* Frosted Glass Mobile Drawer */}
       {isMobileMenuOpen && (
-        <div className="sm:hidden mt-2 p-5 rounded-3xl bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-2xl space-y-3 animate-in slide-in-from-top-2">
+        <div className="sm:hidden mt-2 p-5 rounded-3xl bg-white/85 dark:bg-black/85 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-2xl space-y-3 animate-in slide-in-from-top-2">
           <a
             href="#capabilities"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -128,6 +163,18 @@ export default function Navbar() {
           >
             What • Why • Where
           </a>
+          {onOpenTour && (
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                onOpenTour();
+              }}
+              className="w-full text-left py-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2"
+            >
+              <HelpCircle className="w-4 h-4" />
+              <span>Interactive Product Tour</span>
+            </button>
+          )}
           <Link
             href="/dashboard"
             onClick={() => setIsMobileMenuOpen(false)}

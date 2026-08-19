@@ -169,14 +169,15 @@ export default function Header({
           </>
         )}
 
-        {/* Quick Tour / Help (Hidden on small mobile, accessible in overflow) */}
+        {/* Quick Tour / Helper Button */}
         {onOpenOnboarding && (
           <button
             onClick={onOpenOnboarding}
-            className="hidden sm:flex p-2 rounded-xl text-[#53627A] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white hover:bg-blue-50/60 dark:hover:bg-white/5 border border-[#DCE5F0] dark:border-white/10 transition-colors cursor-pointer"
-            title="Product Tour & Guide"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-white/80 dark:bg-white/5 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 border border-black/10 dark:border-white/10 hover:border-emerald-500/30 text-xs font-semibold transition-all cursor-pointer shadow-2xs backdrop-blur-md"
+            title="Interactive Product Tour & Helper Guide"
           >
-            <HelpCircle className="w-3.5 h-3.5" />
+            <HelpCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+            <span className="hidden sm:inline">Tour</span>
           </button>
         )}
 
