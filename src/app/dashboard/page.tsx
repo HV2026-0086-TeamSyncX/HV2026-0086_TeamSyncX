@@ -360,8 +360,8 @@ function DashboardWorkspaceContent() {
 
   // Navigation & Workspace State
   const [activeDomain, setActiveDomain] = useState<DocumentDomain>(lensParam || 'overall');
-  const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
-  const [isRightHistoryOpen, setIsRightHistoryOpen] = useState(true);
+  const [isLeftCollapsed, setIsLeftCollapsed] = useState(true);
+  const [isRightHistoryOpen, setIsRightHistoryOpen] = useState(false);
   const [isSplitView, setIsSplitView] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isRawJsonOpen, setIsRawJsonOpen] = useState(false);
@@ -370,6 +370,14 @@ function DashboardWorkspaceContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isParamsDrawerOpen, setIsParamsDrawerOpen] = useState(false);
   const [mobileActiveView, setMobileActiveView] = useState<'chat' | 'doc'>('chat');
+
+  // Auto-expand sidebar on larger desktop displays
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+      setIsLeftCollapsed(false);
+      setIsRightHistoryOpen(true);
+    }
+  }, []);
 
   // Generation State Machine
   const [generationState, setGenerationState] = useState<GenerationState>('idle');
@@ -930,7 +938,7 @@ function DashboardWorkspaceContent() {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[var(--bg-canvas)] text-[var(--text-primary)] antialiased font-sans transition-colors duration-200">
+    <div className="flex h-dvh min-h-dvh w-full max-w-[100vw] overflow-hidden bg-[var(--bg-canvas)] text-[var(--text-primary)] antialiased font-sans transition-colors duration-200">
       {/* 1. Left Control Sidebar */}
       <LeftSidebar
         currentDoc={currentDoc}

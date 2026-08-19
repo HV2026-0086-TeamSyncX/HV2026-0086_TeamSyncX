@@ -221,60 +221,70 @@ export default function Header({
         <div className="relative sm:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-xl text-[#53627A] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white hover:bg-blue-50/60 dark:hover:bg-white/5 border border-[#DCE5F0] dark:border-white/10 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl text-[#53627A] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white hover:bg-blue-50/60 dark:hover:bg-white/5 border border-[#DCE5F0] dark:border-white/10 flex items-center justify-center transition-colors cursor-pointer touch-target"
             aria-label="More options"
+            aria-expanded={isMobileMenuOpen}
           >
-            <MoreVertical className="w-3.5 h-3.5" />
+            <MoreVertical className="w-4 h-4" />
           </button>
 
           {/* Mobile Overflow Dropdown */}
           {isMobileMenuOpen && (
-            <div className="absolute right-0 top-11 w-48 p-1.5 rounded-2xl bg-white dark:bg-[#121722] border border-[#DCE5F0] dark:border-white/15 shadow-2xl space-y-1 z-50 animate-in fade-in zoom-in-95">
-              {onResetDoc && (
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onResetDoc();
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors text-left"
-                >
-                  <Plus className="w-3.5 h-3.5 text-blue-500" />
-                  <span>New Chat</span>
-                </button>
-              )}
-              {onOpenOnboarding && (
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onOpenOnboarding();
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors text-left"
-                >
-                  <HelpCircle className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Product Tour</span>
-                </button>
-              )}
-              {onOpenSettings && (
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onOpenSettings();
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors text-left"
-                >
-                  <Settings className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Settings & API</span>
-                </button>
-              )}
-              <Link
-                href="/"
+            <>
+              {/* Backdrop */}
+              <div
+                className="fixed inset-0 z-40 bg-black/20"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors"
-              >
-                <Home className="w-3.5 h-3.5 text-slate-400" />
-                <span>Return to Home</span>
-              </Link>
-            </div>
+                aria-hidden="true"
+              />
+
+              <div className="absolute right-0 top-11 w-52 p-2 rounded-2xl bg-white dark:bg-[#121722] border border-[#DCE5F0] dark:border-white/15 shadow-2xl space-y-1 z-50 animate-in fade-in zoom-in-95">
+                {onResetDoc && (
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      onResetDoc();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors text-left touch-target cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 text-blue-500" />
+                    <span>New Chat</span>
+                  </button>
+                )}
+                {onOpenOnboarding && (
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      onOpenOnboarding();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors text-left touch-target cursor-pointer"
+                  >
+                    <HelpCircle className="w-4 h-4 text-emerald-500" />
+                    <span>Product Tour</span>
+                  </button>
+                )}
+                {onOpenSettings && (
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      onOpenSettings();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors text-left touch-target cursor-pointer"
+                  >
+                    <Settings className="w-4 h-4 text-slate-400" />
+                    <span>Settings & API</span>
+                  </button>
+                )}
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-[#0F172A] dark:text-white hover:bg-blue-50 dark:hover:bg-white/5 transition-colors touch-target"
+                >
+                  <Home className="w-4 h-4 text-slate-400" />
+                  <span>Return to Home</span>
+                </Link>
+              </div>
+            </>
           )}
         </div>
       </div>

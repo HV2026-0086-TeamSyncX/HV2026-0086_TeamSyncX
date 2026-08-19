@@ -174,8 +174,8 @@ export default function WhyWhatWhereSection() {
         </div>
 
         {/* 3 Interactive Pillar Selector Tabs */}
-        <div className="flex justify-center">
-          <div className="inline-flex p-1 rounded-full studio-card border border-black/10 dark:border-white/10 gap-1 overflow-x-auto scrollbar-none shadow-xs">
+        <div className="flex justify-center w-full">
+          <div className="inline-flex p-1 rounded-full studio-card border border-black/10 dark:border-white/10 gap-1 overflow-x-auto scrollbar-none shadow-xs max-w-full">
             {[
               { id: 'what', label: '01 • What is DocFin?', icon: Sparkles },
               { id: 'why', label: '02 • Why It Matters', icon: Lightbulb },
@@ -186,7 +186,7 @@ export default function WhyWhatWhereSection() {
                 <button
                   key={tab.id}
                   onClick={() => setActivePillar(tab.id as any)}
-                  className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-serif font-bold flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap touch-target ${
+                  className={`px-3.5 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-serif font-bold flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap touch-target flex-shrink-0 active:scale-95 ${
                     activePillar === tab.id
                       ? 'bg-[#2563EB] text-white shadow-md'
                       : 'text-[#53627A] dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
@@ -201,8 +201,8 @@ export default function WhyWhatWhereSection() {
         </div>
 
         {/* Active Pillar Detailed Card */}
-        <div className="studio-card rounded-3xl p-6 sm:p-10 shadow-aesthetic-lg border border-black/10 dark:border-white/10 animate-in fade-in space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="studio-card rounded-3xl p-4 sm:p-10 shadow-aesthetic-lg border border-black/10 dark:border-white/10 animate-in fade-in space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
             {/* Left Narrative */}
             <div className="lg:col-span-7 space-y-4">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#2563EB] dark:text-blue-400 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 inline-block">
@@ -234,11 +234,11 @@ export default function WhyWhatWhereSection() {
             </div>
 
             {/* Right Visual Quote Card */}
-            <div className="lg:col-span-5 p-6 rounded-2xl bg-gradient-to-br from-[#121826] to-[#0A0E17] text-white space-y-4 border border-white/10 shadow-xl">
+            <div className="lg:col-span-5 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#121826] to-[#0A0E17] text-white space-y-4 border border-white/10 shadow-xl">
               <span className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider block">
                 {current.visualQuote.tag}
               </span>
-              <p className="text-sm sm:text-base font-serif italic text-slate-200 leading-relaxed">
+              <p className="text-sm sm:text-base font-serif italic text-slate-200 leading-relaxed break-words">
                 &ldquo;{current.visualQuote.text}&rdquo;
               </p>
               <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-slate-400">
@@ -250,9 +250,9 @@ export default function WhyWhatWhereSection() {
         </div>
 
         {/* 4 Quantitative Scorecard Highlight Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-4">
           {metrics.map((m, idx) => (
-            <div key={idx} className="studio-card p-5 sm:p-6 rounded-3xl text-center space-y-1.5 shadow-aesthetic group hover:border-blue-500/30 transition-all">
+            <div key={idx} className="studio-card p-4 sm:p-6 rounded-3xl text-center space-y-1.5 shadow-aesthetic group hover:border-blue-500/30 transition-all">
               <span className="text-2xl sm:text-4xl font-mono font-bold text-[#2563EB] dark:text-blue-400 group-hover:scale-105 transition-transform inline-block">
                 {m.val}
               </span>
@@ -267,22 +267,22 @@ export default function WhyWhatWhereSection() {
         </div>
 
         {/* Direct Side-by-Side Comparative Matrix Table */}
-        <div className="studio-card rounded-3xl p-6 sm:p-8 shadow-aesthetic-lg overflow-hidden border border-black/10 dark:border-white/10">
-          <div className="flex items-center justify-between pb-4 border-b border-black/[0.06] dark:border-white/[0.08] mb-4">
+        <div className="studio-card rounded-3xl p-4 sm:p-8 shadow-aesthetic-lg overflow-hidden border border-black/10 dark:border-white/10">
+          <div className="flex items-center justify-between pb-4 border-b border-black/[0.06] dark:border-white/[0.08] mb-4 gap-2">
             <div>
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                 Technical Matrix
               </span>
-              <h3 className="text-lg font-serif font-bold text-[#0F172A] dark:text-white">
+              <h3 className="text-base sm:text-lg font-serif font-bold text-[#0F172A] dark:text-white">
                 Traditional OCR vs DocFin Multimodal Studio
               </h3>
             </div>
-            <span className="hidden sm:inline text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+            <span className="hidden sm:inline text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold flex-shrink-0">
               ● 100% Deterministic Grounding
             </span>
           </div>
 
-          <div className="overflow-x-auto scrollbar-thin">
+          <div className="overflow-x-auto scrollbar-thin table-scroll-container">
             <table className="min-w-full text-left text-xs divide-y divide-black/[0.06] dark:divide-white/[0.08]">
               <thead>
                 <tr className="text-slate-500 dark:text-slate-400 font-mono text-[11px] uppercase tracking-wider">

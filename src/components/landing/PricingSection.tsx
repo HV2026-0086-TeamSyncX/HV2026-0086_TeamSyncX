@@ -112,7 +112,7 @@ export default function PricingSection() {
             return (
               <div
                 key={idx}
-                className={`rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all ${
+                className={`rounded-3xl p-5 sm:p-8 flex flex-col justify-between transition-all ${
                   p.highlight
                     ? 'bg-[#1B4332] text-white shadow-xl ring-2 ring-[#2D6A4F]'
                     : 'bg-white dark:bg-[#121722] text-slate-900 dark:text-white border border-slate-200/80 dark:border-white/10 shadow-sm hover:shadow-md'
@@ -158,7 +158,7 @@ export default function PricingSection() {
 
                 <Link
                   href={p.ctaHref}
-                  className={`w-full py-3.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                  className={`w-full py-3.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 touch-target active:scale-98 cursor-pointer ${
                     p.highlight
                       ? 'bg-white text-[#1B4332] hover:bg-slate-100 shadow-md'
                       : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90'

@@ -200,10 +200,10 @@ export default function AddMediaModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/65 backdrop-blur-2xl animate-in fade-in select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/65 backdrop-blur-2xl animate-in fade-in select-none">
       {/* Liquid Glass Modal Window */}
       <div
-        className="w-full max-w-2xl liquid-glass-modal rounded-[32px] text-white overflow-hidden animate-in zoom-in-95 duration-250 flex flex-col max-h-[88vh] relative group"
+        className="w-full max-w-2xl liquid-glass-modal rounded-3xl sm:rounded-[32px] text-white overflow-hidden animate-in zoom-in-95 duration-250 flex flex-col max-h-[92dvh] relative group shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Ambient Chromatic Fluid Lighting (Behind Glass Layer) */}
@@ -212,36 +212,37 @@ export default function AddMediaModal({
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
         {/* Modal Header */}
-        <div className="p-6 px-7 border-b border-white/[0.12] flex items-center justify-between bg-white/[0.02] flex-shrink-0">
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600/30 to-indigo-500/20 border border-white/20 flex items-center justify-center text-blue-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
-              <Sparkles className="w-5 h-5" />
+        <div className="p-4 sm:p-6 px-4 sm:px-7 border-b border-white/[0.12] flex items-center justify-between bg-white/[0.02] flex-shrink-0 gap-2">
+          <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-blue-600/30 to-indigo-500/20 border border-white/20 flex items-center justify-center text-blue-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)] flex-shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2.5">
-                <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-sm sm:text-lg font-bold text-white tracking-tight truncate">
                   Add Media Files
                 </h3>
-                <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 shadow-xs">
+                <span className="text-[9px] sm:text-[10px] uppercase font-mono px-2 sm:px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 shadow-xs hidden xs:inline-block">
                   Multimodal AI
                 </span>
               </div>
-              <p className="text-xs text-slate-300/80 mt-0.5 font-sans">
-                Attach documents, spreadsheets, scans, or videos for simultaneous reasoning
+              <p className="text-[11px] sm:text-xs text-slate-300/80 mt-0.5 font-sans truncate">
+                Attach documents, spreadsheets, scans, or videos
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer backdrop-blur-md hover:scale-105"
+            className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer backdrop-blur-md hover:scale-105 touch-target flex-shrink-0"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Liquid Glass Category Filter Pills */}
-        <div className="px-6 py-3 border-b border-white/[0.08] flex items-center gap-2 overflow-x-auto scrollbar-none bg-white/[0.01] flex-shrink-0">
+        <div className="px-4 sm:px-6 py-2.5 sm:py-3 border-b border-white/[0.08] flex items-center gap-2 overflow-x-auto scrollbar-none bg-white/[0.01] flex-shrink-0">
           {CATEGORY_TABS.map((tab) => {
             const Icon = tab.icon;
             const isSelected = selectedCategory === tab.id;
@@ -249,7 +250,7 @@ export default function AddMediaModal({
               <button
                 key={tab.id}
                 onClick={() => setSelectedCategory(tab.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer flex-shrink-0 ${
+                className={`px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer flex-shrink-0 touch-target ${
                   isSelected
                     ? 'bg-blue-600/90 text-white shadow-[0_0_20px_rgba(59,130,246,0.5),inset_0_1px_0_rgba(255,255,255,0.4)] border border-blue-400/50 scale-[1.02]'
                     : 'bg-white/5 text-slate-300/80 hover:text-white hover:bg-white/10 border border-white/5'

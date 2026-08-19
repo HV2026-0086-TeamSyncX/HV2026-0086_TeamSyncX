@@ -36,6 +36,7 @@ export default function ResetPasswordPage() {
     <AuthCard
       title="Set New DocFin Password"
       subtitle="Choose a strong, memorable password to secure your financial document audit workspace."
+      badgeText="Security Reset"
       footerLink={{
         text: 'Want to return?',
         label: 'Back to sign in',

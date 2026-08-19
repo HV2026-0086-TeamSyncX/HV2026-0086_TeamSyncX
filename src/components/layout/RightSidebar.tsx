@@ -227,10 +227,10 @@ export default function RightSidebar({
 
             {/* Footer Clear History */}
             {docs.length > 0 && (
-              <div className="p-3 border-t border-black/[0.08] dark:border-white/10 bg-white/40 dark:bg-white/[0.02] backdrop-blur-md flex-shrink-0">
+              <div className="p-3 pb-safe border-t border-black/[0.08] dark:border-white/10 bg-white/40 dark:bg-white/[0.02] backdrop-blur-md flex-shrink-0">
                 <button
                   onClick={onClearHistory}
-                  className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold text-[#53627A] dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold text-[#53627A] dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors cursor-pointer touch-target"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Clear All History</span>

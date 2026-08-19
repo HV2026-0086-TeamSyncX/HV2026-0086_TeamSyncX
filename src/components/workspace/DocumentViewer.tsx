@@ -31,29 +31,31 @@ export default function DocumentViewer({
   return (
     <div className="bg-[#0b0e14] text-slate-100 rounded-2xl border border-white/10 flex flex-col h-full overflow-hidden shadow-md">
       {/* Viewer Header */}
-      <div className="p-3 bg-[#07090e] border-b border-white/10 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-2 truncate">
+      <div className="p-2.5 sm:p-3 bg-[#07090e] border-b border-white/10 flex items-center justify-between gap-2 text-xs flex-shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
           <FileText className="w-4 h-4 text-[#52B788] flex-shrink-0" />
-          <span className="font-semibold text-slate-200 truncate">{doc.name}</span>
+          <span className="font-semibold text-slate-200 truncate max-w-[120px] xs:max-w-[180px] sm:max-w-xs">{doc.name}</span>
         </div>
 
         {/* Zoom & Page Controls */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="flex items-center bg-white/5 rounded-lg p-0.5 border border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          <div className="hidden xs:flex items-center bg-white/5 rounded-lg p-0.5 border border-white/10 flex-shrink-0">
             <button
               onClick={() => setZoom(Math.max(70, zoom - 15))}
               className="p-1 text-slate-400 hover:text-white rounded cursor-pointer transition-colors"
               title="Zoom Out"
+              aria-label="Zoom Out"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
-            <span className="text-[10px] font-mono px-1.5 text-slate-300 whitespace-nowrap select-none min-w-[36px] text-center">
+            <span className="text-[10px] font-mono px-1.5 text-slate-300 whitespace-nowrap select-none min-w-[34px] text-center">
               {zoom}%
             </span>
             <button
               onClick={() => setZoom(Math.min(150, zoom + 15))}
               className="p-1 text-slate-400 hover:text-white rounded cursor-pointer transition-colors"
               title="Zoom In"
+              aria-label="Zoom In"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
@@ -63,19 +65,21 @@ export default function DocumentViewer({
             <button
               disabled={currentPage <= 1}
               onClick={() => setCurrentPage(currentPage - 1)}
-              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded cursor-pointer transition-colors disabled:cursor-not-allowed"
+              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded cursor-pointer transition-colors disabled:cursor-not-allowed touch-target flex items-center justify-center"
               title="Previous Page"
+              aria-label="Previous Page"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
-            <span className="text-[10px] font-mono px-2 text-slate-300 whitespace-nowrap select-none min-w-[48px] text-center inline-block">
+            <span className="text-[10px] font-mono px-1.5 text-slate-300 whitespace-nowrap select-none min-w-[42px] text-center inline-block">
               {currentPage} / {totalPages}
             </span>
             <button
               disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage(currentPage + 1)}
-              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded cursor-pointer transition-colors disabled:cursor-not-allowed"
+              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 rounded cursor-pointer transition-colors disabled:cursor-not-allowed touch-target flex items-center justify-center"
               title="Next Page"
+              aria-label="Next Page"
             >
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
@@ -84,10 +88,10 @@ export default function DocumentViewer({
       </div>
 
       {/* Document Page Canvas with Real Extracted Text */}
-      <div className="flex-1 overflow-auto p-4 flex justify-center bg-black/40">
+      <div className="flex-1 overflow-auto p-2.5 sm:p-4 flex justify-center bg-black/40">
         <div
           style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top center' }}
-          className="w-full max-w-xl bg-[#FAF9F5] text-slate-900 rounded-xl p-6 sm:p-8 shadow-2xl transition-transform border border-slate-300 min-h-[560px] text-xs font-serif leading-relaxed"
+          className="w-full max-w-xl bg-[#FAF9F5] text-slate-900 rounded-xl p-4 sm:p-8 shadow-2xl transition-transform border border-slate-300 min-h-[560px] text-xs font-serif leading-relaxed"
         >
           {/* Header of Document */}
           <div className="border-b border-slate-300 pb-3 mb-4 text-center">

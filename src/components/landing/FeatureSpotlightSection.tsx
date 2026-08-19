@@ -92,8 +92,8 @@ export default function FeatureSpotlightSection() {
           </p>
 
           {/* Interactive Scenario Switcher */}
-          <div className="pt-2 flex justify-center">
-            <div className="inline-flex p-1 rounded-full bg-white/5 border border-white/10 gap-1 overflow-x-auto scrollbar-none">
+          <div className="pt-2 flex justify-center w-full">
+            <div className="inline-flex p-1 rounded-full bg-white/5 border border-white/10 gap-1 overflow-x-auto scrollbar-none max-w-full">
               {[
                 { id: 'lease', label: 'Commercial Lease Audit' },
                 { id: 'statement', label: 'Bank Fee Surcharge' },
@@ -102,7 +102,7 @@ export default function FeatureSpotlightSection() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 sm:px-5 py-1.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer whitespace-nowrap ${
+                  className={`px-3.5 sm:px-5 py-1.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer whitespace-nowrap touch-target flex-shrink-0 active:scale-95 ${
                     activeTab === tab.id
                       ? 'bg-blue-600 text-white shadow-md'
                       : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -118,16 +118,16 @@ export default function FeatureSpotlightSection() {
         {/* High-Contrast Interactive Showcase Split Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           {/* Left: Interactive Simulated Document Page with Spatial Bounding Box Radar (7 Cols) */}
-          <div className="lg:col-span-7 bg-[#0E131E] rounded-3xl border border-white/15 p-6 sm:p-8 flex flex-col justify-between shadow-2xl relative group overflow-hidden">
+          <div className="lg:col-span-7 bg-[#0E131E] rounded-3xl border border-white/15 p-4 sm:p-8 flex flex-col justify-between shadow-2xl relative group overflow-hidden">
             {/* Top Toolbar */}
             <div className="flex items-center justify-between pb-4 border-b border-white/10 text-xs font-mono">
-              <div className="flex items-center gap-2 text-slate-300">
-                <FileText className="w-4 h-4 text-blue-400" />
-                <span className="font-semibold truncate max-w-[200px] sm:max-w-xs">{current.docName}</span>
+              <div className="flex items-center gap-2 text-slate-300 min-w-0">
+                <FileText className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <span className="font-semibold truncate max-w-[150px] xs:max-w-[200px] sm:max-w-xs">{current.docName}</span>
                 <span className="text-slate-500">•</span>
-                <span className="text-slate-400">Page {current.page}</span>
+                <span className="text-slate-400 flex-shrink-0">Page {current.page}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
                   Radar Active
                 </span>
@@ -135,18 +135,18 @@ export default function FeatureSpotlightSection() {
             </div>
 
             {/* Document Simulation Canvas with Highlighted Laser Bounding Box */}
-            <div className="my-6 p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-4 relative font-serif text-slate-300 text-xs sm:text-sm leading-relaxed">
+            <div className="my-5 p-4 sm:p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-3.5 relative font-serif text-slate-300 text-xs sm:text-sm leading-relaxed">
               <p className="opacity-40 text-[11px] font-sans">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
 
               {/* The Laser Bounding Box Highlight */}
-              <div className="relative p-4 rounded-xl bg-blue-500/15 border-2 border-blue-400 shadow-[0_0_30px_rgba(59,130,246,0.3)] animate-pulse">
+              <div className="relative p-3.5 sm:p-4 rounded-xl bg-blue-500/15 border-2 border-blue-400 shadow-[0_0_30px_rgba(59,130,246,0.3)] animate-pulse">
                 <div className="absolute -top-3 left-3 bg-blue-600 text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
                   <Target className="w-2.5 h-2.5" />
                   <span>TENSOR {current.coords}</span>
                 </div>
-                <p className="text-white font-medium italic mt-1 leading-relaxed">
+                <p className="text-white font-medium italic mt-1 leading-relaxed break-words">
                   &ldquo;{current.quote}&rdquo;
                 </p>
               </div>
@@ -168,7 +168,7 @@ export default function FeatureSpotlightSection() {
           </div>
 
           {/* Right: DocFin AI Extracted Reasoning & Automated Remedy Card (5 Cols) */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-[#121826] to-[#0D121B] rounded-3xl border border-white/15 p-6 sm:p-8 flex flex-col justify-between shadow-2xl space-y-6">
+          <div className="lg:col-span-5 bg-gradient-to-br from-[#121826] to-[#0D121B] rounded-3xl border border-white/15 p-4 sm:p-8 flex flex-col justify-between shadow-2xl space-y-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className={`text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-full border ${current.severityColor}`}>

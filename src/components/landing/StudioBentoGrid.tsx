@@ -95,11 +95,11 @@ export default function StudioBentoGrid() {
         </div>
 
         {/* Asymmetrical Bento Grid Matrix */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 max-w-6xl mx-auto w-full">
           {/* Card 1: 1M Token Context Ingestion (8 cols) */}
-          <div className="md:col-span-8 studio-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between group relative overflow-hidden shadow-aesthetic">
+          <div className="md:col-span-8 studio-card rounded-3xl p-4 sm:p-7 flex flex-col justify-between group relative overflow-hidden shadow-aesthetic">
             <div>
-              <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 px-2.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20">
                   1,000,000 Token Ingestion
                 </span>
@@ -129,12 +129,12 @@ export default function StudioBentoGrid() {
               </div>
 
               {/* Mini Terminal Trace */}
-              <div className="p-3 rounded-2xl bg-slate-900 text-slate-200 font-mono text-[10px] space-y-1 shadow-inner">
-                <div className="flex items-center justify-between text-slate-400 border-b border-slate-800 pb-1">
-                  <span className="flex items-center gap-1.5"><Terminal className="w-3 h-3 text-blue-400" /> MULTIMODAL_DECOMPOSE</span>
-                  <span className="text-emerald-400 font-bold">LATENCY 142ms</span>
+              <div className="p-3 rounded-2xl bg-slate-900 text-slate-200 font-mono text-[10px] space-y-1 shadow-inner overflow-x-auto scrollbar-none">
+                <div className="flex items-center justify-between text-slate-400 border-b border-slate-800 pb-1 gap-2">
+                  <span className="flex items-center gap-1.5 truncate"><Terminal className="w-3 h-3 text-blue-400 flex-shrink-0" /> MULTIMODAL_DECOMPOSE</span>
+                  <span className="text-emerald-400 font-bold flex-shrink-0">LATENCY 142ms</span>
                 </div>
-                <div className="text-slate-300">
+                <div className="text-slate-300 break-words">
                   <span className="text-blue-400">❯</span> Ingested 544 pages • Detected 18 structured tables • Extracted 62 page anchors
                 </div>
               </div>
@@ -147,7 +147,7 @@ export default function StudioBentoGrid() {
           </div>
 
           {/* Card 2: Interactive Table-to-CSV Extractor (4 cols) */}
-          <div className="md:col-span-4 studio-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between group relative overflow-hidden shadow-aesthetic">
+          <div className="md:col-span-4 studio-card rounded-3xl p-4 sm:p-7 flex flex-col justify-between group relative overflow-hidden shadow-aesthetic">
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
@@ -179,7 +179,7 @@ export default function StudioBentoGrid() {
 
             <button
               onClick={handleCopyTable}
-              className="mt-4 w-full py-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-blue-500/10 text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors flex items-center justify-center gap-1.5 cursor-pointer border border-black/5 dark:border-white/10"
+              className="mt-4 w-full py-2.5 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-blue-500/10 text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors flex items-center justify-center gap-1.5 cursor-pointer border border-black/5 dark:border-white/10 touch-target active:scale-98"
             >
               {tableCopied ? (
                 <>
@@ -196,7 +196,7 @@ export default function StudioBentoGrid() {
           </div>
 
           {/* Card 3: Automated Legal & Dispute Remedies (4 cols) */}
-          <div className="md:col-span-4 studio-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between group relative overflow-hidden shadow-aesthetic">
+          <div className="md:col-span-4 studio-card rounded-3xl p-4 sm:p-7 flex flex-col justify-between group relative overflow-hidden shadow-aesthetic">
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20">
@@ -216,20 +216,20 @@ export default function StudioBentoGrid() {
                 <span className="text-[9px] font-mono text-purple-600 dark:text-purple-400 font-bold uppercase block">
                   CITED: RBI/2024-25/92
                 </span>
-                <p className="italic">
+                <p className="italic break-words">
                   "Formal request for full reversal of non-consensual annual fee debited on Account ending **8912..."
                 </p>
               </div>
             </div>
 
             <div className="mt-4 pt-3 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between text-xs text-purple-600 dark:text-purple-400 font-semibold">
-              <span>View Remedy Engine</span>
+              <span>Inspect Redline Workflow</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
 
-          {/* Card 4: Interactive Persona Matrix (8 cols) */}
-          <div className="md:col-span-8 studio-card rounded-3xl p-6 sm:p-7 shadow-aesthetic">
+          {/* Card 4: Domain Personas & Industry Profiles (8 cols) */}
+          <div className="md:col-span-8 studio-card rounded-3xl p-4 sm:p-7 flex flex-col justify-between group relative overflow-hidden shadow-aesthetic">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-3 border-b border-black/[0.06] dark:border-white/[0.06]">
               <div>
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">

@@ -26,6 +26,7 @@ export default function ForgotPasswordPage() {
     <AuthCard
       title="Reset DocFin Password"
       subtitle="Enter your work email address and we'll dispatch a secure recovery link."
+      badgeText="Account Recovery"
       footerLink={{
         text: 'Remembered your password?',
         label: 'Back to sign in',

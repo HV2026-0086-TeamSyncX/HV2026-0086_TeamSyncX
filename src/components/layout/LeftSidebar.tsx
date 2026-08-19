@@ -355,7 +355,7 @@ export default function LeftSidebar({
       </div>
 
       {/* 4. Bottom User Profile & Settings */}
-      <div className="p-2 border-t border-white/[0.06] flex-shrink-0 relative">
+      <div className="p-2 pb-safe border-t border-white/[0.06] flex-shrink-0 relative">
         <button
           onClick={() => setShowUserMenu(!showUserMenu)}
           className={`w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer text-left touch-target ${

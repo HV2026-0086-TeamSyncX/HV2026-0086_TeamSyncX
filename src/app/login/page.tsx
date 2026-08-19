@@ -73,7 +73,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--bg-canvas)] text-[var(--text-primary)] relative overflow-hidden transition-colors duration-300 select-none p-4 sm:p-6 lg:p-8">
+    <div className="min-h-dvh w-full max-w-[100vw] flex flex-col justify-between bg-[var(--bg-canvas)] text-[var(--text-primary)] relative overflow-hidden transition-colors duration-300 select-none p-3.5 sm:p-6 lg:p-8">
       {/* Background Google AI Studio & Relay Grid Mesh Layers */}
       <div className="absolute inset-0 bg-studio-grid pointer-events-none opacity-70 dark:opacity-40 [mask-image:radial-gradient(ellipse_80%_70%_at_50%_40%,black_70%,transparent_100%)]" />
       <div className="absolute inset-0 bg-studio-dots pointer-events-none opacity-35 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black_70%,transparent_100%)]" />
@@ -84,22 +84,23 @@ export default function LoginPage() {
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-500/10 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Bar: Brand & Controls */}
-      <header className="max-w-5xl w-full mx-auto flex items-center justify-between z-10 pt-1">
-        <Link href="/" className="hover:opacity-90 transition-opacity">
+      <header className="max-w-5xl w-full mx-auto flex items-center justify-between z-10 pt-1 gap-2">
+        <Link href="/" className="hover:opacity-90 transition-opacity flex-shrink-0">
           <Logo size="sm" />
         </Link>
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-[#0F172A] dark:hover:text-white px-3 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 border border-transparent hover:border-black/5 dark:hover:border-white/10 transition-all font-medium"
+            className="text-xs text-slate-600 dark:text-slate-400 hover:text-[#0F172A] dark:hover:text-white px-2.5 sm:px-3 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 border border-transparent hover:border-black/5 dark:hover:border-white/10 transition-all font-medium flex items-center gap-1.5 touch-target"
+            title="Return to Home"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Home</span>
+            <span className="hidden xs:inline">Back to Home</span>
           </Link>
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="w-9 h-9 rounded-full text-[#1E3A2B] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white bg-white/80 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-black/10 dark:border-white/10 flex items-center justify-center transition-all shadow-xs touch-target cursor-pointer"
+            className="w-9 h-9 rounded-full text-[#1E3A2B] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white bg-white/80 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-black/10 dark:border-white/10 flex items-center justify-center transition-all shadow-xs touch-target cursor-pointer flex-shrink-0"
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#1E3A2B]" />}
@@ -108,8 +109,8 @@ export default function LoginPage() {
       </header>
 
       {/* Main Centered Sign-In Card */}
-      <main className="max-w-md w-full mx-auto my-auto py-8 z-10">
-        <div className="card-glass bg-white/85 dark:bg-[#0E1210]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-black/10 dark:border-white/15 shadow-2xl shadow-emerald-950/10 space-y-6 relative overflow-hidden">
+      <main className="max-w-md w-full mx-auto my-auto py-6 sm:py-8 z-10">
+        <div className="card-glass bg-white/85 dark:bg-[#0E1210]/90 backdrop-blur-2xl rounded-3xl p-5 sm:p-10 border border-black/10 dark:border-white/15 shadow-2xl shadow-emerald-950/10 space-y-6 relative overflow-hidden">
           {/* Top Subtle Specular Light Highlight */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent" />
 

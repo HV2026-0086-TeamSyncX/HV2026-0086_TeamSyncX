@@ -686,13 +686,14 @@ export default function PromptBar({
                   </div>
 
                   {/* Right: Attachment & Send */}
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
                     {/* Paperclip Button */}
                     <button
                       type="button"
                       onClick={() => nativeFileInputRef.current?.click()}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer touch-target"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer touch-target active:scale-95"
                       title="Attach File or Media"
+                      aria-label="Attach File or Media"
                     >
                       <Paperclip className="w-4 h-4 rotate-45" />
                     </button>
@@ -701,10 +702,11 @@ export default function PromptBar({
                     <button
                       type="submit"
                       disabled={(!input.trim() && attachedFiles.length === 0) || isLoading}
-                      className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-md disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all flex-shrink-0 cursor-pointer"
+                      className="w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-md disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all flex-shrink-0 cursor-pointer touch-target"
                       title="Send Message"
+                      aria-label="Send Message"
                     >
-                      <ArrowUp className="w-4 h-4 font-bold stroke-[2.5]" />
+                      <ArrowUp className="w-4.5 h-4.5 font-bold stroke-[2.5]" />
                     </button>
                   </div>
                 </div>
