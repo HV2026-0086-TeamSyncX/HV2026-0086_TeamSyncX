@@ -17,7 +17,10 @@ import {
   Loader2,
   Sun,
   Moon,
-  AlertTriangle
+  AlertTriangle,
+  Sparkles,
+  ShieldCheck,
+  ArrowLeft
 } from 'lucide-react';
 
 export default function SignupPage() {
@@ -77,32 +80,57 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--bg-canvas)] text-[var(--text-primary)] transition-colors duration-300 select-none p-3 sm:p-6">
-      {/* Top Bar: Brand & Theme Toggle */}
-      <header className="max-w-md w-full mx-auto flex items-center justify-between pt-2">
-        <Link href="/">
+    <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--bg-canvas)] text-[var(--text-primary)] relative overflow-hidden transition-colors duration-300 select-none p-4 sm:p-6 lg:p-8">
+      {/* Background Google AI Studio & Relay Grid Mesh Layers */}
+      <div className="absolute inset-0 bg-studio-grid pointer-events-none opacity-70 dark:opacity-40 [mask-image:radial-gradient(ellipse_80%_70%_at_50%_40%,black_70%,transparent_100%)]" />
+      <div className="absolute inset-0 bg-studio-dots pointer-events-none opacity-35 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black_70%,transparent_100%)]" />
+      <div className="absolute inset-0 bg-studio-beam pointer-events-none" />
+
+      {/* Floating Ambient Glow Orbs */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] bg-emerald-500/10 dark:bg-emerald-500/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 left-10 w-80 h-80 bg-blue-500/10 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Top Bar: Brand & Controls */}
+      <header className="max-w-5xl w-full mx-auto flex items-center justify-between z-10 pt-1">
+        <Link href="/" className="hover:opacity-90 transition-opacity">
           <Logo size="sm" />
         </Link>
-        <button
-          onClick={toggleTheme}
-          aria-label="Toggle theme"
-          className="w-9 h-9 rounded-2xl text-[#1E3A2B] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white bg-[#EBF5EF] dark:bg-white/5 hover:bg-[#E2F0E7] dark:hover:bg-white/10 border border-[#CDE3D5] dark:border-white/10 flex items-center justify-center transition-all shadow-xs touch-target"
-          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-        >
-          {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#1E3A2B]" />}
-        </button>
+        <div className="flex items-center gap-2.5">
+          <Link
+            href="/"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-[#0F172A] dark:hover:text-white px-3 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 border border-transparent hover:border-black/5 dark:hover:border-white/10 transition-all font-medium"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Home</span>
+          </Link>
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="w-9 h-9 rounded-full text-[#1E3A2B] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white bg-white/80 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-black/10 dark:border-white/10 flex items-center justify-center transition-all shadow-xs touch-target cursor-pointer"
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#1E3A2B]" />}
+          </button>
+        </div>
       </header>
 
       {/* Main Centered Signup Card */}
-      <main className="max-w-md w-full mx-auto my-auto py-6 sm:py-8">
-        <div className="bg-white dark:bg-[#0E121A] rounded-2xl sm:rounded-3xl p-5 sm:p-9 border border-[#DCE5F0] dark:border-white/10 shadow-xl shadow-blue-500/5 space-y-6">
+      <main className="max-w-md w-full mx-auto my-auto py-8 z-10">
+        <div className="card-glass bg-white/85 dark:bg-[#0E1210]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-black/10 dark:border-white/15 shadow-2xl shadow-emerald-950/10 space-y-6 relative overflow-hidden">
+          {/* Top Subtle Specular Light Highlight */}
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent" />
+
           {/* Header */}
-          <div className="space-y-1.5 text-center">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#0F172A] dark:text-white tracking-tight">
+          <div className="space-y-2 text-center">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[11px] font-mono font-bold uppercase tracking-wider mx-auto">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Get Started Free</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#0F172A] dark:text-[#F2F4F3] tracking-tight">
               Create an Account
             </h1>
-            <p className="text-xs text-[#53627A] dark:text-slate-400">
-              Get started with DocFin document intelligence
+            <p className="text-xs sm:text-sm text-[#2E503B] dark:text-[#8E9690] leading-relaxed">
+              Start extracting & auditing documents with multimodal intelligence
             </p>
           </div>
 
@@ -124,7 +152,7 @@ export default function SignupPage() {
               type="button"
               disabled={isSubmitting || isLoading}
               onClick={handleManualGoogleSignup}
-              className="w-full py-2.5 px-4 rounded-full bg-white dark:bg-white/5 hover:bg-[#F8FAFD] dark:hover:bg-white/10 border border-[#DCE5F0] dark:border-white/15 text-[#0F172A] dark:text-white text-xs font-semibold flex items-center justify-center gap-2.5 transition-all shadow-xs disabled:opacity-50"
+              className="w-full py-2.5 px-4 rounded-full bg-white/90 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 border border-black/15 dark:border-white/15 text-[#0F172A] dark:text-[#F2F4F3] text-xs font-semibold flex items-center justify-center gap-2.5 transition-all shadow-xs disabled:opacity-50 cursor-pointer"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -144,16 +172,17 @@ export default function SignupPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>Sign up with Google</span>
+              <span>Continue with Google</span>
             </button>
           )}
 
+          {/* Clean Divider */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-[#DCE5F0] dark:bg-white/10" />
-            <span className="text-[10px] text-[#8092A7] font-mono uppercase tracking-wider">
+            <div className="flex-1 h-px bg-black/10 dark:bg-white/10" />
+            <span className="text-[10px] text-slate-500 dark:text-[#8E9690] font-mono uppercase tracking-wider font-semibold">
               Or with email
             </span>
-            <div className="flex-1 h-px bg-[#DCE5F0] dark:bg-white/10" />
+            <div className="flex-1 h-px bg-black/10 dark:bg-white/10" />
           </div>
 
           {/* Error Banner */}
@@ -165,115 +194,128 @@ export default function SignupPage() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3.5 text-left">
+          <form onSubmit={handleSubmit} className="space-y-4 text-left">
             <div>
-              <label className="text-xs font-bold text-[#0F172A] dark:text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-[#0F172A] dark:text-[#F2F4F3] block mb-1.5">
                 Full Name
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-[#8092A7] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <User className="w-4 h-4 text-slate-400 dark:text-[#8E9690] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Your Name"
-                  className="w-full pl-10 pr-3 py-2.5 bg-[#F8FAFD] dark:bg-white/5 border border-[#DCE5F0] dark:border-white/10 rounded-full text-xs text-[#0F172A] dark:text-white placeholder:text-[#8092A7] focus:bg-white dark:focus:bg-[#161c28] focus:outline-none focus:ring-1 focus:ring-[#2563EB] transition-all"
+                  placeholder="Roshan Kodi"
+                  className="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-white/5 border border-black/15 dark:border-white/15 rounded-full text-xs sm:text-sm text-[#0F172A] dark:text-[#F2F4F3] placeholder:text-slate-400 dark:placeholder:text-[#8E9690] focus:bg-white dark:focus:bg-[#141a18] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-2xs"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-[#0F172A] dark:text-slate-300 block mb-1">
-                Email Address
+              <label className="text-xs font-bold text-[#0F172A] dark:text-[#F2F4F3] block mb-1.5">
+                Work Email
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-[#8092A7] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-slate-400 dark:text-[#8E9690] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@company.com"
-                  className="w-full pl-10 pr-3 py-2.5 bg-[#F8FAFD] dark:bg-white/5 border border-[#DCE5F0] dark:border-white/10 rounded-full text-xs text-[#0F172A] dark:text-white placeholder:text-[#8092A7] focus:bg-white dark:focus:bg-[#161c28] focus:outline-none focus:ring-1 focus:ring-[#2563EB] transition-all"
+                  className="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-white/5 border border-black/15 dark:border-white/15 rounded-full text-xs sm:text-sm text-[#0F172A] dark:text-[#F2F4F3] placeholder:text-slate-400 dark:placeholder:text-[#8E9690] focus:bg-white dark:focus:bg-[#141a18] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-2xs"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-[#0F172A] dark:text-slate-300 block mb-1">
-                Create Password
+              <label className="text-xs font-bold text-[#0F172A] dark:text-[#F2F4F3] block mb-1.5">
+                Password
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-[#8092A7] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-slate-400 dark:text-[#8E9690] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 6 characters"
-                  className="w-full pl-10 pr-10 py-2.5 bg-[#F8FAFD] dark:bg-white/5 border border-[#DCE5F0] dark:border-white/10 rounded-full text-xs text-[#0F172A] dark:text-white placeholder:text-[#8092A7] focus:bg-white dark:focus:bg-[#161c28] focus:outline-none focus:ring-1 focus:ring-[#2563EB] transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-white/5 border border-black/15 dark:border-white/15 rounded-full text-xs sm:text-sm text-[#0F172A] dark:text-[#F2F4F3] placeholder:text-slate-400 dark:placeholder:text-[#8E9690] focus:bg-white dark:focus:bg-[#141a18] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-2xs"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8092A7] hover:text-[#0F172A] dark:hover:text-slate-200"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#8E9690] hover:text-[#0F172A] dark:hover:text-white cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <div className="py-1">
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={agreeTerms}
-                  onChange={(e) => setAgreeTerms(e.target.checked)}
-                  className="w-3.5 h-3.5 mt-0.5 rounded border-[#DCE5F0] text-[#2563EB] focus:ring-0"
-                />
-                <span className="text-[11px] text-[#53627A] dark:text-slate-400 leading-relaxed">
-                  I agree to the <Link href="#" className="underline font-semibold text-[#0F172A] dark:text-slate-200">Terms of Service</Link> and <Link href="#" className="underline font-semibold text-[#0F172A] dark:text-slate-200">Privacy Policy</Link>.
-                </span>
+            <div className="flex items-start gap-2 pt-1 text-xs text-slate-600 dark:text-[#8E9690]">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={agreeTerms}
+                onChange={(e) => setAgreeTerms(e.target.checked)}
+                className="w-4 h-4 rounded border-black/20 text-emerald-600 focus:ring-emerald-500 mt-0.5"
+              />
+              <label htmlFor="terms" className="leading-snug cursor-pointer font-medium">
+                I agree to DocFin's{' '}
+                <Link href="/" className="text-emerald-700 dark:text-emerald-400 hover:underline">
+                  Terms of Service
+                </Link>{' '}
+                and{' '}
+                <Link href="/" className="text-emerald-700 dark:text-emerald-400 hover:underline">
+                  Privacy Policy
+                </Link>
+                .
               </label>
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting || isLoading}
-              className="w-full py-3 px-4 rounded-full bg-[#1E7145] hover:bg-[#185E39] text-white text-xs font-bold shadow-md shadow-emerald-900/10 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+              className="btn-primary w-full py-3 sm:py-3.5 px-4 rounded-full bg-[#288E4F] dark:bg-[#4CAF6B] text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer"
             >
-              {isSubmitting ? (
+              {isSubmitting || isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Creating account...</span>
+                  <span>Creating Account...</span>
                 </>
               ) : (
                 <>
-                  <span className="underline decoration-1.5 underline-offset-2">Create Account</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>Create Free Account</span>
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
 
           {/* Footer Note */}
-          <div className="text-center pt-2">
-            <p className="text-xs text-[#53627A] dark:text-slate-400">
+          <div className="text-center pt-2 border-t border-black/[0.06] dark:border-white/10">
+            <p className="text-xs text-slate-600 dark:text-[#8E9690]">
               Already have an account?{' '}
               <Link
                 href="/login"
-                className="font-bold text-[#2563EB] dark:text-blue-400 hover:underline"
+                className="font-bold text-emerald-700 dark:text-emerald-400 hover:underline ml-1"
               >
-                Sign In
+                Sign in
               </Link>
             </p>
           </div>
         </div>
+
+        {/* Security Trust Badge */}
+        <div className="flex items-center justify-center gap-2 mt-4 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+          <span>SOC-2 Type II Certified • 256-Bit SSL Encrypted</span>
+        </div>
       </main>
 
       {/* Footer */}
-      <footer className="max-w-md w-full mx-auto text-center text-[11px] text-[#8092A7] pb-2">
+      <footer className="max-w-md w-full mx-auto text-center text-[11px] text-slate-500 dark:text-slate-400 pb-2 z-10">
         <Link href="/" className="hover:underline">← Back to Homepage</Link>
       </footer>
     </div>
